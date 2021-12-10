@@ -1,0 +1,397 @@
+:root {
+  --primary-color: #166d71;
+  --gray: #e0e0e0;
+  --todo-bg: #f7f7f7;
+  --todo-bg-hover: #e6e1e1;
+  --warning: #f4aa0b;
+  --red: #ec4646;
+  --success: #166d71;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Overpass", sans-serif;
+  min-height: 100vh;
+}
+div.no-margin {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+span.backBtn {
+  cursor: pointer;
+}
+select:invalid select {
+  color: gray;
+}
+select.select {
+  color: gray;
+}
+input {
+  outline: none !important;
+}
+.body {
+  height: 100%;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+.text-to-right {
+  text-align: right !important;
+}
+/* payment page styles */
+div.payment-row {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+p.kindly-pay {
+  font-weight: bold;
+  line-height: 35px;
+  font-size: xx-large;
+}
+
+p span.amount {
+  color: var(--primary-color);
+}
+div {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+div.paybg {
+  background-color: #f7f7f7;
+  max-width: 100% !important;
+  margin-left: 0;
+  margin-right: 0;
+}
+div span.title {
+  font-size: 11px;
+  font-weight: bold;
+  color: rgb(20, 20, 20);
+  font-family: "Overpass", sans-serif;
+}
+div span.value {
+  font-size: 15px;
+  font-weight: bold;
+  color: rgb(20, 20, 20);
+  font-family: "Overpass", sans-serif;
+}
+
+div p.confirm,
+div p.note {
+  font-size: 18px;
+  text-align: left;
+  font-weight: normal;
+  line-height: 24.3px;
+  font-style: normal;
+  margin: 12px;
+}
+
+button.payment {
+  background-color: var(--primary-color);
+  color: white;
+  width: 100%;
+  padding: 14px 0;
+  height: 65;
+  margin: 24px 0px;
+  outline: none;
+  border: 0;
+  border-radius: 12px;
+  box-sizing: content-box;
+  display: inline-block;
+}
+button.payment:hover {
+  color: aliceblue;
+  background-color: #1d5255;
+}
+span.payment.material-icons {
+  margin: 8px 0px;
+  color: #8c8c8c;
+  cursor: help;
+}
+span.payment.material-icons:hover {
+  color: #413d3d;
+}
+
+/* history page styles */
+p.trans-history {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 48.6px;
+  color: #131313;
+  text-align: center;
+  margin: 10px 0;
+}
+div.transaction {
+  background-color: #e5e5e5;
+  padding: 12px 24px !important;
+  overflow: hidden;
+}
+
+div.history {
+  overflow: hidden;
+}
+
+span.no-history {
+  background-color: #e0e0e0;
+  padding: 1em;
+  color: var(--primary-color);
+  font-size: 45px;
+}
+span.no-trans-yet {
+  color: #8c8c8c;
+  font-size: 16px;
+  display: block;
+  margin-top: 10px;
+}
+
+span.trans-title,
+span.trans-amount {
+  font-family: "Overpass", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 135%;
+  display: inline-block;
+  color: #131313;
+}
+
+span.trans-status,
+span.trans-time {
+  font-family: "Overpass", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 21px;
+  color: #8c8c8c;
+  display: inline-block;
+}
+span.ellipse {
+  position: relative;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 5px;
+  background-color: var(--type);
+  bottom: 1px;
+}
+
+/* sell crypto styles */
+div.upload {
+  border: 1px solid #8c8c8c;
+  box-sizing: border-box;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 0px;
+}
+label.choose,
+span.placeholder {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: normal;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+label.choose {
+  color: var(--primary-color);
+  cursor: pointer;
+}
+label.choose:hover {
+  color: #638385;
+}
+input.file-input {
+  opacity: 0;
+  max-height: 8px;
+  line-height: 8px;
+  font-size: x-small;
+}
+
+/* trade crypto styles */
+button.trading {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+}
+button.buy.active {
+  background: #cdeced !important;
+  border: 2px solid var(--primary-color) !important;
+  color: #131313 !important;
+}
+button.sell.active {
+  background: #f0e3c5 !important;
+  border: 2px solid #f4aa0b !important;
+  color: #131313 !important;
+}
+select.select {
+  width: 100%;
+  display: block;
+  padding: 12px;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  cursor: pointer;
+  overflow-y: auto;
+  color: gray;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url(../svg/arrow_down.svg);
+  background-repeat: no-repeat;
+  background-position: right 10px top 50%;
+}
+
+select:focus,
+select:hover,
+input:hover,
+input:focus {
+  outline: none;
+  border: 1px solid #6d6f72;
+}
+.fw-bold {
+  font-weight: bold;
+}
+
+div.trade select,
+div.trade input:not(input[type="checkbox"]) {
+  font-size: 16px !important;
+  border-radius: 10px !important;
+  padding: 12px !important;
+}
+
+input.toggle-switch {
+  margin-left: 0.3em !important;
+  margin-right: 10px;
+}
+input.toggle-switch:checked {
+  background-color: var(--primary-color);
+  border-color: #166d71;
+}
+/* sell giftcard page */
+label[for="upload"].giftcard {
+  background-color: #e0e0e0;
+  cursor: pointer;
+  border-radius: 12px;
+  text-align: center;
+  padding: 25px 16px;
+  height: 80px;
+}
+label[for="upload"].giftcard span {
+  display: inline-block;
+  font-size: 30px;
+  vertical-align: middle;
+}
+/* dashboard styles */
+p.view-all {
+  color: var(--primary-color);
+  cursor: pointer;
+}
+div.todo {
+  border-radius: 12px;
+  background-color: var(--todo-bg);
+  cursor: pointer;
+}
+div.todo:hover {
+  background-color: var(--todo-bg-hover);
+}
+div > div.todo:first-child {
+  margin-right: 20px;
+}
+div.todo span.icon {
+  border-radius: 50%;
+  padding: 8px;
+}
+
+div.todo span.giftcard {
+  background-color: #cdeced;
+}
+div.todo span.crypto {
+  background-color: #f0e3c5;
+}
+
+div.todo p.act {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 135%;
+}
+div.todo p.note {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 135%;
+  margin-left: 0;
+}
+
+/* exchange rate page */
+div.rates {
+  background-color: #f7f7f7;
+  overflow: hidden;
+  margin-top: 10px;
+  border-radius: 12px;
+}
+
+div.rates div.rate {
+  background-color: #e5e5e5;
+  padding: 12px 24px !important;
+  overflow: hidden;
+}
+
+div.rate span.rate-title {
+  font-size: 14px;
+}
+div.rate span.rate-price {
+  font-size: 14px;
+  font-weight: bold;
+}
+/* settings page styles */
+.gap {
+  gap: 20px !important;
+}
+.rad8 {
+  border-radius: 8px;
+  font-size: 15px;
+  padding: 10px;
+}
+p.changepass {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
+}
+p.changepass a:hover {
+  color: #1d5255;
+}
+p.changepass a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+button.settings {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px 0;
+  margin: 24px auto;
+  outline: none;
+  border: 0;
+  border-radius: 12px;
+  display: block;
+}
+button.changepass {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px 0;
+  margin: 24px auto;
+  outline: none;
+  border: 0;
+  border-radius: 12px;
+}
+button.changepass:hover,
+button.settings:hover {
+  background-color: #1d5255;
+}
+label.settings {
+  font-size: 14px !important;
+}
+
+/* reset page styles */
+p.info {
+  font-size: 14px !important;
+}
