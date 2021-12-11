@@ -3,7 +3,7 @@
 <body>
     <div class="body no-margin">
         <div class="row justify-content-center mt-4">
-            <div class="col col-md-5 col-lg-3" id="settings_pass_div">
+            <div class="col-9 col-md-5 col-lg-5" id="settings_pass_div">
                 <img src="assets/images/FabEx.png" class="mx-auto d-block" alt="Logo">
                 <p class="text-center mt-2 fw-bold fs-4">Reset password</p>
                 <p class="text-center fs-6 mb-3">Enter the email address linked to your account.

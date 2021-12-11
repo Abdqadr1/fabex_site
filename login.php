@@ -3,7 +3,7 @@
 <body>
     <div class="body no-margin">
         <div class="row justify-content-center mt-4">
-            <div class="col col-md-5 col-lg-3" id="settings_pass_div">
+            <div class="col-11 col-md-5 col-lg-3" id="settings_pass_div">
                 <img src="assets/images/FabEx.png" class="mx-auto d-block" alt="Logo">
                 <p class="text-center mt-2 fw-bold fs-4">Login to your account</p>
                 <p class="text-center mt-2 fw-bold changepass">New to Fabex? <a href="register.php">Register</a></p>
@@ -15,6 +15,7 @@
                     <div class="col-10 mt-1 my-3">
                         <label for="password" class="form-label settings">Password</label>
                         <input type="text" class="form-control rad8" id="password" placeholder="Enter password">
+                        <p class="forgotpass"><a href="reset.php">Forgot password?</a></p>
                     </div>
                 </div>
 

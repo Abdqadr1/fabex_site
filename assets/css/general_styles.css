@@ -7,6 +7,9 @@
   --red: #ec4646;
   --success: #166d71;
 }
+img.logo {
+  cursor: pointer !important;
+}
 body {
   margin: 0;
   padding: 0;
@@ -121,13 +124,14 @@ p.trans-history {
   margin: 10px 0;
 }
 div.transaction {
-  background-color: #e5e5e5;
-  padding: 12px 24px !important;
-  overflow: hidden;
+  margin: 0;
+  padding: 12px 0;
 }
 
 div.history {
-  overflow: hidden;
+  padding: 0 12px !important;
+  background-color: #f7f7f7;
+  border-radius: 8px;
 }
 
 span.no-history {
@@ -138,20 +142,22 @@ span.no-history {
 }
 span.no-trans-yet {
   color: #8c8c8c;
-  font-size: 16px;
+  font-size: 18px;
   display: block;
-  margin-top: 10px;
+  margin-top: 18px;
 }
 
 span.trans-title,
 span.trans-amount {
   font-family: "Overpass", sans-serif;
   font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 135%;
   display: inline-block;
   color: #131313;
+}
+span.trans-amount {
+  font-weight: 600;
 }
 
 span.trans-status,
@@ -292,9 +298,6 @@ div.todo {
 div.todo:hover {
   background-color: var(--todo-bg-hover);
 }
-div > div.todo:first-child {
-  margin-right: 20px;
-}
 div.todo span.icon {
   border-radius: 50%;
   padding: 8px;
@@ -307,11 +310,11 @@ div.todo span.crypto {
   background-color: #f0e3c5;
 }
 
-div.todo p.act {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 135%;
+div.todo span.act {
+  font-weight: 400;
+  font-size: large;
+  height: 40px;
+  vertical-align: middle;
 }
 div.todo p.note {
   font-style: normal;
@@ -337,6 +340,9 @@ div.rates div.rate {
 
 div.rate span.rate-title {
   font-size: 14px;
+  font-weight: 400;
+  display: inline-block;
+  max-width: 90%;
 }
 div.rate span.rate-price {
   font-size: 14px;
@@ -344,7 +350,7 @@ div.rate span.rate-price {
 }
 /* settings page styles */
 .gap {
-  gap: 20px !important;
+  row-gap: 10px !important;
 }
 .rad8 {
   border-radius: 8px;
@@ -368,7 +374,7 @@ button.settings {
   background-color: var(--primary-color);
   color: white;
   padding: 12px 0;
-  margin: 24px auto;
+  margin: 16px auto;
   outline: none;
   border: 0;
   border-radius: 12px;
@@ -394,4 +400,19 @@ label.settings {
 /* reset page styles */
 p.info {
   font-size: 14px !important;
+}
+/* login page styles */
+p.forgotpass {
+  text-align: right !important;
+  font-size: 16px;
+  margin-top: 8px;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+p.forgotpass a:hover {
+  color: #1d5255;
+}
+p.forgotpass a {
+  text-decoration: none;
+  color: var(--primary-color);
 }
