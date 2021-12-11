@@ -5,8 +5,8 @@
             chevron_left
         </span></div>
     <div class="body row justify-content-center payment-row">
-        <div class="col-md-5 col-lg-4 col-9 col-sm-7">
-            <p class="kindly-pay my-2 text-center mb-5">Kindly withdraw $30 worth of ETH to the address below</p>
+        <div class="col-md-5 col-lg-4 col-10">
+            <p class="kindly-pay my-2 text-center mb-3">Kindly withdraw $30 worth of ETH to the address below</p>
             <div class="details my-3  row p-2 rounded border paybg">
                 <div class="col-8 p-0">
                     <span class="d-block title">Network</span>
@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="details my-3 row p-2 rounded border justify-content-between paybg">
-                <div class="col-8 p-0">
+                <div class="col-10 p-0">
                     <span class="d-block title">Address</span>
                     <span class="value account-number">e1t2f2yff3fnfjh3rf2f89e2fffef2fiu2fnsge</span>
                 </div>
@@ -44,8 +44,8 @@
             <!-- upload form -->
             <p class="mb-1">Upload proof of transfer</p>
             <div class="upload row justify-content-between">
-                <span class="col-6 text-left placeholder">png, jpg or jpeg</span>
-                <label for="upload" class="col-5 text-right choose">Choose image</label>
+                <span class="col-7 text-left file-placeholder">png, jpg or jpeg</span>
+                <label for="upload" class="col-5 choose">Choose image</label>
             </div>
             <input type="file" class="file-input" id="upload" placeholder="png, jpg or jpeg">
             <button class="payment text-center">Proceed</button>

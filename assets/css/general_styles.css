@@ -49,7 +49,7 @@ div.payment-row {
 p.kindly-pay {
   font-weight: bold;
   line-height: 35px;
-  font-size: xx-large;
+  font-size: 26px;
 }
 
 p span.amount {
@@ -74,6 +74,7 @@ div span.title {
 div span.value {
   font-size: 15px;
   font-weight: bold;
+  word-break: break-all;
   color: rgb(20, 20, 20);
   font-family: "Overpass", sans-serif;
 }
@@ -94,7 +95,7 @@ button.payment {
   width: 100%;
   padding: 14px 0;
   height: 65;
-  margin: 24px 0px;
+  margin: 18px 0px;
   outline: none;
   border: 0;
   border-radius: 12px;
@@ -190,10 +191,10 @@ div.upload {
   margin: 0px;
 }
 label.choose,
-span.placeholder {
+span.file-placeholder {
   font-style: normal;
   font-weight: normal;
-  font-size: 16px;
+  font-size: 14px !important;
   line-height: normal;
   padding-bottom: 0;
   margin-bottom: 0;
@@ -201,6 +202,7 @@ span.placeholder {
 label.choose {
   color: var(--primary-color);
   cursor: pointer;
+  text-align: right;
 }
 label.choose:hover {
   color: #638385;
@@ -236,13 +238,6 @@ select.select {
   cursor: pointer;
   overflow-y: auto;
   color: gray;
-
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url(../svg/arrow_down.svg);
-  background-repeat: no-repeat;
-  background-position: right 10px top 50%;
 }
 
 select:focus,
@@ -277,8 +272,7 @@ label[for="upload"].giftcard {
   cursor: pointer;
   border-radius: 12px;
   text-align: center;
-  padding: 25px 16px;
-  height: 80px;
+  padding: 25px 30px;
 }
 label[for="upload"].giftcard span {
   display: inline-block;

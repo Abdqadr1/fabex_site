@@ -7,11 +7,11 @@
         </span>
     </div>
     <div class="body row justify-content-center payment-row">
-        <div class="col-md-5 col-lg-4 col-9 col-sm-7">
+        <div class="col-md-5 col-lg-4 col-10">
             <p class="kindly-pay my-2 text-center mb-5">Kindly upload image(s) of the Giftcards</p>
             <!-- upload form -->
-            <div class="no-margin row justify-content-start mt-5">
-                <label class="col-3 text-center d-block giftcard" for="upload">
+            <div class="no-margin mt-5">
+                <label class="text-center d-inline-block giftcard" for="upload">
                     <span class="material-icons">
                         add
                     </span>

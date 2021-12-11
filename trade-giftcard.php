@@ -5,23 +5,32 @@
             chevron_left
         </span></div>
     <div class="body row justify-content-center payment-row">
-        <div class="col-md-5 col-lg-4 col-9 col-sm-7 trade">
-            <p class="kindly-pay my-2 text-center mb-5">Trade Giftcards</p>
-            <div class="row justify-content-center mb-4">
+        <div class="col-md-5 col-lg-4 col-10 trade">
+            <p class="kindly-pay my-2 text-center mb-3">Trade Giftcards</p>
+            <div class="row justify-content-center mb-3">
                 <button class="col-3 btn btn-outline-secondary mr-3 buy active trading">Buy</button>
                 <button class="col-3 btn btn-outline-secondary ml-3 sell trading">Sell</button>
             </div>
             <!-- category -->
-            <label for="category" class="form-label mb-1 mt-3">Category</label>
-            <select class="select" id="category" required>
-                <option selected>Select category...</option>
-            </select>
-
+            <div class="mt-3">
+                <label for="category" class="form-label">Category</label>
+                <select class="form-select rad8" id="category">
+                    <option selected hidden>Select category...</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
             <!-- sub category -->
-            <label for="subCategory" class="form-labe mb-1 mt-3">Sub category</label>
-            <select class="select" id="subCategory" required>
-                <option selected>Select sub...</option>
-            </select>
+            <div class="mt-3">
+                <label for="subCategory" class="form-label">Sub Category</label>
+                <select class="form-select rad8" id="subCategory">
+                    <option selected hidden>Select sub...</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
 
             <!-- amount -->
             <label for="amount" class="form-label mb-1 mt-3">Amount ($)</label>
@@ -35,11 +44,14 @@
             </div>
 
             <!-- bank name -->
-            <div class="for-sell bank">
-                <label for="bankName" class="form-label my-1">Bank Name</label>
-                <select class="select mb-1" id="bankName" required>
+            <div class="mt-3 for-sell bank">
+                <label for="bankName" class="form-label">Bank Name</label>
+                <select class="form-select rad8" id="bankName">
                     <option selected disabled hidden>Select Bank Name</option>
                     <option>Access Bank Plc</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
                 </select>
             </div>
 
@@ -57,7 +69,7 @@
 
             </div>
 
-            <button class="payment text-center">Buy Crypto</button>
+            <button class="payment text-center">Buy Giftcard</button>
         </div>
     </div>
     <script type="module" src="js/trade_crypto.js"></script>

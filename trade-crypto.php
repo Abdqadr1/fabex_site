@@ -5,17 +5,22 @@
             chevron_left
         </span></div>
     <div class="body row justify-content-center payment-row">
-        <div class="col-md-5 col-lg-4 col-9 col-sm-7 trade">
-            <p class="kindly-pay my-2 text-center mb-5">Trade Crypto</p>
+        <div class="col-md-5 col-lg-4 col-10 trade">
+            <p class="kindly-pay my-2 text-center mb-3">Trade Crypto</p>
             <div class="row justify-content-center">
                 <button class="col-3 btn btn-outline-secondary mr-3 buy active trading">Buy</button>
                 <button class="col-3 btn btn-outline-secondary ml-3 sell trading">Sell</button>
             </div>
             <!-- assets -->
-            <label for="assets" class="form-label mb-1 mt-5">Asset</label>
-            <select class="select" id="assets" required>
-                <option selected>Select coin...</option>
-            </select>
+            <div class="mt-3">
+                <label for="assets" class="form-label">Assets</label>
+                <select class="form-select rad8" id="assets" required>
+                    <option selected hidden>Select coin...</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
             <!-- amount -->
             <label for="amount" class="form-label mb-1 mt-3">Amount ($)</label>
             <input type="text" class="form-control form-control-lg" id="amount" required>
@@ -24,17 +29,18 @@
             <div class="for-buy">
                 <label for="address" class="form-label mb-1 mt-3">Wallet Address</label>
                 <input type="text" class="form-control form-control-lg" id="address" placeholder="Enter wallet address" required>
-
             </div>
 
             <!-- network -->
-            <div class="for-buy">
-                <label for="network" class="form-label mb-1 mt-3">Network</label>
-                <select class="select mb-4" id="network" required>
+            <div class="mt-3 for-buy">
+                <label for="network" class="form-label">Network</label>
+                <select class="form-select rad8" id="network">
                     <option selected>BEP20 (BSC)</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
                 </select>
             </div>
-
 
             <div class="form-check form-switch my-2 d-none" id="toggle-switch">
                 <input class="form-check-input toggle-switch" type="checkbox" role="switch" id="bankSwitch">
@@ -42,11 +48,14 @@
             </div>
 
             <!-- bank name -->
-            <div class="for-sell bank d-none">
-                <label for="bankName" class="form-label my-1">Bank Name</label>
-                <select class="select mb-1" id="bankName" required>
+            <div class="mt-3 for-sell bank d-none">
+                <label for="bankName" class="form-label">Bank Name</label>
+                <select class="form-select rad8" id="bankName">
                     <option selected disabled hidden>Select Bank Name</option>
                     <option>Access Bank Plc</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
                 </select>
             </div>
 
