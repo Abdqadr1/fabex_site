@@ -7,6 +7,21 @@
   --red: #ec4646;
   --success: #166d71;
 }
+navbar.navbar {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+li.nav-item .nav-link.active {
+  border-bottom: 2px solid var(--primary-color);
+}
+a.logout {
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--red);
+}
+a.logout:hover {
+  color: rgb(177, 39, 39);
+}
 img.logo {
   cursor: pointer !important;
 }
