@@ -1,14 +1,22 @@
 import { Ajax } from "./ajax.js";
-const loginForm = document.getElementById("login-form") as HTMLFormElement;
+const loginForm = document.getElementById("loginForm") as HTMLFormElement;
 const button = loginForm.querySelector('button') as HTMLButtonElement;
+const errorDiv = loginForm.querySelector("#errorDiv") as HTMLDivElement;
+const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>
+                Please wait... `;
 loginForm.onsubmit = (e) => {
     e.preventDefault();
     button.disabled = true;
-    button.innerText = "Logging in...";
-    const aj = new Ajax(loginForm);
+    const aj = new Ajax(loginForm as HTMLFormElement);
+    aj.setBefore(() => {
+        button.innerHTML = spinner;
+    });
     aj.setAfter((responseText: string) => {
         console.log(responseText);
-        if (responseText.indexOf("success") != -1) location.href = "dashboard.php";
+        if (responseText.toLowerCase().indexOf("success") != -1) location.href = "profile.php";
+        else {
+            errorDiv.innerText = responseText;
+        }
     });
     aj.start();
 }

@@ -1,16 +1,18 @@
-<?php include_once "header.php"; ?>
+<?php
+session_start();
+include_once "header.php"; ?>
 
 <body>
     <div class="body no-margin px-sm-4">
-        <div class="row justify-content-center mt-4">
-            <div class="col-9 col-md-5 col-lg-3" id="settings_pass_div">
+        <div class="row justify-content-center mt-5">
+            <div class="col-9 col-md-5 col-lg-3 mt-5" id="settings_pass_div">
                 <img src="assets/images/FabEx.png" class="mx-auto d-block" alt="Logo">
                 <p class="text-center mt-2 fw-bold fs-4">Confirm your email</p>
-                <p class="text-center mt-2 fs-6">An email has been sent to josephy123@gmail.com
+                <p class="text-center mt-2 fs-6">An email has been sent to <b><?php echo $_SESSION["email"] ?></b>
                     Check your email and follow the instructions.</a></p>
                 <p class="text-center changepass"><a href="change-email.php">Change email</a></p>
                 <div class="row justify-content-center">
-                    <button class="col-10 settings text-center mx-auto">Go to login</button>
+                    <button class="btn col-10 settings text-center mx-auto"><a class="text-white d-block" href="login.php">Go to login</a></button>
                 </div>
             </div>
         </div>

@@ -7,6 +7,9 @@
   --red: #ec4646;
   --success: #166d71;
 }
+a {
+  text-decoration: none !important;
+}
 div#container {
   width: 100%;
   height: calc(100vh - 70px);

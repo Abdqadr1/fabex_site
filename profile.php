@@ -1,4 +1,6 @@
-<?php include "header.php"; ?>
+<?php
+session_start();
+include "header.php"; ?>
 
 <body>
     <?php include_once "navbar.php" ?>

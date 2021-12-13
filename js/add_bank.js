@@ -1,26 +1,26 @@
 import { Ajax } from "./ajax.js";
-var registerForm = document.getElementById('registerForm');
-var submitBtn = registerForm.querySelector("button");
-var errorDiv = registerForm.querySelector("#errorDiv");
+var addBankForm = document.querySelector("form#addBankForm");
+var errorDiv = document.querySelector("#errorDiv");
+var submitBtn = addBankForm.querySelector("button");
 var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>\n                Please wait... ";
-registerForm.onsubmit = function (event) {
-    submitBtn.disabled = true;
+var btnClose = "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"close\"></button>";
+addBankForm.onsubmit = function (event) {
     event.preventDefault();
+    submitBtn.disabled = true;
     var aj = new Ajax(event.target);
-    console.log(event.target);
     aj.setBefore(function () {
         submitBtn.innerHTML = spinner;
     });
     aj.setAfter(function (responseText) {
         console.log(responseText);
-        if (responseText.toLowerCase().indexOf("success") != -1)
-            location.href = "confirm-email.php";
+        if (responseText.indexOf("success") != -1)
+            location.href = "congrats.php";
         else {
-            errorDiv.innerText = responseText;
+            errorDiv.innerHTML = responseText;
             errorDiv.classList.remove("d-none");
             errorDiv.classList.add("d-block");
             submitBtn.disabled = false;
-            submitBtn.innerHTML = "Register";
+            submitBtn.innerHTML = "Add account details";
             errorDiv.focus();
         }
     });

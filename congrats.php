@@ -8,7 +8,7 @@
                 <p class="text-center mt-2 fw-bold fs-4">Congratulations!<br>
                     Your account has been verified</p>
                 <div class="row justify-content-center">
-                    <button class="col-10 settings text-center mx-auto">Go to login</button>
+                    <button class="col-10 settings text-center mx-auto"><a href="login.php" class="text-white">Go to login</a></button>
                 </div>
             </div>
         </div>
