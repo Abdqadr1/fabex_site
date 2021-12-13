@@ -1,0 +1,16 @@
+//customize bootstrap variables
+$primary: #166d71;
+$spinner-width: 5em;
+$spinner-height: $spinner-width;
+
+//import functions and variables
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+
+$custom-theme-colors: (
+  "altgray": #c97777,
+);
+
+$theme-colors: map-merge($custom-theme-colors, $theme-colors);
+
+@import "../node_modules/bootstrap/scss/bootstrap";

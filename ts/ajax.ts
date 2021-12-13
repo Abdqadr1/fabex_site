@@ -43,4 +43,12 @@ export class Ajax{
         if (this.isFetch) this.doFetch();
         else this.ajax();
     }
+
+    public static fetchPage(url:string, doAfter:Function) {
+        fetch(url, {
+            method: "get"
+        }).then(response => response.text())
+            .then(data => doAfter(data))
+            .catch(error => console.error("An error occurred", error));
+    }
 }

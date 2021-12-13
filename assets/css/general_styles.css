@@ -7,16 +7,26 @@
   --red: #ec4646;
   --success: #166d71;
 }
+div#container {
+  width: 100%;
+  height: calc(100vh - 70px);
+}
 navbar.navbar {
   padding-top: 0px !important;
   padding-bottom: 0px !important;
 }
-li.nav-item .nav-link.active {
-  border-bottom: 2px solid var(--primary-color);
+button.navbar-toggler {
+  border: none !important;
+  outline: none !important;
+}
+button.navbar-toggler a {
+  text-decoration: none;
+  font-size: 16px;
 }
 a.logout {
   text-decoration: none;
   cursor: pointer;
+  padding: 0;
   color: var(--red);
 }
 a.logout:hover {
@@ -152,9 +162,9 @@ div.history {
 
 span.no-history {
   background-color: #e0e0e0;
-  padding: 1em;
+  padding: 40px;
   color: var(--primary-color);
-  font-size: 45px;
+  font-size: 120px;
 }
 span.no-trans-yet {
   color: #8c8c8c;
@@ -255,12 +265,16 @@ select.select {
   color: gray;
 }
 
-select:focus,
 select:hover,
-input:hover,
-input:focus {
+input:hover {
   outline: none;
   border: 1px solid #6d6f72;
+}
+*:focus {
+  outline: none !important;
+}
+*::-moz-focus-inner {
+  outline: none !important;
 }
 .fw-bold {
   font-weight: bold;
@@ -295,9 +309,17 @@ label[for="upload"].giftcard span {
   vertical-align: middle;
 }
 /* dashboard styles */
+a.dash {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: #131313;
+  text-decoration: none;
+}
 p.view-all {
   color: var(--primary-color);
   cursor: pointer;
+  text-align: right !important;
 }
 div.todo {
   border-radius: 12px;
@@ -377,7 +399,7 @@ p.changepass a:hover {
 }
 p.changepass a {
   text-decoration: none;
-  color: var(--primary-color);
+  cursor: pointer;
 }
 button.settings {
   background-color: var(--primary-color);
