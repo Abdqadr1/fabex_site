@@ -48,9 +48,13 @@ var load = function (pageName) {
         container.innerHTML = "";
         container.innerHTML = data;
         var script = document.createElement("script");
-        script.src = jsFolder + pageName + ".js";
+        script.src = jsFolder + pageName.toLowerCase() + ".js";
         script.setAttribute("type", "module");
         container.appendChild(script);
+        if (activePage === "Dashboard") {
+            var fNameTag = container.querySelector("b#fname");
+            fNameTag.innerText = fname;
+        }
     });
     console.log(url);
 };

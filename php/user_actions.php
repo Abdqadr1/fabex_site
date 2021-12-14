@@ -29,7 +29,7 @@ class User
     }
     public function setFname(string $fname)
     {
-        $this->id = $fname;
+        $this->fname = $fname;
     }
     public function setPhone(string $phone)
     {
@@ -47,27 +47,34 @@ class User
     {
         $this->email = $email;
     }
-    public function login(mysqli $conn)
+    public function login(mysqli &$conn)
     {
-        $login_query = "SELECT id, fname FROM users WHERE email = '{$this->email}' AND pword = '{$this->pword}'";
+        $login_query = "SELECT id, fname, verified FROM users WHERE email = '{$this->email}' AND pword = '{$this->pword}'";
         $result = $conn->query($login_query);
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $_SESSION["id"] = $row["id"];
-            $_SESSION["fname"] = $row["fname"];
-            echo $row["fname"];
-            echo "Success: Account found!";
+            if ($row["verified"] == 1) {
+                $_SESSION["id"] = $row["id"];
+                $_SESSION["fname"] = $row["fname"];
+                echo "Success: Account found and verified!";
+            } else {
+                echo "Your email is not verified!";
+            }
         } else {
             echo "Invalid email or password!";
         }
     }
     public function register(mysqli &$conn)
     {
+        $verify_url = "localhost/fabex/php/verify_email.php?email=" . $this->email . "&verify=";
+        $code = md5($this->email . $this->phone . $this->email);
+        $verify_url = $verify_url . $code;
+        echo $verify_url;
         $email_query = "SELECT email FROM users WHERE email = '{$this->email}'";
         $email_result = $conn->query($email_query);
         $register_query =
-            "INSERT INTO users (fname, lname, email, pword, phone) 
-            VALUES ('{$this->fname}', '{$this->lname}', '{$this->email}', '{$this->pword}', '{$this->phone}')";
+            "INSERT INTO users (fname, lname, email, pword, phone, v_code) 
+            VALUES ('{$this->fname}', '{$this->lname}', '{$this->email}', '{$this->pword}', '{$this->phone}', '$code')";
         if ($email_result->num_rows > 0) {
             // output data of each row
             echo "Email already exists!";
@@ -78,7 +85,8 @@ class User
                 $_SESSION["email"] = $this->email;
                 $_SESSION["fname"] = $this->fname;
                 $_SESSION["id"] = $last_id;
-                echo "Account created successfully! " . $last_id;
+                // TODO: write send email code
+                echo "Success: Account created and email sent! " . $last_id;
             } else {
                 echo "Something went wrong!" . $conn->error;
             }
@@ -87,6 +95,11 @@ class User
     }
     public function addBank(mysqli &$conn)
     {
+        $sql = "SELECT email, fname FROM user WHERE id='{$this->id}'";
+        $res = $conn->query($sql);
+        $row = $res->fetch_assoc();
+        $_SESSION['fname'] = $row["fname"];
+        $_SESSION['email'] = $row["email"];
         $query = "UPDATE users SET bank_name='{$this->bank_name}', account_number='{$this->account_number}',
         account_name='{$this->account_name}', bvn='{$this->bvn}' WHERE id='{$this->id}'";
         $bank_query = $conn->query($query);
@@ -96,7 +109,37 @@ class User
             echo "Error updating record: " . $conn->error;
         }
     }
-    public function editInfo()
+    public function resetPassword(mysqli &$conn)
+    {
+        $verify_url = "localhost/fabex/php/reset_password.php?email=" . $this->email . "&verify=";
+        $code = md5($this->email . time());
+        $verify_url = $verify_url . $code;
+        $query = "SELECT id FROM users WHERE email='{$this->email}'";
+        $res = $conn->query($query);
+        if ($res->num_rows > 0) {
+            $row = $res->fetch_assoc();
+            $sql = "UPDATE users SET v_code='$code' WHERE id='{$row['id']}'";
+            $result = $conn->query($sql);
+            if ($result === true) {
+                // TODO: write send email code
+                echo $verify_url;
+                echo "Success: email sent";
+            }
+        } else {
+            echo "Account does not exist!";
+        }
+    }
+    public function changePassword(mysqli &$conn)
+    {
+        $query = "UPDATE users SET pword='{$this->pword}'WHERE id='{$this->id}'";
+        $bank_query = $conn->query($query);
+        if ($bank_query === true) {
+            echo "Password changed successfully";
+        } else {
+            echo "Error updating record: " . $conn->error;
+        }
+    }
+    public function editInfo(mysqli &$conn)
     {
     }
 }

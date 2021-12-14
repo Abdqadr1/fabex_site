@@ -1,6 +1,6 @@
 <div class="row justify-content-center justify-content-md-around no-margin mt-5">
     <div class="col-10 col-md-6">
-        <p class="kindly-pay mb-3 mx-md-3 mx-3">Hello <?php echo $_SESSION["fname"]; ?>,</p>
+        <p class="kindly-pay mb-3 mx-md-3 mx-3">Hello <b id="fname"><?php echo $fname; ?></b>,</p>
         <p class="mb-3 fw-bold mx-md-3 mx-3">What would you like to do? </p>
         <div class="row justify-content-center justify-content-md-around mt-3 no-margin">
             <div class="col-12 col-md-5 py-md-4 py-2 px-md-3 px-5 todo my-3 my-md-0">

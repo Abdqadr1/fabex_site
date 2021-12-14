@@ -1,3 +1,4 @@
+declare const fname: string;
 import { Ajax } from "./ajax.js";
 const jsFolder = "js/";
 const navLinks = document.querySelectorAll("li>a.nav-link") as NodeListOf<HTMLAnchorElement>;
@@ -52,9 +53,13 @@ const load = (pageName: string) => {
         container.innerHTML = "";
         container.innerHTML = data;
         const script = document.createElement("script");
-        script.src = jsFolder + pageName + ".js";
+        script.src = jsFolder + pageName.toLowerCase() + ".js";
         script.setAttribute("type", "module");
         container.appendChild(script);
+        if (activePage === "Dashboard") {
+             const fNameTag = container.querySelector("b#fname") as HTMLElement;
+            fNameTag.innerText = fname;
+        }
     })
     console.log(url)
 }

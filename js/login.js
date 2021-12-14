@@ -16,6 +16,11 @@ loginForm.onsubmit = function (e) {
             location.href = "profile.php";
         else {
             errorDiv.innerText = responseText;
+            errorDiv.classList.remove("d-none");
+            errorDiv.classList.add("d-block");
+            button.disabled = false;
+            button.innerHTML = "Register";
+            errorDiv.focus();
         }
     });
     aj.start();

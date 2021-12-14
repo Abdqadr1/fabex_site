@@ -4,18 +4,17 @@ session_start();
 include_once "connect_db.php";
 include_once "user_actions.php";
 
-if (!isset($_POST["id"]) || !isset($_POST["fname"])) {
+if (!isset($_POST["email"])) {
     exit("Invalid credentials!");
 }
 
 $email = mysqli_escape_string($conn, $_POST["email"]);
-$pword = mysqli_escape_string($conn, $_POST["password"]);
-if (!empty($email) && !empty($pword)) {
+if (!empty($email)) {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         exit("enter a valid email address!");
     }
-    $user = new User($email, $pword);
-    $user->login($conn);
+    $user = new User($email, "");
+    $user->resetPassword($conn);
 } else {
     echo "All fields are required!";
 }

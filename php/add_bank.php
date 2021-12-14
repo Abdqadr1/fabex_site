@@ -4,6 +4,13 @@ session_start();
 include_once "connect_db.php";
 include_once "user_actions.php";
 
+if (
+    !isset($_POST["bank_name"]) || !isset($_POST["account_number"])
+    || !isset($_POST["account_name"]) || !isset($_POST["bvn"]) || !$_SESSION["id"]
+) {
+    exit("Invalid credentials!");
+}
+
 $id = $_SESSION["id"];
 
 $bank_name = mysqli_escape_string($conn, $_POST["bank_name"]);
