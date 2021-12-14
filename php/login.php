@@ -4,7 +4,7 @@ session_start();
 include_once "connect_db.php";
 include_once "user_actions.php";
 
-if (!isset($_POST["id"]) || !isset($_POST["fname"])) {
+if (!isset($_POST["email"]) || !isset($_POST["password"])) {
     exit("Invalid credentials!");
 }
 
@@ -17,5 +17,5 @@ if (!empty($email) && !empty($pword)) {
     $user = new User($email, $pword);
     $user->login($conn);
 } else {
-    echo "All fields are required!";
+    exit("All fields are required!");
 }

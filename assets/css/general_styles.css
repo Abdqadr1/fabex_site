@@ -7,6 +7,9 @@
   --red: #ec4646;
   --success: #166d71;
 }
+.text-caps {
+  text-transform: capitalize !important;
+}
 a {
   text-decoration: none !important;
 }
