@@ -58,7 +58,7 @@ class User
                 $_SESSION["fname"] = $row["fname"];
                 echo "Success: Account found and verified!";
             } else {
-                echo "Your email is not verified!";
+                echo "Your email is not verified! Check your mail";
             }
         } else {
             echo "Invalid email or password!";
@@ -95,7 +95,7 @@ class User
     }
     public function addBank(mysqli &$conn)
     {
-        $sql = "SELECT email, fname FROM user WHERE id='{$this->id}'";
+        $sql = "SELECT email, fname FROM users WHERE id='{$this->id}'";
         $res = $conn->query($sql);
         $row = $res->fetch_assoc();
         $_SESSION['fname'] = $row["fname"];
@@ -139,7 +139,27 @@ class User
             echo "Error updating record: " . $conn->error;
         }
     }
-    public function editInfo(mysqli &$conn)
+    public function changeInfo(mysqli &$conn)
     {
+        $sql = "UPDATE users SET fname='{$this->fname}', lname='{$this->lname}' ,phone='{$this->phone}',
+         bank_name='{$this->bank_name}', account_number='{$this->account_number}', bvn='{$this->bvn}' 
+        WHERE id='{$this->id}'";
+        $result = $conn->query($sql);
+        if ($result === true) {
+            echo "Success: info updated!";
+        } else {
+            exit("Error occur when updating record: " . $conn->error);
+        }
+    }
+
+    public function changeCurrentPassword(mysqli &$conn, string $newPass)
+    {
+        $query = "UPDATE users SET pword='$newPass' WHERE id='{$this->id}' AND pword='{$this->pword}'";
+        $bank_query = $conn->query($query);
+        if ($bank_query === true) {
+            echo "Password changed successfully";
+        } else {
+            echo "Error updating record: " . $conn->error;
+        }
     }
 }

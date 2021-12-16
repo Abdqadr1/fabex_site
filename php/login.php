@@ -14,6 +14,7 @@ if (!empty($email) && !empty($pword)) {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         exit("enter a valid email address!");
     }
+    //TODO: hash password
     $user = new User($email, $pword);
     $user->login($conn);
 } else {

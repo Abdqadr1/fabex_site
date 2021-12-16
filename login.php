@@ -16,7 +16,7 @@
                         </div>
                         <div class="col-10 mt-1 my-3">
                             <label for="password" class="form-label settings">Password</label>
-                            <input name="password" type="text" class="form-control rad8" id="password" placeholder="Enter password" required>
+                            <input name="password" type="password" class="form-control rad8" id="password" placeholder="Enter password" required>
                             <p class="forgotpass"><a href="reset.php">Forgot password?</a></p>
                         </div>
                     </div>

@@ -1,7 +1,10 @@
 <div class="body row justify-content-center">
     <div class="col-md-5 col-lg-5 col-9 col-sm-7">
         <p class="trans-history">Transaction History</p>
-        <div class="row justify-content-center my-4">
+        <div class="col-4 mx-auto my-5 text-center d-block" id="loadingContainer">
+            <div class='spinner-border spinner-border-sm text-primary' aria-hidden='true' role='status' style='width:4em;height:4em;'></div>
+        </div>
+        <div class="row justify-content-center my-4 d-none" id="no-history">
             <div class="col-6 text-center">
                 <span class="material-icons rounded-pill no-history">
                     sync_alt
@@ -9,7 +12,7 @@
                 <span class="no-trans-yet">No transaction yet</span>
             </div>
         </div>
-        <div class="history">
+        <div class="history d-none" id="history">
             <!-- each transaction -->
             <div class="row justify-content-between transaction">
                 <div class="col-8 ml-2">

@@ -30,6 +30,7 @@ if (
             echo "Password must be at least 8 characters!";
             exit();
         }
+        //TODO: hash password
         $user = new User($email, $pword);
         $user->setFname($fname);
         $user->setLname($lname);

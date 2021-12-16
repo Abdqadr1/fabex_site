@@ -1,12 +1,18 @@
+var version = 1.00;
 import { Ajax } from "./ajax.js";
 var jsFolder = "js/";
 var navLinks = document.querySelectorAll("li>a.nav-link");
 var navToggleButton = document.querySelector(".dropdown-toggle");
 var container = document.querySelector("div#container");
+var navLinkDiv = document.querySelector("div#navbarTogglerDemo03");
 var loaderHTML = "<div class='d-flex align-items-center justify-content-center' style='height: 100%;'>\n            <div class='spinner-border text-primary' role='status' style='height: 60px; width:60px;'>\n                <span class='visually-hidden'>Loading...</span>\n            </div>\n        </div>";
 var activePage = "Dashboard";
 navLinks.forEach(function (element) {
     element.onclick = function (event) {
+        navToggleButton.parentElement.classList.add("collapsed");
+        navToggleButton.parentElement.setAttribute("aria-expanded", "false");
+        console.log(navToggleButton.parentElement);
+        navLinkDiv.classList.remove("show");
         var text = element.innerText;
         if (activePage !== text) {
             container.innerHTML = "";
@@ -20,7 +26,7 @@ navLinks.forEach(function (element) {
             var borderBottom_1 = "border-bottom";
             var border2_1 = "border-2";
             var borderPrimary_1 = "border-primary";
-            var dSMNone_1 = "d-sm-none";
+            var dSMNone_1 = "d-none";
             var dMdBlock_1 = "d-md-block";
             navLinks.forEach(function (el) {
                 if (el.innerText === text) {
@@ -43,18 +49,23 @@ navLinks.forEach(function (element) {
     };
 });
 var load = function (pageName) {
+    version = version + 0.001;
     var url = pageName.toLowerCase() + ".php";
     Ajax.fetchPage(url, function (data) {
         container.innerHTML = "";
         container.innerHTML = data;
+        var scriptB4 = container.querySelector("script#pageScript");
+        if (scriptB4 !== null) {
+            container.removeChild(scriptB4);
+        }
         var script = document.createElement("script");
-        script.src = jsFolder + pageName.toLowerCase() + ".js";
+        script.src = jsFolder + pageName.toLowerCase() + ".js?version=" + version;
         script.setAttribute("type", "module");
+        script.id = "pageScript";
         container.appendChild(script);
         if (activePage === "Dashboard") {
-            var fNameTag = container.querySelector("b#fname");
+            var fNameTag = container.querySelector("span#fname");
             fNameTag.innerText = fname;
         }
     });
-    console.log(url);
 };
