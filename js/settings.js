@@ -3,6 +3,7 @@ var settingsDiv = document.querySelector("#settings_pass_div");
 var changePassDiv = document.querySelector("#change_pass_div");
 var changePassAnchor = document.querySelector("#change_pass_a");
 var backbtn = document.querySelector("#backbtn");
+var select = document.querySelector("select#bankname");
 var loadingContainer = document.querySelector("div#loadingContainer");
 var changeInfoForm = document.querySelector("form#changeInfoForm");
 var changePassForm = document.querySelector("form#changePassForm");
@@ -117,5 +118,18 @@ changePassForm.onsubmit = function (event) {
         loadingContainer.classList.add("d-none");
         settingsDiv.classList.remove("d-none");
         settingsDiv.classList.add("d-block");
+    });
+})();
+// get all banks
+(function () {
+    //TODO: replace url before server
+    Ajax.fetchPage("/fabex/php/data.php?which=banks", function (data) {
+        var bankList = JSON.parse(data);
+        bankList.forEach(function (bank) {
+            var option = document.createElement("option");
+            option.value = bank;
+            option.innerText = bank;
+            select.appendChild(option);
+        });
     });
 })();

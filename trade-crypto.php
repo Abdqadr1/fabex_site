@@ -16,9 +16,6 @@
                 <label for="assets" class="form-label">Assets</label>
                 <select class="form-select rad8" id="assets" required>
                     <option selected hidden>Select coin...</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
                 </select>
             </div>
             <!-- amount -->
@@ -52,10 +49,6 @@
                 <label for="bankName" class="form-label">Bank Name</label>
                 <select class="form-select rad8" id="bankName">
                     <option selected disabled hidden>Select Bank Name</option>
-                    <option>Access Bank Plc</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
                 </select>
             </div>
 

@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+//TODO: set timeout error;
+
 include_once "connect_db.php";
 include_once "user_actions.php";
 

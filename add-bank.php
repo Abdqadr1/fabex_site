@@ -13,7 +13,6 @@
                         <label for="bankname" class="form-label settings">Bank name</label>
                         <select name="bank_name" class="form-select rad8" id="bankname" required>
                             <option hidden disabled selected>Select bank</option>
-                            <option value="Kuda">Kuda MFB</option>
                         </select>
                     </div>
                     <div class="mt-1 my-3">

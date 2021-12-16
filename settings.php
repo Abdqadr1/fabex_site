@@ -38,11 +38,6 @@
                     <div class="col-11 col-md-5 mx-auto">
                         <label for="bankname" class="form-label settings">Bank name</label>
                         <select name="bank_name" class="form-select rad8" id="bankname" required>
-                            <option value="Access Bank">Access Bank</option>
-                            <option value="UBA Plc">UBA Plc</option>
-                            <option value="Wema Alat">Wema Alat</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
                         </select>
                     </div>
                     <div class="col-11 col-md-5 mx-auto">

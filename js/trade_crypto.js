@@ -1,4 +1,4 @@
-"use strict";
+import { Ajax } from "./ajax.js";
 var buttons = document.querySelectorAll("button.trading");
 var toggleSwitch = document.querySelector("input.toggle-switch");
 var allBuyData = document.querySelectorAll("div.for-buy");
@@ -6,7 +6,9 @@ var allSellData = document.querySelectorAll("div.for-sell");
 var bankData = document.querySelectorAll("div.for-sell.bank");
 var cryptoButton = document.querySelector("button.payment");
 var toggleDiv = document.querySelector("div#toggle-switch");
-console.log(toggleDiv);
+var select = document.querySelector("select#bankName");
+var assets = document.querySelector("select#assets");
+// console.log(select);
 toggleSwitch.onchange = function (event) {
     if (toggleSwitch.checked) {
         bankData.forEach(function (element) {
@@ -82,3 +84,32 @@ buttons.forEach(function (element) {
         }
     };
 });
+// get all banks
+(function () {
+    //TODO: replace url before server
+    Ajax.fetchPage("/fabex/php/data.php?which=banks", function (data) {
+        var bankList = JSON.parse(data);
+        console.log(bankList);
+        bankList.forEach(function (bank) {
+            var option = document.createElement("option");
+            option.value = bank;
+            option.innerText = bank;
+            select.appendChild(option);
+        });
+    });
+})();
+// get all banks
+(function () {
+    //TODO: replace url before server
+    Ajax.fetchPage("/fabex/php/data.php?which=coins", function (data) {
+        var coinList = JSON.parse(data);
+        var keys = Object.keys(coinList);
+        console.log(keys);
+        keys.forEach(function (key) {
+            var option = document.createElement("option");
+            option.value = key;
+            option.innerText = coinList[key];
+            assets.appendChild(option);
+        });
+    });
+})();

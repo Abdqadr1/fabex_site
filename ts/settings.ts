@@ -4,6 +4,8 @@ const changePassDiv = document.querySelector("#change_pass_div") as HTMLDivEleme
 const changePassAnchor = document.querySelector("#change_pass_a") as HTMLDivElement;
 const backbtn = document.querySelector("#backbtn") as HTMLSpanElement;
 
+const select = document.querySelector("select#bankname") as HTMLSelectElement;
+
 const loadingContainer = document.querySelector("div#loadingContainer") as HTMLDivElement;
 
 const changeInfoForm = document.querySelector("form#changeInfoForm") as HTMLFormElement;
@@ -131,4 +133,19 @@ changePassForm.onsubmit = event => {
         settingsDiv.classList.remove("d-none");
         settingsDiv.classList.add("d-block");
     });
-})()
+})();
+
+// get all banks
+(function () {
+    //TODO: replace url before server
+    Ajax.fetchPage("/fabex/php/data.php?which=banks", (data: string) => {
+        const bankList:[] = JSON.parse(data);
+        bankList.forEach((bank:string) => {
+            const option = document.createElement("option");
+            option.value = bank;
+            option.innerText = bank;
+            select.appendChild(option);
+        })
+    })
+}
+)()

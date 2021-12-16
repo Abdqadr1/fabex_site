@@ -7,6 +7,11 @@
   --red: #ec4646;
   --success: #166d71;
 }
+input,
+span,
+p {
+  text-transform: capitalize;
+}
 .text-caps {
   text-transform: capitalize !important;
 }

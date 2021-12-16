@@ -3,7 +3,7 @@ var addBankForm = document.querySelector("form#addBankForm");
 var errorDiv = document.querySelector("#errorDiv");
 var submitBtn = addBankForm.querySelector("button");
 var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>\n                Please wait... ";
-var btnClose = "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"close\"></button>";
+var select = document.querySelector("select#bankname");
 addBankForm.onsubmit = function (event) {
     event.preventDefault();
     submitBtn.disabled = true;
@@ -26,3 +26,16 @@ addBankForm.onsubmit = function (event) {
     });
     aj.start();
 };
+// get all banks
+(function () {
+    //TODO: replace url before server
+    Ajax.fetchPage("/fabex/php/data.php?which=banks", function (data) {
+        var bankList = JSON.parse(data);
+        bankList.forEach(function (bank) {
+            var option = document.createElement("option");
+            option.value = bank;
+            option.innerText = bank;
+            select.appendChild(option);
+        });
+    });
+})();

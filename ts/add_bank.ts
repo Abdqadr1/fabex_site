@@ -4,7 +4,7 @@ const errorDiv = document.querySelector("#errorDiv") as HTMLDivElement;
 const submitBtn = addBankForm.querySelector("button") as HTMLButtonElement;
 const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>
                 Please wait... `;
-const btnClose = `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>`;
+const select = document.querySelector("select#bankname") as HTMLSelectElement;
 addBankForm.onsubmit = (event) => {
     event.preventDefault();
     submitBtn.disabled = true;
@@ -25,5 +25,19 @@ addBankForm.onsubmit = (event) => {
         }
     });
     aj.start();
-
 }
+
+// get all banks
+(function () {
+    //TODO: replace url before server
+    Ajax.fetchPage("/fabex/php/data.php?which=banks", (data: string) => {
+        const bankList:[] = JSON.parse(data);
+        bankList.forEach((bank:string) => {
+            const option = document.createElement("option");
+            option.value = bank;
+            option.innerText = bank;
+            select.appendChild(option);
+        })
+    })
+}
+)()
