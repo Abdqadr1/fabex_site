@@ -25,7 +25,7 @@
                 </li>
             </ul>
             <p class="d-block py-sm-1 d-md-flex my-0">
-                <a href="logout.php" class="d-inline-block logout nav-link py-1">Log out</a>
+                <a href="logout" class="d-inline-block logout nav-link py-1">Log out</a>
             </p>
         </div>
     </div>

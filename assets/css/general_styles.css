@@ -137,6 +137,7 @@ button.payment {
   border-radius: 12px;
   box-sizing: content-box;
   display: inline-block;
+  text-transform: capitalize;
 }
 button.payment:hover {
   color: aliceblue;

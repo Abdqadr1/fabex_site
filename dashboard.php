@@ -4,7 +4,7 @@
         <p class="mb-3 fw-bold mx-md-3 mx-3">What would you like to do? </p>
         <div class="row justify-content-center justify-content-md-around mt-3 no-margin">
             <div class="col-12 col-md-5 py-md-4 py-2 px-md-3 px-5 todo my-3 my-md-0">
-                <a href="trade-giftcard.php" class="dash">
+                <a href="giftcard" class="dash">
                     <span class="material-icons icon giftcard d-inline-block">
                         card_giftcard
                     </span>
@@ -13,7 +13,7 @@
                 </a>
             </div>
             <div class="col-12 col-md-5 py-md-4 py-2 px-md-3 px-5 todo">
-                <a href="trade-crypto.php" class="dash">
+                <a href="crypto" class="dash">
                     <span class="material-icons icon crypto">
                         currency_bitcoin
                     </span>

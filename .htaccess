@@ -1,0 +1,12 @@
+RewriteEngine On    # Turn on the rewriting engine
+
+RewriteRule    ^login/?$    login.php    [NC,L]   
+RewriteRule    ^signup/?$    register.php    [NC,L]   
+
+RewriteRule    ^logout/?$    logout.php    [NC,L]  
+
+RewriteRule    ^dashboard/?$    profile.php    [NC,L]   
+RewriteRule    ^crypto/?$    trade-crypto.php    [NC,L]  
+RewriteRule    ^giftcard/?$    trade-giftcard.php    [NC,L]  
+
+RewriteRule    ^reset/?$     reset.php [NC,L]

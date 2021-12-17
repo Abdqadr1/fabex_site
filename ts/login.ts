@@ -6,14 +6,14 @@ const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true
                 Please wait... `;
 loginForm.onsubmit = (e) => {
     e.preventDefault();
-    button.disabled = true;
     const aj = new Ajax(loginForm as HTMLFormElement);
     aj.setBefore(() => {
+        button.disabled = true;
         button.innerHTML = spinner;
     });
     aj.setAfter((responseText: string) => {
         console.log(responseText);
-        if (responseText.toLowerCase().indexOf("success") != -1) location.href = "profile.php";
+        if (responseText.toLowerCase().indexOf("success") != -1) location.href = "dashboard";
         else {
             errorDiv.innerText = responseText;
             errorDiv.classList.remove("d-none");

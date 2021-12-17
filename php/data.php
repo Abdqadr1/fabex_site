@@ -1,5 +1,5 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] != "GET" && !isset($_GET["which"])) {
+if ($_SERVER["REQUEST_METHOD"] != "GET" || !isset($_GET["which"])) {
     exit("Invalid credentials!");
 }
 //TODO: insert banks and crypto
