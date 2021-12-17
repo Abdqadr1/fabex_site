@@ -6,9 +6,12 @@ session_start();
 include_once "connect_db.php";
 include_once "user_actions.php";
 
+// set_time_limit(150);
+
 if (!isset($_POST["email"]) || !isset($_POST["password"])) {
     exit("Invalid credentials!");
 }
+
 
 $email = mysqli_escape_string($conn, $_POST["email"]);
 $pword = mysqli_escape_string($conn, $_POST["password"]);

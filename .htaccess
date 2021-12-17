@@ -10,3 +10,5 @@ RewriteRule    ^crypto/?$    trade-crypto.php    [NC,L]
 RewriteRule    ^giftcard/?$    trade-giftcard.php    [NC,L]  
 
 RewriteRule    ^reset/?$     reset.php [NC,L]
+RewriteRule    ^payment/?$    payment.php  [NC,L]
+RewriteRule    ^upload/?$    sell-giftcard.php  [NC,L]

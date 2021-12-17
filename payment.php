@@ -1,4 +1,8 @@
-<?php include_once "header.php"; ?>
+<?php
+session_start();
+include_once "header.php";
+$amount = $_SESSION["amount"];
+?>
 
 <body>
     <div class="container-lg pl-5 my-4"><span class="backBtn material-icons">
@@ -6,7 +10,7 @@
         </span></div>
     <div class="body row justify-content-center payment-row">
         <div class="col-md-5 col-lg-4 col-10">
-            <p class="kindly-pay my-2 text-center mb-5">Kindly pay <span class="amount">N5000</span>
+            <p class="kindly-pay my-2 text-center mb-5">Kindly pay <span class="amount">#<?php echo $amount; ?></span>
                 to the account details below</p>
             <div class="details my-3  row p-2 rounded border paybg">
                 <div class="col-8 p-0">
@@ -36,7 +40,7 @@
             </div>
             <p class="text-danger note"><b>Note:</b> Third party payments are not allowed! You should only pay from an account registered with your name.</p>
 
-            <p class="confirm">Your Gift card will be sent to your email address once order is confirmed.</p>
+            <p class="confirm d-none">Your Gift card will be sent to your email address once order is confirmed.</p>
             <button class="payment text-center"> I have paid, Proceed</button>
         </div>
     </div>

@@ -12,18 +12,21 @@
                 <button class="col-3 btn btn-outline-secondary ml-3 sell trading">Sell</button>
             </div>
             <form action="php/trade_giftcard.php" method="POST" id="tradeGiftcardForm">
+                <div tabindex="-1" class="alert alert-danger d-none text-center" id="errorDiv" role="alert"></div>
                 <!-- category -->
                 <div class="mt-3">
                     <label for="category" class="form-label">Category</label>
                     <select name="category" class="form-select rad8" id="category" required>
-                        <option selected hidden>Select category...</option>
+                        <option value="" selected hidden>Select category...</option>
+                        <option value="gift">Giftcard</option>
                     </select>
                 </div>
                 <!-- sub category -->
                 <div class="mt-3">
                     <label for="subCategory" class="form-label">Sub Category</label>
                     <select name="sub_category" class="form-select rad8" id="subCategory" required>
-                        <option selected hidden>Select sub...</option>
+                        <option value="" selected hidden>Select sub...</option>
+                        <option value="1333">Giftcard</option>
                     </select>
                 </div>
 
@@ -42,11 +45,8 @@
                     <div class="mt-3 for-sell bank">
                         <label for="bankName" class="form-label">Bank Name</label>
                         <select name="bank_name" class="form-select rad8 sell-input" id="bankName" disabled>
-                            <option selected disabled hidden>Select Bank Name</option>
+                            <option value="" selected disabled hidden>Select Bank Name</option>
                             <option>Access Bank Plc</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
                         </select>
                     </div>
                     <!-- account number -->

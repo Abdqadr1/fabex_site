@@ -10,5 +10,8 @@
     "Kuda",
     "lastname",
     "newpass"
+  ],
+  "cSpell.ignoreWords": [
+    "descrip"
   ]
 }

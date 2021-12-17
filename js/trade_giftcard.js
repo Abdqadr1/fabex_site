@@ -9,6 +9,12 @@ var toggleField = document.querySelector("div#toggle-switch");
 var bankDiv = document.querySelector("div#bankDiv");
 var allSellInput = document.querySelectorAll(".sell-input");
 var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>\n                Please wait... ";
+// click handler for back button
+var backBtn = document.querySelector("span.backBtn");
+backBtn.onclick = function (event) {
+    event.stopPropagation();
+    history.go(-1);
+};
 var changeDisability = function (show) {
     allSellInput.forEach(function (el) {
         var element;
@@ -25,23 +31,47 @@ var action = "buy";
 var tradeGiftcardForm = document.querySelector("form#tradeGiftcardForm");
 var submitBtn = tradeGiftcardForm.querySelector("button");
 var hiddenInput = tradeGiftcardForm.querySelector("input#hidden");
+var errorDiv = tradeGiftcardForm.querySelector("#errorDiv");
+var timeoutFun = function (xhttp) {
+    errorDiv.innerText = "Request taking too long, Check your internet connection";
+    errorDiv.classList.remove("d-none");
+    errorDiv.classList.add("d-block");
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = action + " giftcard";
+    errorDiv.focus();
+    xhttp.abort();
+};
 tradeGiftcardForm.onsubmit = function (event) {
     event.preventDefault();
     hiddenInput.value = action;
     var aj = new Ajax(tradeGiftcardForm);
+    var timing = setTimeout(function () {
+        timeoutFun(aj.xhttp);
+    }, 180000);
     aj.setBefore(function () {
         submitBtn.disabled = true;
         submitBtn.innerHTML = spinner;
     });
     aj.setAfter(function (responseText) {
+        clearTimeout(timing);
         console.log(responseText);
+        if (responseText.toLowerCase().indexOf("success") != -1) {
+            if (action === "buy") {
+                location.href = "payment";
+            }
+            else {
+                location.href = "upload";
+            }
+        }
+        else {
+            errorDiv.innerText = responseText;
+        }
         submitBtn.innerText = action + " giftcard";
         submitBtn.disabled = false;
     });
     aj.start();
 };
 toggleBank.onchange = function (event) {
-    console.log(allSellInput);
     if (toggleBank.checked) {
         bankField.forEach(function (element) {
             element.classList.remove("d-block");

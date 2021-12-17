@@ -10,7 +10,13 @@ const bankDiv = document.querySelector("div#bankDiv") as HTMLDivElement;
 const allSellInput = document.querySelectorAll(".sell-input") as NodeListOf<HTMLElement>;
 const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>
                 Please wait... `;
-
+                
+// click handler for back button
+const backBtn = document.querySelector("span.backBtn") as HTMLSpanElement;
+backBtn.onclick = event => {
+    event.stopPropagation();
+    history.go(-1);
+}
 const changeDisability = (show:boolean) => {
     allSellInput.forEach(el => {
         let element;
@@ -22,21 +28,45 @@ const changeDisability = (show:boolean) => {
         element.disabled = show;
     })
 }
-
 let action:string = "buy";
 const tradeGiftcardForm = document.querySelector("form#tradeGiftcardForm") as HTMLFormElement;
 const submitBtn = tradeGiftcardForm.querySelector("button") as HTMLButtonElement;
 const hiddenInput = tradeGiftcardForm.querySelector("input#hidden") as HTMLInputElement;
+const errorDiv = tradeGiftcardForm.querySelector("#errorDiv") as HTMLDivElement;
+
+const timeoutFun = (xhttp: XMLHttpRequest) => {
+    errorDiv.innerText = "Request taking too long, Check your internet connection";
+    errorDiv.classList.remove("d-none");
+    errorDiv.classList.add("d-block");
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = action + " giftcard";
+    errorDiv.focus();
+    xhttp.abort();
+}
+
 tradeGiftcardForm.onsubmit = event => {
     event.preventDefault();
     hiddenInput.value = action;
     const aj = new Ajax(tradeGiftcardForm as HTMLFormElement);
+    const timing = setTimeout(() => {
+        timeoutFun(aj.xhttp);
+    }, 180000);
     aj.setBefore(() => {
         submitBtn.disabled = true;
         submitBtn.innerHTML = spinner;
     });
     aj.setAfter((responseText: string) => {
+        clearTimeout(timing);
         console.log(responseText);
+        if (responseText.toLowerCase().indexOf("success") != -1) {
+            if (action === "buy") {
+                location.href = "payment";
+            } else {
+                location.href = "upload";
+            }
+        } else {
+            errorDiv.innerText = responseText;
+        }
         submitBtn.innerText = action + " giftcard"
         submitBtn.disabled = false;
     });
@@ -44,7 +74,6 @@ tradeGiftcardForm.onsubmit = event => {
 }
 
 toggleBank.onchange = (event) => {
-    console.log(allSellInput);
     if (toggleBank.checked) {
         bankField.forEach(element => {
             element.classList.remove("d-block");

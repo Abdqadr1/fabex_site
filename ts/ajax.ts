@@ -5,6 +5,8 @@ export class Ajax{
     private isFetch: boolean;
     private before: Function = () => { };
     private after: Function = () => { };
+    private error: Function = () => { };
+    public xhttp: XMLHttpRequest = new XMLHttpRequest();
     constructor(form:HTMLFormElement, isF:boolean = false) {
         this.url = form.action;
         this.method = form.method;
@@ -15,9 +17,9 @@ export class Ajax{
     public setFetch = (u: boolean) => {
         this.isFetch = u;
     }
-
     public setBefore = (f: Function) => { this.before = f; }
-    public setAfter = (f: Function) => { this.after = f;}
+    public setAfter = (f: Function) => { this.after = f; }
+    public setError = (f: Function) => { this.error = f;} 
 
     protected doFetch() {
         if (!fetch) { this.ajax(); return; }
@@ -30,14 +32,14 @@ export class Ajax{
     }
     protected ajax() {
         this.before();
-        const xhttp = new XMLHttpRequest();
-        xhttp.open(this.method, this.url, true);
-        xhttp.addEventListener("load", () => {
-            if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status === 200) this.after(xhttp.responseText);
+        this.xhttp.open(this.method, this.url, true);
+        this.xhttp.addEventListener("load", () => {
+            if (this.xhttp.readyState === XMLHttpRequest.DONE && this.xhttp.status === 200) this.after(this.xhttp.responseText);
+            else { this.error(this.xhttp);}
         });
-        xhttp.addEventListener("error", (e) => console.error("An error occurred", e));
-        xhttp.addEventListener("abort", (e) => console.error("Ajax process was aborted!", e));
-        xhttp.send(new FormData(this.form));
+        this.xhttp.addEventListener("error", (e) => console.error("An error occurred", e));
+        this.xhttp.addEventListener("abort", (e) => console.error("Ajax process was aborted!", e));
+        this.xhttp.send(new FormData(this.form));
     }
     public start() {
         if (this.isFetch) this.doFetch();
