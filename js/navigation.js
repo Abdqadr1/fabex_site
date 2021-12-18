@@ -9,6 +9,7 @@ var loaderHTML = "<div class='d-flex align-items-center justify-content-center' 
 var activePage = "Dashboard";
 navLinks.forEach(function (element) {
     element.onclick = function (event) {
+        event.preventDefault();
         navToggleButton.parentElement.classList.add("collapsed");
         navToggleButton.parentElement.setAttribute("aria-expanded", "false");
         console.log(navToggleButton.parentElement);

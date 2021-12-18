@@ -1,11 +1,42 @@
 <?php
 session_start();
-include_once "header.php";
 $amount = $_SESSION["amount"];
+if (!isset($_SESSION["amount"]) || !isset($_SESSION["tx_id"]) || !isset($_SESSION["which"]) || !isset($_SESSION["act"])) {
+    echo ("Invalid credentials!");
+    header("location: dashboard");
+}
+if (empty($_SESSION["amount"]) || empty($_SESSION["tx_id"]) || empty($_SESSION["which"]) || empty($_SESSION["act"])) {
+    echo ("Invalid credentials!");
+    header("location: dashboard");
+}
+
+if ($_SESSION["act"] != "buy") {
+    echo ("Wrong transaction!");
+    header("location: dashboard");
+}
+$tx_id = $_SESSION["tx_id"];
+$act = $_SESSION["act"];
+include_once "php/connect_db.php";
+$sql = "SELECT typ, u_id FROM trx_history WHERE tx_id='$tx_id'";
+$res = $conn->query($sql);
+if ($res->num_rows == 1) {
+    $row = $res->fetch_assoc();
+    if ($row["typ"] == 0 && $act != "buy") {
+        header("location: dashboard");
+    } elseif ($row["typ"] == 1 && $act != "sell") {
+        header("location: dashboard");
+    }
+    if ($row['u_id'] !== $_SESSION["id"]) {
+        header("location: dashboard");
+    }
+} else {
+    header("location: dashboard");
+}
+include_once "header.php";
 ?>
 
 <body>
-    <div class="container-lg pl-5 my-4"><span class="backBtn material-icons">
+    <div class="container-md pl-5 my-4 mx-auto"><span class="backBtn material-icons">
             chevron_left
         </span></div>
     <div class="body row justify-content-center payment-row">

@@ -1,4 +1,39 @@
-<?php include_once "header.php"; ?>
+<?php
+session_start();
+$amount = $_SESSION["amount"];
+if (!isset($_SESSION["amount"]) || !isset($_SESSION["tx_id"]) || !isset($_SESSION["which"]) || !isset($_SESSION["act"])) {
+    echo ("Invalid credentials!");
+    header("location: giftcard");
+}
+if (empty($_SESSION["amount"]) || empty($_SESSION["tx_id"]) || empty($_SESSION["which"]) || empty($_SESSION["act"])) {
+    echo ("Invalid credentials!");
+    header("location: giftcard");
+}
+
+if ($_SESSION["act"] != "sell") {
+    echo ("Wrong transaction!");
+    header("location: giftcard");
+}
+$tx_id = $_SESSION["tx_id"];
+$act = $_SESSION["act"];
+include_once "php/connect_db.php";
+$sql = "SELECT typ, u_id FROM trx_history WHERE tx_id='$tx_id'";
+$res = $conn->query($sql);
+if ($res->num_rows == 1) {
+    $row = $res->fetch_assoc();
+    if ($row["typ"] == 0 && $act != "buy") {
+        header("location: giftcard");
+    } elseif ($row["typ"] == 1 && $act != "sell") {
+        header("location: giftcard");
+    }
+    if ($row['u_id'] !== $_SESSION["id"]) {
+        header("location: giftcard");
+    }
+} else {
+    header("location: giftcard");
+}
+include_once "header.php";
+?>
 
 <body>
     <div class="container pl-5 my-4">

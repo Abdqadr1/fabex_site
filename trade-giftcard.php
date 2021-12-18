@@ -34,6 +34,7 @@
                 <label for="amount" class="form-label mb-1 mt-3">Amount ($)</label>
                 <input name="amount" type="text" class="form-control form-control-lg" id="amount" required>
                 <p class="mt-2 mb-0 fw-bold" id="amount">Total: N33,000</p>
+                <input type="hidden" name="price" value="30000" id="priceInput">
 
                 <div class="no-margin d-none" id="bankDiv">
                     <!-- toggle div -->

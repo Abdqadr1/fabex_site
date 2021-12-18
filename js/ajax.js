@@ -6,12 +6,22 @@ var Ajax = /** @class */ (function () {
         this.after = function () { };
         this.error = function () { };
         this.xhttp = new XMLHttpRequest();
+        this.timing = 0;
         this.setFetch = function (u) {
             _this.isFetch = u;
         };
         this.setBefore = function (f) { _this.before = f; };
         this.setAfter = function (f) { _this.after = f; };
         this.setError = function (f) { _this.error = f; };
+        this.setTimer = function (f, t) {
+            _this.timing = setTimeout(function () {
+                _this.xhttp.abort();
+                f(_this.xhttp);
+            }, t);
+        };
+        this.clearTimer = function () {
+            clearTimeout(_this.timing);
+        };
         this.url = form.action;
         this.method = form.method;
         this.form = form;
@@ -35,13 +45,19 @@ var Ajax = /** @class */ (function () {
         this.before();
         this.xhttp.open(this.method, this.url, true);
         this.xhttp.addEventListener("load", function () {
+            _this.clearTimer();
             if (_this.xhttp.readyState === XMLHttpRequest.DONE && _this.xhttp.status === 200)
                 _this.after(_this.xhttp.responseText);
             else {
                 _this.error(_this.xhttp);
             }
         });
-        this.xhttp.addEventListener("error", function (e) { return console.error("An error occurred", e); });
+        this.xhttp.addEventListener("error", function (e) {
+            _this.clearTimer();
+            console.error("An error occurred", e);
+            _this.error(_this.xhttp);
+            _this.after = function () { };
+        });
         this.xhttp.addEventListener("abort", function (e) { return console.error("Ajax process was aborted!", e); });
         this.xhttp.send(new FormData(this.form));
     };

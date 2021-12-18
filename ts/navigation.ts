@@ -14,6 +14,7 @@ const loaderHTML = `<div class='d-flex align-items-center justify-content-center
 let activePage = "Dashboard";
 navLinks.forEach(element => {
     element.onclick = (event) => {
+        event.preventDefault();
         (navToggleButton.parentElement as HTMLButtonElement).classList.add("collapsed");
         (navToggleButton.parentElement as HTMLButtonElement).setAttribute("aria-expanded", "false");
         console.log(navToggleButton.parentElement);

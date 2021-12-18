@@ -15,9 +15,10 @@ $action = mysqli_escape_string($conn, $_POST["act"]);
 $category = mysqli_escape_string($conn, $_POST["category"]);
 $sub_category = mysqli_escape_string($conn, $_POST["sub_category"]);
 $amount = mysqli_escape_string($conn, $_POST["amount"]);
+$price = mysqli_escape_string($conn, $_POST["price"]);
 
 
-if (empty($action) || empty($category) || empty($sub_category) || empty($amount)) {
+if (empty($action) || empty($category) || empty($sub_category) || empty($amount) || empty($price)) {
     exit("Fill the required fields!");
 }
 
@@ -32,14 +33,14 @@ function getId(&$conn)
     return $tx_id;
 }
 
-function buyGiftcard(&$conn, $amount, $product_id, $product_name)
+function buyGiftcard(&$conn, $amount, $price, $product_id, $product_name)
 {
     $uid = $_SESSION["id"];
     $tx_id = getId($conn);
     $desc = "Buy " . $product_name;
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, product, typ, stat) 
-    VALUES ('$uid','$tx_id','$desc', '$amount','$product_id', 0,0)";
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, typ, stat) 
+    VALUES ('$uid','$tx_id','$desc', '$amount', '$price','$product_id', 0,0)";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;
@@ -51,7 +52,7 @@ function buyGiftcard(&$conn, $amount, $product_id, $product_name)
         echo "Something went wrong " . $conn->error;
     }
 }
-function sellGiftcard(&$conn, $amount, $product_id, $product_name)
+function sellGiftcard(&$conn, $amount, $price, $product_id, $product_name)
 {
     $uid = $_SESSION["id"];
     $tx_id = getId($conn);
@@ -70,13 +71,13 @@ function sellGiftcard(&$conn, $amount, $product_id, $product_name)
         $account_name = mysqli_escape_string($conn, $_POST["account_name"]);
     }
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, product, typ, stat, bank_name, account_number, account_name) 
-    VALUES ('$uid','$tx_id','$desc', '$amount','$product_id', 1,0, '$bank_name','$account_number','$account_name')";
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, typ, stat, bank_name, account_number, account_name) 
+    VALUES ('$uid','$tx_id','$desc', '$amount', '$price', '$product_id', 1,0, '$bank_name','$account_number','$account_name')";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;
         $_SESSION["which"] = "giftcard";
-        $_SESSION["act"] = "buy";
+        $_SESSION["act"] = "sell";
         $_SESSION["amount"] = $amount;
         echo "Success: transaction was inserted " . $conn->insert_id;
     } else {
@@ -87,9 +88,9 @@ function sellGiftcard(&$conn, $amount, $product_id, $product_name)
 
 switch ($action) {
     case "buy":
-        buyGiftcard($conn, $amount, $sub_category, $category);
+        buyGiftcard($conn, $amount, $price, $sub_category, $category);
         break;
     case "sell":
-        sellGiftcard($conn, $amount, $sub_category, $category);
+        sellGiftcard($conn, $amount, $price, $sub_category, $category);
         break;
 }

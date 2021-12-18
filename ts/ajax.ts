@@ -7,6 +7,7 @@ export class Ajax{
     private after: Function = () => { };
     private error: Function = () => { };
     public xhttp: XMLHttpRequest = new XMLHttpRequest();
+    private timing: number = 0;
     constructor(form:HTMLFormElement, isF:boolean = false) {
         this.url = form.action;
         this.method = form.method;
@@ -19,7 +20,16 @@ export class Ajax{
     }
     public setBefore = (f: Function) => { this.before = f; }
     public setAfter = (f: Function) => { this.after = f; }
-    public setError = (f: Function) => { this.error = f;} 
+    public setError = (f: Function) => { this.error = f; } 
+    public setTimer = (f: Function, t: number) => {
+        this.timing = setTimeout(() => {
+            this.xhttp.abort();
+            f(this.xhttp);
+        }, t);
+    }
+    private clearTimer = () => {
+        clearTimeout(this.timing);
+    }
 
     protected doFetch() {
         if (!fetch) { this.ajax(); return; }
@@ -34,10 +44,16 @@ export class Ajax{
         this.before();
         this.xhttp.open(this.method, this.url, true);
         this.xhttp.addEventListener("load", () => {
+            this.clearTimer();
             if (this.xhttp.readyState === XMLHttpRequest.DONE && this.xhttp.status === 200) this.after(this.xhttp.responseText);
             else { this.error(this.xhttp);}
         });
-        this.xhttp.addEventListener("error", (e) => console.error("An error occurred", e));
+        this.xhttp.addEventListener("error", (e) => {
+            this.clearTimer();
+            console.error("An error occurred", e);
+            this.error(this.xhttp);
+            this.after = function () { };
+            });
         this.xhttp.addEventListener("abort", (e) => console.error("Ajax process was aborted!", e));
         this.xhttp.send(new FormData(this.form));
     }

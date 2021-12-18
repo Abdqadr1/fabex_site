@@ -9,16 +9,16 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link d-none d-md-block active border-bottom border-2 border-primary py-md-3 py-1" aria-current="page" href="#">Dashboard</a>
+                    <a class="nav-link d-none d-md-block active border-bottom border-2 border-primary py-md-3 py-1" aria-current="page" href="dashboard">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link py-md-3 py-1" aria-current="page" href="#">History</a>
+                    <a class="nav-link py-md-3 py-1" aria-current="page" href="history">History</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link py-md-3 py-1" href="#">Rates</a>
+                    <a class="nav-link py-md-3 py-1" href="rates">Rates</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link py-md-3 py-1" style="cursor: pointer;">Settings</a>
+                    <a class="nav-link py-md-3 py-1" style="cursor: pointer;" href="settings">Settings</a>
                 </li>
                 <li class="d-none d-md-">
                     <hr href="" class="dropdown-divider" />

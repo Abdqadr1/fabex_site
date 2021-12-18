@@ -31,29 +31,27 @@ var action = "buy";
 var tradeGiftcardForm = document.querySelector("form#tradeGiftcardForm");
 var submitBtn = tradeGiftcardForm.querySelector("button");
 var hiddenInput = tradeGiftcardForm.querySelector("input#hidden");
+var priceInput = tradeGiftcardForm.querySelector("input#priceInput");
 var errorDiv = tradeGiftcardForm.querySelector("#errorDiv");
-var timeoutFun = function (xhttp) {
+var timeoutFun = function () {
     errorDiv.innerText = "Request taking too long, Check your internet connection";
     errorDiv.classList.remove("d-none");
     errorDiv.classList.add("d-block");
     submitBtn.disabled = false;
     submitBtn.innerHTML = action + " giftcard";
     errorDiv.focus();
-    xhttp.abort();
 };
 tradeGiftcardForm.onsubmit = function (event) {
     event.preventDefault();
     hiddenInput.value = action;
+    console.log("submitting...");
     var aj = new Ajax(tradeGiftcardForm);
-    var timing = setTimeout(function () {
-        timeoutFun(aj.xhttp);
-    }, 180000);
+    aj.setTimer(timeoutFun, 120000);
     aj.setBefore(function () {
         submitBtn.disabled = true;
         submitBtn.innerHTML = spinner;
     });
     aj.setAfter(function (responseText) {
-        clearTimeout(timing);
         console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
             if (action === "buy") {
