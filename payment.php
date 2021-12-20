@@ -1,6 +1,9 @@
 <?php
 session_start();
 $amount = $_SESSION["amount"];
+if (!isset($_SESSION["id"]) || empty($_SESSION["id"])) {
+    header("location: login");
+}
 if (!isset($_SESSION["amount"]) || !isset($_SESSION["tx_id"]) || !isset($_SESSION["which"]) || !isset($_SESSION["act"])) {
     echo ("Invalid credentials!");
     header("location: dashboard");
@@ -14,6 +17,10 @@ if ($_SESSION["act"] != "buy") {
     echo ("Wrong transaction!");
     header("location: dashboard");
 }
+
+$which = $_SESSION["which"];
+$d = "d-none";
+
 $tx_id = $_SESSION["tx_id"];
 $act = $_SESSION["act"];
 include_once "php/connect_db.php";
@@ -34,6 +41,9 @@ if ($res->num_rows == 1) {
 }
 include_once "header.php";
 ?>
+<script>
+    <?php echo "const which = '$which'"; ?>
+</script>
 
 <body>
     <div class="container-md pl-5 my-4 mx-auto"><span class="backBtn material-icons">
@@ -41,8 +51,9 @@ include_once "header.php";
         </span></div>
     <div class="body row justify-content-center payment-row">
         <div class="col-md-5 col-lg-4 col-10">
-            <p class="kindly-pay my-2 text-center mb-5">Kindly pay <span class="amount">#<?php echo $amount; ?></span>
+            <p class="kindly-pay my-2 text-center mb-5">Kindly pay <span class="amount">N<?php echo $amount; ?></span>
                 to the account details below</p>
+            <div tabindex="-1" class="alert alert-danger col-10 d-none text-center" id="errorDiv" role="alert"></div>
             <div class="details my-3  row p-2 rounded border paybg">
                 <div class="col-8 p-0">
                     <span class="d-block title">Bank Name</span>
@@ -69,14 +80,17 @@ include_once "header.php";
                     <span class="value">Fabex Global</span>
                 </div>
             </div>
-            <p class="text-danger note"><b>Note:</b> Third party payments are not allowed! You should only pay from an account registered with your name.</p>
+            <p tabindex="-2" class="text-danger note"><b>Note:</b> Third party payments are not allowed! You should only pay from an account registered with your name.</p>
 
-            <p class="confirm d-none">Your Gift card will be sent to your email address once order is confirmed.</p>
-            <button class="payment text-center"> I have paid, Proceed</button>
+            <p class="confirm d-none" id="confirm">Your Gift card will be sent to your email address once order is confirmed.</p>
+            <form action="php/payment.php" method="POST" id="paidForm">
+                <input type="hidden" name="paid" value="yes" id="paidInput">
+                <button type="submit" name="paidBtn" class="payment text-center"> I have paid, Proceed</button>
+            </form>
         </div>
     </div>
 
-    <script src="js/payment.js"></script>
+    <script src="js/payment.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 

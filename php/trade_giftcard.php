@@ -22,6 +22,8 @@ if (empty($action) || empty($category) || empty($sub_category) || empty($amount)
     exit("Fill the required fields!");
 }
 
+$dir = "trx_proof/";
+
 function getId(&$conn)
 {
     $tx_id = md5(time(), false);
@@ -37,9 +39,9 @@ function buyGiftcard(&$conn, $amount, $price, $product_id, $product_name)
 {
     $uid = $_SESSION["id"];
     $tx_id = getId($conn);
-    $desc = "Buy " . $product_name;
+    $desc = "Bought " . $product_name;
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, typ, stat) 
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, typ, status) 
     VALUES ('$uid','$tx_id','$desc', '$amount', '$price','$product_id', 0,0)";
     $res = $conn->query($sql);
     if ($res === true) {
@@ -56,7 +58,7 @@ function sellGiftcard(&$conn, $amount, $price, $product_id, $product_name)
 {
     $uid = $_SESSION["id"];
     $tx_id = getId($conn);
-    $desc = "Sell " . $product_name;
+    $desc = "Sold " . $product_name;
     $bank_name = $account_number = $account_name = "";
     if (isset($_POST["toggle"]) && $_POST["toggle"] === "on") {
         $sql = "SELECT fname, lname, bank_name, account_number FROM users WHERE id='$uid'";
@@ -71,7 +73,7 @@ function sellGiftcard(&$conn, $amount, $price, $product_id, $product_name)
         $account_name = mysqli_escape_string($conn, $_POST["account_name"]);
     }
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, typ, stat, bank_name, account_number, account_name) 
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, typ, status, bank_name, account_number, account_name) 
     VALUES ('$uid','$tx_id','$desc', '$amount', '$price', '$product_id', 1,0, '$bank_name','$account_number','$account_name')";
     $res = $conn->query($sql);
     if ($res === true) {
@@ -94,3 +96,5 @@ switch ($action) {
         sellGiftcard($conn, $amount, $price, $sub_category, $category);
         break;
 }
+
+mkdir($dir . $_SESSION["tx_id"], 0777, true);

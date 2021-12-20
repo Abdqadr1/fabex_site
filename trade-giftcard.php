@@ -1,4 +1,11 @@
-<?php include_once "header.php"; ?>
+<?php
+session_start();
+$fname = $_SESSION["fname"];
+if (!isset($_SESSION["id"]) || !isset($_SESSION["fname"]) || empty($_SESSION["id"]) || empty($_SESSION["fname"])) {
+    header("location: login");
+    exit();
+}
+include_once "header.php"; ?>
 
 <body>
     <div class="container pl-4 my-4"><span class="backBtn material-icons">

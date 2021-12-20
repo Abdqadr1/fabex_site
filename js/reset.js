@@ -20,8 +20,8 @@ resetForm.onsubmit = function (e) {
             btn.innerHTML = "Proceed";
             errorDiv.classList.remove("d-block");
             errorDiv.classList.add("d-none");
-            var input = resetForm.querySelector("input");
-            input.value = "";
+            var input_1 = resetForm.querySelector("input");
+            input_1.value = "";
         }
         else {
             errorDiv.innerText = responseText;

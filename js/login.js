@@ -8,7 +8,7 @@ var timeout = function () {
     errorDiv.classList.remove("d-none");
     errorDiv.classList.add("d-block");
     button.disabled = false;
-    button.innerHTML = "Register";
+    button.innerHTML = "Login";
     errorDiv.focus();
 };
 loginForm.onsubmit = function (e) {
@@ -31,7 +31,7 @@ loginForm.onsubmit = function (e) {
             errorDiv.classList.remove("d-none");
             errorDiv.classList.add("d-block");
             button.disabled = false;
-            button.innerHTML = "Register";
+            button.innerHTML = "Login";
             errorDiv.focus();
         }
     });

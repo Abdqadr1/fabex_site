@@ -7,6 +7,9 @@
   --red: #ec4646;
   --success: #166d71;
 }
+div#errorDiv {
+  word-break: break-all;
+}
 input,
 span,
 p {
@@ -319,6 +322,7 @@ label[for="upload"].giftcard span {
   display: inline-block;
   font-size: 30px;
   vertical-align: middle;
+  text-transform: lowercase !important;
 }
 /* dashboard styles */
 a.dash {

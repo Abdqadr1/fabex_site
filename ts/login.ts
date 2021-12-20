@@ -9,7 +9,7 @@ const timeout = () : void => {
     errorDiv.classList.remove("d-none");
     errorDiv.classList.add("d-block");
     button.disabled = false;
-    button.innerHTML = "Register";
+    button.innerHTML = "Login";
     errorDiv.focus();
 }
                 
@@ -32,7 +32,7 @@ loginForm.onsubmit = (e) => {
             errorDiv.classList.remove("d-none");
             errorDiv.classList.add("d-block");
             button.disabled = false;
-            button.innerHTML = "Register";
+            button.innerHTML = "Login";
             errorDiv.focus();
         }
     });

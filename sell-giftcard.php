@@ -14,6 +14,11 @@ if ($_SESSION["act"] != "sell") {
     echo ("Wrong transaction!");
     header("location: giftcard");
 }
+if ($_SESSION["which"] != "giftcard") {
+    echo ("Wrong transaction!");
+    header("location: giftcard");
+}
+
 $tx_id = $_SESSION["tx_id"];
 $act = $_SESSION["act"];
 include_once "php/connect_db.php";
@@ -37,26 +42,30 @@ include_once "header.php";
 
 <body>
     <div class="container pl-5 my-4">
-        <span class="backBtn material-icons">
+        <span class="backBtn material-icons" id="backBtn">
             chevron_left
         </span>
     </div>
     <div class="body row justify-content-center payment-row">
         <div class="col-md-5 col-lg-4 col-10">
-            <p class="kindly-pay my-2 text-center mb-5">Kindly upload image(s) of the Giftcards</p>
-            <!-- upload form -->
-            <div class="no-margin mt-5">
-                <label class="text-center d-inline-block giftcard" for="upload">
-                    <span class="material-icons">
-                        add
-                    </span>
-                </label>
-            </div>
-            <input type="file" class="file-input" id="upload" placeholder="png, jpg or jpeg">
-            <button class="payment text-center">Proceed</button>
+            <form action="php/sell_giftcard.php" method="POST" id="uploadForm" enctype="multipart/form-data">
+                <p class="kindly-pay my-2 text-center mb-5">Kindly upload image(s) of the Giftcards</p>
+                <div tabindex="-1" class="alert alert-danger d-none text-center px-2 fw-bold" id="errorDiv" role="alert"></div>
+                <!-- upload form -->
+                <div class="no-margin mt-5">
+                    <label class="text-center d-inline-block giftcard" for="upload">
+                        <span class="material-icons" id="number">
+                            add
+                        </span>
+                    </label>
+                </div>
+                <input name="upload[]" type="file" accept="image/*" class="file-input" id="upload" placeholder="png, jpg or jpeg" multiple required>
+                <button type="submit" name="submit" class="payment text-center">Proceed</button>
+            </form>
+
         </div>
     </div>
-    <script src="js/sell_crypto.js"></script>
+    <script src="js/sell_giftcard.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
