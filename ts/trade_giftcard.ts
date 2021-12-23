@@ -17,17 +17,21 @@ backBtn.onclick = event => {
     event.stopPropagation();
     history.go(-1);
 }
-const changeDisability = (show:boolean) => {
-    allSellInput.forEach(el => {
+const changeDisability = (nodes:NodeListOf<HTMLElement>,show:boolean) => {
+    nodes.forEach(el => {
         let element;
         if (el instanceof HTMLInputElement) {
             element = el as HTMLInputElement;
-        } else {
+        } else if(el instanceof HTMLSelectElement) {
             element = el as HTMLSelectElement;
+        } else {
+            element = el as HTMLButtonElement;
         }
         element.disabled = show;
     })
 }
+ 
+
 let action:string = "buy";
 const tradeGiftcardForm = document.querySelector("form#tradeGiftcardForm") as HTMLFormElement;
 const submitBtn = tradeGiftcardForm.querySelector("button") as HTMLButtonElement;
@@ -41,6 +45,7 @@ const timeoutFun = () => {
     errorDiv.classList.add("d-block");
     submitBtn.disabled = false;
     submitBtn.innerHTML = action + " giftcard";
+    changeDisability(actionButtons, false);
     errorDiv.focus();
 }
 
@@ -53,6 +58,7 @@ tradeGiftcardForm.onsubmit = event => {
     aj.setBefore(() => {
         submitBtn.disabled = true;
         submitBtn.innerHTML = spinner;
+        changeDisability(actionButtons, true)
     });
     aj.setAfter((responseText: string) => {
         console.log(responseText);
@@ -60,10 +66,13 @@ tradeGiftcardForm.onsubmit = event => {
             if (action === "buy") {
                 location.href = "payment";
             } else {
-                location.href = "upload";
+                location.href = "sell_giftcard";
             }
         } else {
             errorDiv.innerText = responseText;
+            errorDiv.classList.remove("d-none");
+            errorDiv.classList.add("d-block");
+            errorDiv.focus();
         }
         submitBtn.innerText = action + " giftcard"
         submitBtn.disabled = false;
@@ -77,13 +86,13 @@ toggleBank.onchange = (event) => {
             element.classList.remove("d-block");
             element.classList.add("d-none");
         });
-        changeDisability(true);
+        changeDisability(allSellInput,true);
     } else {
         bankField.forEach(element => {
             element.classList.remove("d-none");
             element.classList.add("d-block");
         });
-        changeDisability(false);
+        changeDisability(allSellInput,false);
     }
 }
 toggleBank.checked = false;
@@ -123,13 +132,13 @@ actionButtons.forEach(element => {
                             element.classList.remove("d-block");
                             element.classList.add("d-none");
                         });
-                        changeDisability(true);
+                        changeDisability(allSellInput,true);
                     } else {
                         allSellField.forEach(element => {
                             element.classList.remove("d-none");
                             element.classList.add("d-block");
                         });
-                        changeDisability(false);
+                        changeDisability(allSellInput,false);
                     }
                     bankDiv.classList.remove("d-none");
                     bankDiv.classList.add("d-block");

@@ -48,7 +48,7 @@ foreach ($_FILES["upload"]['tmp_name'] as $key => $tmp_name) {
                     unlink($upload_file);
                 }
                 //upload the file
-                if (move_uploaded_file($file_tmp, $file_name)) {
+                if (move_uploaded_file($file_tmp, $upload_file)) {
                     array_push($uploaded, $upload_file);
                 } else {
                     $not_uploaded++;
@@ -76,6 +76,7 @@ if (count($uploaded) === $number) {
         $_SESSION['tx_id'] = "";
         $_SESSION["which"] = "";
         $_SESSION["amount"] = "";
+        $_SESSION["price"] = "";
         echo "Success: Images uploaded!";
     } else {
         echo "Something went wrong when updating record: " . $conn->error;

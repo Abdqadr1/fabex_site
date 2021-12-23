@@ -1,7 +1,14 @@
-<?php include_once "header.php"; ?>
+<?php
+session_start();
+$fname = $_SESSION["fname"];
+if (!isset($_SESSION["id"]) || !isset($_SESSION["fname"]) || empty($_SESSION["id"]) || empty($_SESSION["fname"])) {
+    header("location: login");
+    exit();
+}
+include_once "header.php"; ?>
 
 <body>
-    <div class="container pl-4 my-4"><span class="backBtn material-icons">
+    <div class="container pl-4 my-4"><span class="backBtn material-icons" id="backBtn">
             chevron_left
         </span></div>
     <div class="body row justify-content-center payment-row">
@@ -11,62 +18,73 @@
                 <button class="col-3 btn btn-outline-secondary mr-3 buy active trading">Buy</button>
                 <button class="col-3 btn btn-outline-secondary ml-3 sell trading">Sell</button>
             </div>
-            <!-- assets -->
-            <div class="mt-3">
-                <label for="assets" class="form-label">Assets</label>
-                <select class="form-select rad8" id="assets" required>
-                    <option selected hidden>Select coin...</option>
-                </select>
-            </div>
-            <!-- amount -->
-            <label for="amount" class="form-label mb-1 mt-3">Amount ($)</label>
-            <input type="text" class="form-control form-control-lg" id="amount" required>
-            <p class="mt-2 mb-0 fw-bold">Total: N33,000</p>
-            <!-- amount -->
-            <div class="for-buy">
-                <label for="address" class="form-label mb-1 mt-3">Wallet Address</label>
-                <input type="text" class="form-control form-control-lg" id="address" placeholder="Enter wallet address" required>
-            </div>
+            <form method="POST" action="php/trade_crypto.php" id="tradeCryptoForm">
+                <div tabindex="-1" class="alert alert-danger d-none text-center mt-3" id="errorDiv" role="alert"></div>
+                <!-- assets -->
+                <div class="mt-3">
+                    <label for="assets" class="form-label">Assets</label>
+                    <select name="asset" class="form-select rad8" id="assets" required>
+                        <option value="" selected hidden>Select coin...</option>
+                    </select>
+                </div>
+                <!-- amount -->
+                <label for="amount" class="form-label mb-1 mt-3">Amount ($)</label>
+                <input name="amount" type="text" class="form-control form-control-lg" id="amount" required>
+                <p class="mt-2 mb-0 fw-bold">Total: N33,000</p>
+                <input type="hidden" name="price" value="33,00">
+                <div id="buyingFields" class="no-margin">
+                    <!-- amount -->
+                    <div class="for-buy">
+                        <label for="address" class="form-label mb-1 mt-3">Wallet Address</label>
+                        <input name="address" type="text" class="form-control form-control-lg buyInput" id="address" placeholder="Enter wallet address" required>
+                    </div>
 
-            <!-- network -->
-            <div class="mt-3 for-buy">
-                <label for="network" class="form-label">Network</label>
-                <select class="form-select rad8" id="network">
-                    <option selected>BEP20 (BSC)</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-            </div>
+                    <!-- network -->
+                    <div class="mt-3 for-buy">
+                        <label for="network" class="form-label">Network</label>
+                        <select name="network" class="form-select rad8 buyInput" id="network">
+                            <option selected>BEP20 (BSC)</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                </div>
 
-            <div class="form-check form-switch my-2 d-none" id="toggle-switch">
-                <input class="form-check-input toggle-switch" type="checkbox" role="switch" id="bankSwitch">
-                <label class="form-check-label" for="bankSwitch">Use default account details</label>
-            </div>
 
-            <!-- bank name -->
-            <div class="mt-3 for-sell bank d-none">
-                <label for="bankName" class="form-label">Bank Name</label>
-                <select class="form-select rad8" id="bankName">
-                    <option selected disabled hidden>Select Bank Name</option>
-                </select>
-            </div>
+                <div class="form-check form-switch my-2 d-none" id="toggle-switch">
+                    <input name="switch" class="form-check-input toggle-switch" type="checkbox" role="switch" id="bankSwitch">
+                    <label class="form-check-label" for="bankSwitch">Use default account details</label>
+                </div>
 
-            <!-- account number -->
-            <div class="for-sell bank d-none">
-                <label for="accountNumber" class="form-label mb-1 mt-3">Account number</label>
-                <input type="text" class="form-control form-control-lg" id="accountNumber" placeholder="Enter account number" required>
+                <div id="sellingFields" class="no-margin d-none">
 
-            </div>
+                    <!-- bank name -->
+                    <div class="mt-3 for-sell bank">
+                        <label for="bankName" class="form-label">Bank Name</label>
+                        <select name="bank_name" class="form-select rad8 bankInput" id="bankName" required disabled>
+                            <option value="" selected disabled hidden>Select Bank Name</option>
+                        </select>
+                    </div>
 
-            <!-- account name -->
-            <div class="for-sell bank d-none">
-                <label for="accountName" class="form-label mb-1 mt-3">Account name</label>
-                <input type="text" class="form-control form-control-lg" id="accountName" placeholder="Enter account name" required>
+                    <!-- account number -->
+                    <div class="for-sell bank">
+                        <label for="accountNumber" class="form-label mb-1 mt-3">Account number</label>
+                        <input name="account_number" type="text" class="form-control form-control-lg bankInput" id="accountNumber" placeholder="Enter account number" required disabled>
+                    </div>
 
-            </div>
+                    <!-- account name -->
+                    <div class="for-sell bank">
+                        <label for="accountName" class="form-label mb-1 mt-3">Account name</label>
+                        <input name="account_name" type="text" class="form-control form-control-lg bankInput" id="accountName" placeholder="Enter account name" required disabled>
+                    </div>
+                </div>
 
-            <button class="payment text-center">Buy Crypto</button>
+                <input type="hidden" name="act" id="hidden" value="buy">
+                <button type="submit" class="payment text-center">Buy Crypto</button>
+            </form>
+
+
         </div>
     </div>
     <script type="module" src="js/trade_crypto.js"></script>

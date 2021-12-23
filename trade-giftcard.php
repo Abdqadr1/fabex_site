@@ -69,7 +69,7 @@ include_once "header.php"; ?>
 
                     </div>
                 </div>
-                <input type="hidden" name="act" id="hidden">
+                <input type="hidden" name="act" id="hidden" value="buy">
                 <button type="submit" class="payment text-center">Buy Giftcard</button>
             </form>
 

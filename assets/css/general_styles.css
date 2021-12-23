@@ -238,6 +238,7 @@ span.file-placeholder {
   line-height: normal;
   padding-bottom: 0;
   margin-bottom: 0;
+  text-transform: none !important;
 }
 label.choose {
   color: var(--primary-color);
@@ -252,6 +253,7 @@ input.file-input {
   max-height: 8px;
   line-height: 8px;
   font-size: x-small;
+  text-transform: none I !important;
 }
 
 /* trade crypto styles */

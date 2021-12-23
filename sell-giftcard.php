@@ -48,7 +48,7 @@ include_once "header.php";
     </div>
     <div class="body row justify-content-center payment-row">
         <div class="col-md-5 col-lg-4 col-10">
-            <form action="php/sell_giftcard.php" method="POST" id="uploadForm" enctype="multipart/form-data">
+            <form action="php/sell.php" method="POST" id="uploadForm" enctype="multipart/form-data">
                 <p class="kindly-pay my-2 text-center mb-5">Kindly upload image(s) of the Giftcards</p>
                 <div tabindex="-1" class="alert alert-danger d-none text-center px-2 fw-bold" id="errorDiv" role="alert"></div>
                 <!-- upload form -->

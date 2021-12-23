@@ -21,6 +21,7 @@ if ($res->fetch_array()[0] == 1) {
         $_SESSION['tx_id'] = "";
         $_SESSION["which"] = "";
         $_SESSION["amount"] = "";
+        $_SESSION["price"] = "";
         echo "Success: transaction status updated!";
     } else {
         echo "Something went wrong: " . $conn->error;

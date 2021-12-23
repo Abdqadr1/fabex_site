@@ -12,13 +12,11 @@ if ($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["act"]) || !isset($_SE
 
 
 $action = mysqli_escape_string($conn, $_POST["act"]);
-$category = mysqli_escape_string($conn, $_POST["category"]);
-$sub_category = mysqli_escape_string($conn, $_POST["sub_category"]);
+$asset = mysqli_escape_string($conn, $_POST["asset"]);
 $amount = mysqli_escape_string($conn, $_POST["amount"]);
 $price = mysqli_escape_string($conn, $_POST["price"]);
 
-
-if (empty($action) || empty($category) || empty($sub_category) || empty($amount) || empty($price)) {
+if (empty($action) || empty($asset) || empty($amount) || empty($price)) {
     exit("Fill the required fields!");
 }
 
@@ -35,27 +33,32 @@ function getId(&$conn)
     return $tx_id;
 }
 
-function buyGiftcard(&$conn, $amount, $price, $product_id, $product_name)
+function buyCrypto(&$conn, $amount, $price, $product_id, $product_name)
 {
+    if (!isset($_POST["address"]) || !isset($_POST["network"])) {
+        exit("Incomplete parameters");
+    }
+    $network = mysqli_escape_string($conn, $_POST["network"]);
+    $address = mysqli_escape_string($conn, $_POST["address"]);
     $uid = $_SESSION["id"];
     $tx_id = getId($conn);
     $desc = "Bought " . $product_name;
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, typ, status) 
-    VALUES ('$uid','$tx_id','$desc', '$amount', '$price','$product_id', 0,0)";
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, typ, status, network, wallet_address) 
+    VALUES ('$uid','$tx_id','$desc', '$amount', '$price','$product_id', 0,0, '$network','$address')";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;
-        $_SESSION["which"] = "giftcard";
+        $_SESSION["which"] = "crypto";
         $_SESSION["act"] = "buy";
         $_SESSION["amount"] = $amount;
-        $_SESSION["price"] = $price;
         echo "Success: transaction was inserted " . $conn->insert_id;
     } else {
         echo "Something went wrong " . $conn->error;
     }
 }
-function sellGiftcard(&$conn, $amount, $price, $product_id, $product_name)
+
+function sellCrypto(&$conn, $amount, $price, $product_id, $product_name)
 {
     $uid = $_SESSION["id"];
     $tx_id = getId($conn);
@@ -79,24 +82,22 @@ function sellGiftcard(&$conn, $amount, $price, $product_id, $product_name)
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;
-        $_SESSION["which"] = "giftcard";
+        $_SESSION["which"] = "crypto";
         $_SESSION["act"] = "sell";
         $_SESSION["amount"] = $amount;
-        $_SESSION["price"] = $price;
         echo "Success: transaction was inserted " . $conn->insert_id;
     } else {
         echo "Something went wrong " . $conn->error;
     }
 }
 
-
 //TODO: do something about the products id and name
 switch ($action) {
     case "buy":
-        buyGiftcard($conn, $amount, $price, $sub_category, $category);
+        buyCrypto($conn, $amount, $price, $price, $asset);
         break;
     case "sell":
-        sellGiftcard($conn, $amount, $price, $sub_category, $category);
+        sellCrypto($conn, $amount, $price, $price, $asset);
         break;
     default:
         echo "This action is not supported.";

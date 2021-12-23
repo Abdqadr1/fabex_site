@@ -68,9 +68,7 @@ var Ajax = /** @class */ (function () {
             this.ajax();
     };
     Ajax.fetchPage = function (url, doAfter) {
-        fetch(url, {
-            method: "get"
-        }).then(function (response) { return response.text(); })
+        fetch(url).then(function (response) { return response.text(); })
             .then(function (data) { return doAfter(data); })
             .catch(function (error) { return console.error("An error occurred", error); });
     };
