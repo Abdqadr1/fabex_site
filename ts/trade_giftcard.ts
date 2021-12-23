@@ -11,6 +11,8 @@ const allSellInput = document.querySelectorAll(".sell-input") as NodeListOf<HTML
 const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>
                 Please wait... `;
 
+let bankList: [] = [];
+let isChanged: boolean = false;
 // click handler for back button
 const backBtn = document.querySelector("span.backBtn") as HTMLSpanElement;
 backBtn.onclick = event => {
@@ -24,13 +26,23 @@ const changeDisability = (nodes:NodeListOf<HTMLElement>,show:boolean) => {
             element = el as HTMLInputElement;
         } else if(el instanceof HTMLSelectElement) {
             element = el as HTMLSelectElement;
+            if (el.id == "bankName" && isChanged === false && bankList.length > 0) {
+                bankList.forEach((bank: string) => {
+                    if (banks.disabled == true) banks.disabled = false;
+                    const option = document.createElement("option");
+                    option.value = bank;
+                    option.innerText = bank;
+                    banks.appendChild(option);
+                });
+                isChanged = true;
+            }
         } else {
             element = el as HTMLButtonElement;
         }
         element.disabled = show;
     })
 }
- 
+
 
 let action:string = "buy";
 const tradeGiftcardForm = document.querySelector("form#tradeGiftcardForm") as HTMLFormElement;
@@ -153,3 +165,13 @@ actionButtons.forEach(element => {
             
     }
 })
+
+const banks = tradeGiftcardForm.querySelector("select#bankName") as HTMLSelectElement;
+// get all banks
+(function () {
+    //TODO: replace url before server
+    Ajax.fetchPage("/fabex/php/data.php?which=banks", (data: string) => {
+        bankList = JSON.parse(data);
+    });
+}
+)();

@@ -1,9 +1,6 @@
 import { Ajax } from "./ajax.js";
 var buttons = document.querySelectorAll("button.trading");
 var toggleSwitch = document.querySelector("input.toggle-switch");
-// const allBuyData = document.querySelectorAll("div.for-buy") as NodeListOf<HTMLDivElement>;
-// const allSellData = document.querySelectorAll("div.for-sell") as NodeListOf<HTMLDivElement>;
-var bankData = document.querySelectorAll("div.for-sell.bank");
 var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>\n                Please wait... ";
 var cryptoButton = document.querySelector("button.payment");
 var toggleDiv = document.querySelector("div#toggle-switch");
@@ -12,6 +9,8 @@ backBtn.onclick = function (event) {
     event.stopPropagation();
     history.go(-1);
 };
+var bankList = [];
+var isChanged = false;
 var action = "buy";
 var select = document.querySelector("select#bankName");
 var assets = document.querySelector("select#assets");
@@ -23,7 +22,6 @@ var bankInputs = tradeCryptoForm.querySelectorAll(".bankInput");
 var buyInputs = tradeCryptoForm.querySelectorAll(".buyInput");
 var errorDiv = tradeCryptoForm.querySelector("div#errorDiv");
 var act = tradeCryptoForm.querySelector("input#hidden");
-// console.log(select);
 var changeDisability = function (node, show) {
     node.forEach(function (el) {
         var element;
@@ -32,6 +30,14 @@ var changeDisability = function (node, show) {
         }
         else {
             element = el;
+            if (el.id == "bankName" && isChanged === false && bankList.length > 0) {
+                bankList.forEach(function (bank) {
+                    var option = document.createElement("option");
+                    option.value = bank;
+                    option.innerText = bank;
+                    select.appendChild(option);
+                });
+            }
         }
         element.disabled = show;
     });
@@ -148,14 +154,7 @@ buttons.forEach(function (element) {
 (function () {
     //TODO: replace url before server
     Ajax.fetchPage("/fabex/php/data.php?which=banks", function (data) {
-        var bankList = JSON.parse(data);
-        console.log(bankList);
-        bankList.forEach(function (bank) {
-            var option = document.createElement("option");
-            option.value = bank;
-            option.innerText = bank;
-            select.appendChild(option);
-        });
+        bankList = JSON.parse(data);
     });
 })();
 // get all banks

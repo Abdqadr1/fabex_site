@@ -54,7 +54,6 @@ include_once "header.php"; ?>
                         <label for="bankName" class="form-label">Bank Name</label>
                         <select name="bank_name" class="form-select rad8 sell-input" id="bankName" disabled>
                             <option value="" selected disabled hidden>Select Bank Name</option>
-                            <option>Access Bank Plc</option>
                         </select>
                     </div>
                     <!-- account number -->

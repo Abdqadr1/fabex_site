@@ -148,4 +148,4 @@ changePassForm.onsubmit = event => {
         })
     })
 }
-)()
+)();

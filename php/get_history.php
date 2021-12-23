@@ -18,14 +18,42 @@ function getStatusColor($stat)
             return "red";
     }
 };
+function getStatusText($stat)
+{
+    switch ($stat) {
+        case 1:
+            return "In progress";
+        case 2:
+            return "Success";
+        case 3:
+            return "Cancelled";
+    }
+};
+function plural($val, $unit)
+{
+    if ($val > 1) {
+        return "$val $unit" . "s";
+    };
+    return "$val $unit";
+};
 function getTimeDiff($date)
 {
-    $d = strtotime($date);
-    $date1 = date_create(date("Y-m-d h:i:sa", $d));
-    $date2 = date_create(date("Y-m-d h:i:sa"));
-    return date_diff($date2, $date1);
+    $date1 = new DateTime($date);
+    $since = $date1->diff(new DateTime());
+    $y = $since->y;
+    $m = $since->m;
+    $d = $since->d;
+    $h = $since->h;
+    $i = $since->i;
+    $s = $since->s;
+    if ($y > 0) return plural($y, "year") . " ago";
+    if ($m > 0) return plural($m, "month") . " ago";
+    if ($d > 0) return plural($d, "day") . " ago";
+    if ($h > 0) return plural($h, "hour") . " ago";
+    if ($i > 0) return plural($i, "minute") . " ago";
+    if ($s > 0) return plural($s, "second") . " ago";
 };
-$sql = "SELECT descrip, time, amount, id, status FROM trx_history WHERE u_id='$id' AND status>0";
+$sql = "SELECT descrip, time, amount, id, status FROM trx_history WHERE u_id='$id' AND status>0 ORDER BY time DESC";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($rows = $result->fetch_assoc()) {
@@ -34,16 +62,17 @@ if ($result->num_rows > 0) {
         $tid = $rows['id'];
         $status = getStatusColor($rows['status']);
         $time = getTimeDiff($rows['time']);
+        $statText = getStatusText($rows['status']);
 
         $each = "<div class='row justify-content-between transaction' id='$tid'>
                 <div class='col-8 ml-2'>
                     <span class='trans-title'>$desc</span><br>
                     <span class='trans-status'>
-                        <span class='ellipse' style='--type: var(--$status);'></span>In progress</span>
+                        <span class='ellipse' style='--type: var(--$status);'></span>$statText</span>
                 </div>
                 <div class='col-3 text-to-right'>
                     <span class='trans-amount'>N$amount</span><br>
-                    <span class='trans-time'>$time mins ago</span>
+                    <span class='trans-time'>$time</span>
                 </div>
             </div>";
         array_push($output, $each);

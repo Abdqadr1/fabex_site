@@ -9,6 +9,8 @@ var toggleField = document.querySelector("div#toggle-switch");
 var bankDiv = document.querySelector("div#bankDiv");
 var allSellInput = document.querySelectorAll(".sell-input");
 var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>\n                Please wait... ";
+var bankList = [];
+var isChanged = false;
 // click handler for back button
 var backBtn = document.querySelector("span.backBtn");
 backBtn.onclick = function (event) {
@@ -23,6 +25,17 @@ var changeDisability = function (nodes, show) {
         }
         else if (el instanceof HTMLSelectElement) {
             element = el;
+            if (el.id == "bankName" && isChanged === false && bankList.length > 0) {
+                bankList.forEach(function (bank) {
+                    if (banks.disabled == true)
+                        banks.disabled = false;
+                    var option = document.createElement("option");
+                    option.value = bank;
+                    option.innerText = bank;
+                    banks.appendChild(option);
+                });
+                isChanged = true;
+            }
         }
         else {
             element = el;
@@ -151,3 +164,11 @@ actionButtons.forEach(function (element) {
         }
     };
 });
+var banks = tradeGiftcardForm.querySelector("select#bankName");
+// get all banks
+(function () {
+    //TODO: replace url before server
+    Ajax.fetchPage("/fabex/php/data.php?which=banks", function (data) {
+        bankList = JSON.parse(data);
+    });
+})();

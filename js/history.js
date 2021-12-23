@@ -7,7 +7,7 @@ var loadingContainer = document.querySelector("div#loadingContainer");
     //TODO: get user history
     console.info("fetching history from server...");
     Ajax.fetchPage(/** correct the url before server */ "/fabex/php/get_history.php", function (data) {
-        console.log(data);
+        // console.log(data);
         if (data.toLowerCase().indexOf("no history") != -1) {
             noHistory.classList.remove("d-none");
             noHistory.classList.add("d-flex");

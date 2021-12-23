@@ -1,9 +1,6 @@
 import { Ajax } from "./ajax.js";
 const buttons = document.querySelectorAll("button.trading") as NodeListOf<HTMLButtonElement>;
 const toggleSwitch = document.querySelector("input.toggle-switch") as HTMLInputElement;
-// const allBuyData = document.querySelectorAll("div.for-buy") as NodeListOf<HTMLDivElement>;
-// const allSellData = document.querySelectorAll("div.for-sell") as NodeListOf<HTMLDivElement>;
-const bankData = document.querySelectorAll("div.for-sell.bank") as NodeListOf<HTMLDivElement>;
 const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>
                 Please wait... `;
 const cryptoButton = document.querySelector("button.payment") as HTMLButtonElement;
@@ -14,6 +11,8 @@ backBtn.onclick = event => {
     history.go(-1);
 }
 
+let bankList: [] = [];
+let isChanged: boolean = false;
 let action: string = "buy";
 const select = document.querySelector("select#bankName") as HTMLSelectElement;
 const assets = document.querySelector("select#assets") as HTMLSelectElement;
@@ -26,8 +25,6 @@ const buyInputs = tradeCryptoForm.querySelectorAll(".buyInput") as NodeListOf<HT
 const errorDiv = tradeCryptoForm.querySelector("div#errorDiv") as HTMLDivElement;
 const act = tradeCryptoForm.querySelector("input#hidden") as HTMLInputElement;
 
-// console.log(select);
-
 const changeDisability = (node:NodeListOf<HTMLElement>,show:boolean) => {
     node.forEach(el => {
         let element;
@@ -35,6 +32,14 @@ const changeDisability = (node:NodeListOf<HTMLElement>,show:boolean) => {
             element = el as HTMLInputElement;
         } else {
             element = el as HTMLSelectElement;
+            if (el.id == "bankName" && isChanged === false && bankList.length > 0) { 
+                bankList.forEach((bank: string) => {
+                    const option = document.createElement("option");
+                    option.value = bank;
+                    option.innerText = bank;
+                    select.appendChild(option);
+                })
+            }
         }
         element.disabled = show;
     })
@@ -152,14 +157,7 @@ buttons.forEach(element => {
 (function () {
     //TODO: replace url before server
     Ajax.fetchPage("/fabex/php/data.php?which=banks", (data: string) => {
-        const bankList: [] = JSON.parse(data);
-        console.log(bankList);
-        bankList.forEach((bank: string) => {
-            const option = document.createElement("option");
-            option.value = bank;
-            option.innerText = bank;
-            select.appendChild(option);
-        })
+        bankList = JSON.parse(data);
     })
 })();
 
