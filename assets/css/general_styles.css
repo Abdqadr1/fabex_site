@@ -260,6 +260,7 @@ input.file-input {
 button.trading {
   margin-left: 10px !important;
   margin-right: 10px !important;
+  border-radius: 8px !important;
 }
 button.buy.active {
   background: #cdeced !important;
@@ -464,4 +465,44 @@ p.forgotpass a:hover {
 p.forgotpass a {
   text-decoration: none;
   color: var(--primary-color);
+}
+
+/* admin pages */
+button.action-button {
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  padding: 5px;
+  font-size: 13px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin: 0 4px;
+}
+button.approve {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+button.approve:hover {
+  color: white;
+  background-color: var(--primary-color);
+}
+button.reject {
+  color: var(--red);
+  border-color: var(--red);
+  border: 1px solid var(--red);
+}
+button.reject:hover {
+  color: white;
+  background-color: var(--red);
 }
