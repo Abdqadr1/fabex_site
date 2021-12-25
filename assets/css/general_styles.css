@@ -6,6 +6,7 @@
   --warning: #f4aa0b;
   --red: #ec4646;
   --success: #166d71;
+  --header: #8c8c8c;
 }
 div#errorDiv {
   word-break: break-all;
@@ -505,4 +506,18 @@ button.reject {
 button.reject:hover {
   color: white;
   background-color: var(--red);
+}
+
+td span.extra-detail {
+  color: #8c8c8c;
+}
+td span.val {
+  display: inline-block;
+  word-break: break-all;
+}
+td span.copy {
+  color: #8c8c8c;
+  font-size: 15px;
+  margin-left: 5px;
+  cursor: pointer;
 }

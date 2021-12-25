@@ -30,8 +30,8 @@
 </nav>
 <!-- order table -->
 <table class="table table-borderless table-hover">
-    <thead class="table-light">
-        <tr>
+    <thead class="" style="background-color: var(--todo-bg);" id="crypto_header">
+        <tr style="color: var(--header);">
             <th scope="col">Transaction ID</th>
             <th scope="col">Name of User</th>
             <th scope="col">Coin type</th>
@@ -42,7 +42,7 @@
             <th scope="col">Action</th>
         </tr>
     </thead>
-    <thead class="table-light d-none">
+    <thead class="d-none" style="background-color: var(--todo-bg);" id="giftcard_header">
         <tr>
             <th scope="col">Transaction ID</th>
             <th scope="col">Name of User</th>
@@ -58,9 +58,50 @@
             <td>1234567890</td>
             <td>Oyeleye Joseph</td>
             <td>BTC</td>
-            <td>$29.1</td>
-            <td>0x5dCF1A8934234565...</td>
-            <td>1113</td>
+            <td>$29.1<br><span class='extra-detail'>N14,899.2</span></td>
+            <td>
+                <span class="val">0x5dCF1A8934234565...<span class="copy material-icons" title="copy address">content_copy</span></span>
+                <br><span class="extra-detail">ERC 20</span>
+            </td>
+            <td>
+                <span class="val">1134<span class="copy material-icons" title="copy memo">content_copy</span></span>
+            </td>
+            <td>Today, 12:53 pm</td>
+            <td class="d-flex justify-content-center align-top">
+                <button class="action-button approve">Approve</button>
+                <button class="action-button reject">Reject</button>
+            </td>
+        </tr>
+        <tr>
+            <td>1234567890</td>
+            <td>Oyeleye Joseph</td>
+            <td>BTC</td>
+            <td>$29.1<br><span class='extra-detail'>N14,899.2</span></td>
+            <td>
+                <span class="val">0x5dCF1A8934234565...<span class="copy material-icons" title="copy address">content_copy</span></span>
+                <br><span class="extra-detail">ERC 20</span>
+            </td>
+            <td>
+                <span class="val">1134<span class="copy material-icons" title="copy memo">content_copy</span></span>
+            </td>
+            <td>Today, 12:53 pm</td>
+            <td class="d-flex justify-content-center align-top">
+                <button class="action-button approve">Approve</button>
+                <button class="action-button reject">Reject</button>
+            </td>
+        </tr>
+        <tr>
+            <td>1234567890</td>
+            <td>Oyeleye Joseph</td>
+            <td>BTC</td>
+            <td>$29.1<br><span class='extra-detail'>N14,899.2</span></td>
+            <td>
+                <span class="val">0x5dCF1A8934234565...<span class="copy material-icons" title="copy address">content_copy</span></span>
+                <br><span class="extra-detail">ERC 20</span>
+            </td>
+            <td>
+                <span class="val">1134<span class="copy material-icons" title="copy memo">content_copy</span></span>
+            </td>
             <td>Today, 12:53 pm</td>
             <td class="d-flex justify-content-center align-top">
                 <button class="action-button approve">Approve</button>
