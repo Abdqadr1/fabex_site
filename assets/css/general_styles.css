@@ -8,6 +8,14 @@
   --success: #166d71;
   --header: #8c8c8c;
 }
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 div#errorDiv {
   word-break: break-all;
 }
@@ -520,4 +528,21 @@ td span.copy {
   font-size: 15px;
   margin-left: 5px;
   cursor: pointer;
+}
+
+/* admin rate management page */
+div.admin-rate > div.bordered {
+  border-right: 3px solid #e5e5e5;
+}
+span.product-name {
+  height: 24px;
+  margin-top: 7px;
+  vertical-align: middle;
+  font-size: 16px;
+  font-weight: 400;
+}
+input.admin-rate {
+  border-radius: 6px;
+  font-size: 15px;
+  padding: 7px 10px;
 }
