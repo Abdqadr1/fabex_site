@@ -3,7 +3,7 @@
     <div class="col-6 col-lg-4">
         <div class="no-margin pad">
             <h3>Crypto</h3>
-            <div class="mx-0 mt-2" id="crypto-div">
+            <div class="mx-0 mt-2" id="crypto_div">
                 <!-- each crypto -->
                 <div class="each-crypto">
                     <span class="d-inline-block crypto-name">Bitcoin (BTC)</span>
@@ -29,11 +29,12 @@
                     <span class="material-icons text-primary three-dots">more_vert</span>
                 </div>
             </div>
-            <div class="add-crypto mt-2" title="add new crypto">
+            <div class="add-crypto mt-2" title="add new crypto" id="add_crypto">
                 <span class="material-icons add-crypto">add</span>
                 <span>Add new crypto</span>
             </div>
-            <form action="php/add_product" method="POST">
+            <form class="d-none" action="php/add_crypto.php" method="POST" id="add_crypto_form">
+                <div tabindex="-1" class="alert alert-danger mx-0 d-none text-center" id="errorDiv" role="alert"></div>
                 <!-- coin name -->
                 <div class="mt-3">
                     <label for="coin_name" class="form-label">Coin name</label>
@@ -47,8 +48,9 @@
                 <!-- network -->
                 <div class="mt-3">
                     <label for="network" class="form-label">Network</label>
-                    <select name="network" class="form-select rad8" id="network">
+                    <select name="network" class="form-select rad8" id="network" required>
                         <option value="" selected disabled hidden>Select option</option>
+                        <option value="BSC">BSC</option>
                     </select>
                 </div>
                 <!-- coin name -->
@@ -70,70 +72,43 @@
         <div class="no-margin pad">
             <h3>Giftcards</h3>
             <div class="mx-0 mt-2" id="giftcard-div">
-                <div class="each-giftcard">
-                    <div class="inline-block">
-                        <span class="d-inline-block crypto-name">Amazon Giftcards</span>
-                        <span class="form-switch mx-3">
-                            <input class="form-check-input" type="checkbox" role="switch">
-                        </span>
-                        <span class="material-icons text-primary three-dots">more_vert</span>
+                <div class="cap">
+                    <div class="each-giftcard">
+                        <div class="inline-block">
+                            <span class="d-inline-block crypto-name">Amazon Giftcards</span>
+                            <span class="form-switch mx-3">
+                                <input class="form-check-input" type="checkbox" role="switch">
+                            </span>
+                            <span class="material-icons text-primary three-dots">more_vert</span>
+                        </div>
+                        <span class="sub_cat">Sub-category</span>
+                        <div class="inline-block">
+                            <span class="d-inline-block crypto-name">Amazon Giftcards (100-200)</span>
+                            <span class="form-switch mx-3">
+                                <input class="form-check-input" type="checkbox" role="switch" checked>
+                            </span>
+                            <span class="material-icons text-primary three-dots">more_vert</span>
+                        </div>
+                        <div class="inline-block">
+                            <span class="d-inline-block crypto-name">Amazon Giftcards (100-200)</span>
+                            <span class="form-switch mx-3">
+                                <input class="form-check-input" type="checkbox" role="switch" checked>
+                            </span>
+                            <span class="material-icons text-primary three-dots">more_vert</span>
+                        </div>
+                        <div class="add-giftcard mt-2" title="add new sub category">
+                            <span class="material-icons add-crypto">add</span>
+                            <span>Add Subcategory</span>
+                        </div>
                     </div>
-                    <span class="sub_cat">Sub-category</span>
-                    <div class="inline-block">
-                        <span class="d-inline-block crypto-name">Amazon Giftcards (100-200)</span>
-                        <span class="form-switch mx-3">
-                            <input class="form-check-input" type="checkbox" role="switch" checked>
-                        </span>
-                        <span class="material-icons text-primary three-dots">more_vert</span>
-                    </div>
-                    <div class="inline-block">
-                        <span class="d-inline-block crypto-name">Amazon Giftcards (100-200)</span>
-                        <span class="form-switch mx-3">
-                            <input class="form-check-input" type="checkbox" role="switch" checked>
-                        </span>
-                        <span class="material-icons text-primary three-dots">more_vert</span>
-                    </div>
-                    <div class="add-giftcard mt-2" title="add new sub category">
-                        <span class="material-icons add-crypto">add</span>
-                        <span>Add Subcategory</span>
-                    </div>
-                </div>
-            </div>
-            <div class="mx-0 mt-2" id="giftcard-div">
-                <div class="each-giftcard">
-                    <div class="inline-block">
-                        <span class="d-inline-block crypto-name">Amazon Giftcards</span>
-                        <span class="form-switch mx-3">
-                            <input class="form-check-input" type="checkbox" role="switch">
-                        </span>
-                        <span class="material-icons text-primary three-dots">more_vert</span>
-                    </div>
-                    <div class="add-giftcard mt-2" title="add new sub category">
-                        <span class="material-icons add-crypto">add</span>
-                        <span>Add Subcategory</span>
-                    </div>
-                </div>
-            </div>
-            <div class="mx-0 mt-2" id="giftcard-div">
-                <div class="each-giftcard">
-                    <div class="inline-block">
-                        <span class="d-inline-block crypto-name">Amazon Giftcards</span>
-                        <span class="form-switch mx-3">
-                            <input class="form-check-input" type="checkbox" role="switch">
-                        </span>
-                        <span class="material-icons text-primary three-dots">more_vert</span>
-                    </div>
-                    <span class="sub_cat">Sub-category</span>
-                    <div class="inline-block">
-                        <span class="d-inline-block crypto-name">Amazon Giftcards (100-200)</span>
-                        <span class="form-switch mx-3">
-                            <input class="form-check-input" type="checkbox" role="switch" checked>
-                        </span>
-                        <span class="material-icons text-primary three-dots">more_vert</span>
-                    </div>
-                    <div class="add-giftcard mt-2" title="add new sub category">
-                        <span class="material-icons add-crypto">add</span>
-                        <span>Add Subcategory</span>
+                    <div class="mt-3" id="add_new_giftcard_div">
+                        <form action="" method="post" id="add_new_giftcard_form">
+                            <div class="mt-1 my-3">
+                                <label for="add_sub" class="form-label settings">Add sub-category (Amazon Giftcards)</label>
+                                <input name="sub_cat_name" type="text" class="form-control rad8" id="add_sub" placeholder="e.g Amazon Giftcard" required>
+                            </div>
+                            <button type="submit" class="payment text-center mx-auto">Add account details</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -142,8 +117,16 @@
             <span class="material-icons add-crypto">add</span>
             <span>Add new giftcard</span>
         </div>
+        <div class="mt-3 pad" id="add_new_giftcard_div">
+            <form action="" method="post" id="add_new_giftcard_form">
+                <div class="mt-1 my-3">
+                    <label for="add_giftcard" class="form-label settings">Giftcard name</label>
+                    <input name="giftcard_name" type="text" class="form-control rad8" id="add_giftcard" placeholder="e.g Amazon Giftcard" required>
+                </div>
+                <button type="submit" class="payment text-center mx-auto">Add account details</button>
+            </form>
+        </div>
     </div>
-
     <!-- bank column -->
     <div class="col-6 col-lg-4 bank-div mt-5">
         <p class="text-center mt-2 fw-bold fs-4 mb-1">Account Details</p>

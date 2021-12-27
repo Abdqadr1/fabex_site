@@ -50,7 +50,7 @@ navLinks.forEach(function (element) {
     };
 });
 var load = function (pageName) {
-    version = version + 0.001;
+    version = version + 0.01;
     var url = "../fabex-admin/" + pageName.toLowerCase() + ".php";
     Ajax.fetchPage(url, function (data) {
         container.innerHTML = "";

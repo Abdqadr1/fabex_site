@@ -54,7 +54,7 @@ navLinks.forEach(element => {
 });
 
 const load = (pageName: string) => {
-    version = version + 0.001;
+    version = version + 0.01;
     const url: string = "../fabex-admin/" + pageName.toLowerCase() + ".php";
     Ajax.fetchPage(url, (data:string) => {
         container.innerHTML = "";
