@@ -16,8 +16,9 @@ if ($which === "category") {
     $query = "INSERT INTO giftcards (name, type, status)  VALUES ('$giftcard_name','$which',1)";
     $result = $conn->query($query);
     if ($result === true) {
+        $id = $conn->insert_id;
         array_push($arr, "Success: product inserted!");
-        $data = array($giftcard_name, $which, 1, "", array());
+        $data = array($giftcard_name, $which, 1, $id, array());
         array_push($arr, $data);
         echo json_encode($arr);
     } else {
@@ -30,7 +31,7 @@ if ($which === "category") {
     }
     $parent = mysqli_escape_string($conn, $_POST["parent"]);
     $parent = testInput($parent);
-    $query = "INSERT INTO giftcards (name, type, parent, price, status)  VALUES ('$giftcard_name','$which', '$parent', 1)";
+    $query = "INSERT INTO giftcards (name, type, parent, status)  VALUES ('$giftcard_name','$which', '$parent', 1)";
     $result = $conn->query($query);
     if ($result === true) {
         array_push($arr, "Success: product inserted!");

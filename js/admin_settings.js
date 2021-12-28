@@ -7,11 +7,13 @@ var cryptoErrorDiv = addCryptoForm.querySelector("div#errorDiv");
 var addBankForm = document.querySelector("form#addBankForm");
 var addBankSubmitBtn = addBankForm.querySelector("button");
 var bankSelect = addBankForm.querySelector("select#bankname");
+var accountName = addBankForm.querySelector("input#accountname");
+var accountNumber = addBankForm.querySelector("input#accountnumber");
 var bankErrorDiv = addBankForm.querySelector('div#errorDiv');
 var bankSuccessDiv = addBankForm.querySelector("div#successDiv");
 var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>\n                Please wait... ";
 var all_cryptos = document.querySelectorAll("div.each-crypto input");
-var gifcardDiv = document.querySelector("div#giftcard_div");
+var giftcardDiv = document.querySelector("div#giftcard_div");
 var addGiftcard = document.querySelector("div#add_giftcard");
 var giftcardFormDiv = document.querySelector("div#giftcardFormDiv");
 var addGiftcardForm = document.querySelector("form#add_new_giftcard_form");
@@ -120,18 +122,71 @@ addGiftcard.onclick = function (event) {
     giftcardFormDiv.classList.add("d-block");
     addGiftcard.classList.add("d-none");
 };
+var showFormFunction = function (parent) {
+    var form = parent.childNodes[1];
+    form.classList.remove("d-none");
+    form.classList.add("d-block");
+};
+var submitSubGiftCard = function (form, subCatDiv) {
+    console.log("submitting...", form);
+    if (subCatDiv.innerHTML === "") {
+        var span = document.createElement("span");
+        span.className = "sub_cat";
+        span.innerText = "Sub-category";
+        subCatDiv.appendChild(span);
+    }
+    var button = form.querySelector("button");
+    var errorDiv = form.querySelector("div#errorDiv");
+    var aj = new Ajax(form);
+    aj.setBefore(function () {
+        button.disabled = true;
+        button.innerHTML = spinner;
+    });
+    aj.setAfter(function (data) {
+        var arr = JSON.parse(data);
+        console.log(arr);
+        var message = arr[0].toLowerCase();
+        if (message.indexOf("success") != -1) {
+            var content = arr[1];
+            var div = document.createElement("div");
+            div.className = "inline-block mt-2";
+            div.innerHTML = "<span class=\"d-inline-block crypto-name\">" + content[0] + "</span>\n                                <span class=\"form-switch mx-3\">\n                                    <input class=\"form-check-input\" type=\"checkbox\" role=\"switch\" checked>\n                                </span>\n                                <span class=\"material-icons text-primary three-dots\">more_vert</span>";
+            subCatDiv.appendChild(div);
+            form.reset();
+            form.classList.remove("d-block");
+            form.classList.add("d-none");
+            errorDiv.classList.remove("d-block");
+            errorDiv.classList.add("d-none");
+        }
+        else {
+            errorDiv.classList.remove("d-none");
+            errorDiv.classList.add("d-block");
+            errorDiv.innerText = data;
+            errorDiv.focus();
+        }
+        button.disabled = false;
+        button.innerHTML = "Add Sub-category";
+    });
+    aj.start();
+};
 var addGiftCardFun = function (content) {
     var isChecked = content[2] === 1 ? true : false;
     var which = "category";
-    var parent = content[1] === "category" ? "0" : content[3];
+    var parent = content[3];
     var div = document.createElement("div");
     div.className = "cap";
     var each = document.createElement("div");
     each.className = "each-giftcard";
     each.innerHTML = "<div class=\"inline-block\">\n                            <span class=\"d-inline-block crypto-name\">" + content[0] + "</span>\n                            <span class=\"form-switch mx-3\">\n                                <input class=\"form-check-input\" type=\"checkbox\" role=\"switch\" onchange=\"\" checked=\"" + isChecked + "\">\n                            </span>\n                            <span class=\"material-icons text-primary three-dots\">more_vert</span>\n                        </div>";
+    var subCatDiv = document.createElement("div");
+    subCatDiv.id = "sub_cat_div";
     var addDiv = document.createElement("div");
     addDiv.className = "add-giftcard mt-2";
     addDiv.title = "add sub category";
+    addDiv.onclick = function (event) {
+        var _a;
+        showFormFunction((_a = addDiv.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement);
+    };
     addDiv.innerHTML = "<span class=\"material-icons add-crypto\">add</span>\n                            <span>Add Subcategory</span>";
     var form = document.createElement("form");
     var children = content[4];
@@ -140,12 +195,18 @@ var addGiftCardFun = function (content) {
     }
     form.action = "php/add_giftcard.php";
     form.method = "post";
+    form.className = "d-none";
     form.id = "add_new_sub_form";
-    form.innerHTML = "<div class=\"mt-1 my-3\">\n                                <label for=\"add_sub\" class=\"form-label settings\">Add sub-category (Amazon Giftcards)</label>\n                                <input name=\"sub_cat_name\" type=\"text\" class=\"form-control rad8\" id=\"add_sub\" placeholder=\"e.g Amazon Giftcard\" required>\n                            </div>\n                            <input type=\"hidden\" name=\"which\" value=\"" + content[1] + "\">\n                            <input type=\"hidden\" name=\"parent\" value=\"" + parent + "\"><!-- parent_id should replaced  -->\n                            <button type=\"submit\" class=\"payment text-center mx-auto\">Add Sub-category</button>";
+    form.onsubmit = function (event) {
+        event.preventDefault();
+        submitSubGiftCard(form, subCatDiv);
+    };
+    form.innerHTML = "\n                <div tabindex=\"-10\" class=\"alert alert-danger mx-0 d-none text-center\" id=\"errorDiv\" role=\"alert\"></div>\n                <div class=\"mt-1 my-3\">\n                                <label for=\"add_sub\" class=\"form-label settings\">Add sub-category (Amazon Giftcards)</label>\n                                <input name=\"giftcard_name\" type=\"text\" class=\"form-control rad8\" id=\"add_sub\" placeholder=\"e.g Amazon Giftcard\" required>\n                            </div>\n                            <input type=\"hidden\" name=\"which\" value=\"sub_category\">\n                            <input type=\"hidden\" name=\"parent\" value=\"" + parent + "\"><!-- parent_id should replaced  -->\n                            <button type=\"submit\" class=\"payment text-center mx-auto\">Add Sub-category</button>";
+    each.appendChild(subCatDiv);
     each.appendChild(addDiv);
     div.appendChild(each);
     div.appendChild(form);
-    giftcardFormDiv.appendChild(div);
+    giftcardDiv.appendChild(div);
 };
 addGiftcardForm.onsubmit = function (event) {
     event.preventDefault();
@@ -156,6 +217,7 @@ addGiftcardForm.onsubmit = function (event) {
     });
     aj.setAfter(function (data) {
         var arr = JSON.parse(data);
+        console.log(arr);
         var message = arr[0].toLowerCase();
         if (message.indexOf("success") != -1) {
             addGiftCardFun(arr[1]);
@@ -189,5 +251,30 @@ addGiftcardForm.onsubmit = function (event) {
             option.innerText = bank;
             bankSelect.appendChild(option);
         });
+    });
+})();
+//get all cryptos 
+(function () {
+})();
+//get all giftcards 
+(function () {
+})();
+//get admin bank details 
+(function () {
+    Ajax.fetchPage("php/admin_data.php?which=bank", function (data) {
+        var arr = JSON.parse(data);
+        var message = arr[0];
+        if (message.toLowerCase().indexOf('success') != -1) {
+            var details = arr[1];
+            var option = document.createElement("option");
+            option.value = details[0];
+            option.innerText = details[0];
+            option.selected = true;
+            option.hidden = true;
+            option.disabled = true;
+            bankSelect.appendChild(option);
+            accountNumber.value = details[1];
+            accountName.value = details[2];
+        }
     });
 })();

@@ -7,13 +7,15 @@ const cryptoErrorDiv = addCryptoForm.querySelector("div#errorDiv") as HTMLDivEle
 const addBankForm = document.querySelector("form#addBankForm") as HTMLFormElement;
 const addBankSubmitBtn = addBankForm.querySelector("button") as HTMLButtonElement;
 const bankSelect = addBankForm.querySelector("select#bankname") as HTMLSelectElement;
+const accountName = addBankForm.querySelector("input#accountname") as HTMLInputElement;
+const accountNumber = addBankForm.querySelector("input#accountnumber") as HTMLInputElement;
 const bankErrorDiv = addBankForm.querySelector('div#errorDiv') as HTMLDivElement;
 const bankSuccessDiv = addBankForm.querySelector("div#successDiv") as HTMLDivElement;
 const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>
                 Please wait... `;
 const all_cryptos = document.querySelectorAll("div.each-crypto input") as NodeListOf<HTMLInputElement>;
 
-const gifcardDiv = document.querySelector("div#giftcard_div") as HTMLDivElement;
+const giftcardDiv = document.querySelector("div#giftcard_div") as HTMLDivElement;
 const addGiftcard = document.querySelector("div#add_giftcard") as HTMLDivElement;
 const giftcardFormDiv = document.querySelector("div#giftcardFormDiv") as HTMLDivElement;
 const addGiftcardForm = document.querySelector("form#add_new_giftcard_form") as HTMLFormElement;
@@ -122,10 +124,60 @@ addGiftcard.onclick = event => {
     giftcardFormDiv.classList.add("d-block");
     addGiftcard.classList.add("d-none");
 }
+const showFormFunction = (parent: HTMLDivElement) => {
+    const form = parent.childNodes[1] as HTMLFormElement;
+    form.classList.remove("d-none");
+    form.classList.add("d-block");
+}
+const submitSubGiftCard = (form: HTMLFormElement, subCatDiv:HTMLDivElement) => {
+    console.log("submitting...", form);
+    if (subCatDiv.innerHTML === "") {
+        const span = document.createElement("span") as HTMLSpanElement
+        span.className = "sub_cat";
+        span.innerText = "Sub-category";
+        subCatDiv.appendChild(span);
+    }
+    const button = form.querySelector("button") as HTMLButtonElement;
+    const errorDiv = form.querySelector("div#errorDiv") as HTMLDivElement;
+    const aj = new Ajax(form);
+    aj.setBefore(() => {
+        button.disabled = true;
+        button.innerHTML = spinner;
+    });
+    aj.setAfter((data: string) => {
+        const arr = JSON.parse(data);
+        console.log(arr)
+        const message = arr[0].toLowerCase();
+        if (message.indexOf("success") != -1) {
+            const content: any[] = arr[1];
+            const div = document.createElement("div") as HTMLDivElement
+            div.className = "inline-block mt-2";
+            div.innerHTML = `<span class="d-inline-block crypto-name">${content[0]}</span>
+                                <span class="form-switch mx-3">
+                                    <input class="form-check-input" type="checkbox" role="switch" checked>
+                                </span>
+                                <span class="material-icons text-primary three-dots">more_vert</span>`;
+            subCatDiv.appendChild(div);
+            form.reset();
+            form.classList.remove("d-block");
+            form.classList.add("d-none");
+            errorDiv.classList.remove("d-block");
+            errorDiv.classList.add("d-none");
+        } else {
+            errorDiv.classList.remove("d-none");
+            errorDiv.classList.add("d-block");
+            errorDiv.innerText = data;
+            errorDiv.focus();
+        }
+        button.disabled = false;
+        button.innerHTML = "Add Sub-category";
+    })
+    aj.start();
+}
 const addGiftCardFun = (content: any[]) => {
     const isChecked: boolean = content[2] === 1 ? true : false;
     let which = "category";
-    const parent = content[1] === "category" ? "0" : content[3]
+    const parent = content[3]
     const div = document.createElement("div") as HTMLDivElement;
     div.className = "cap";
     const each = document.createElement("div") as HTMLDivElement;
@@ -137,9 +189,14 @@ const addGiftCardFun = (content: any[]) => {
                             </span>
                             <span class="material-icons text-primary three-dots">more_vert</span>
                         </div>`;
+    const subCatDiv = document.createElement("div") as HTMLDivElement;
+    subCatDiv.id = "sub_cat_div";
     const addDiv = document.createElement("div") as HTMLDivElement;
     addDiv.className = "add-giftcard mt-2";
     addDiv.title = "add sub category"
+    addDiv.onclick = event => {
+        showFormFunction(addDiv.parentElement?.parentElement as HTMLDivElement);
+    }
     addDiv.innerHTML = `<span class="material-icons add-crypto">add</span>
                             <span>Add Subcategory</span>`;
     const form = document.createElement("form") as HTMLFormElement;
@@ -149,18 +206,26 @@ const addGiftCardFun = (content: any[]) => {
     }
     form.action = "php/add_giftcard.php";
     form.method = "post";
+    form.className = "d-none"
     form.id = "add_new_sub_form";
-    form.innerHTML = `<div class="mt-1 my-3">
+    form.onsubmit = event => {
+        event.preventDefault();
+        submitSubGiftCard(form, subCatDiv);
+    }
+    form.innerHTML = `
+                <div tabindex="-10" class="alert alert-danger mx-0 d-none text-center" id="errorDiv" role="alert"></div>
+                <div class="mt-1 my-3">
                                 <label for="add_sub" class="form-label settings">Add sub-category (Amazon Giftcards)</label>
-                                <input name="sub_cat_name" type="text" class="form-control rad8" id="add_sub" placeholder="e.g Amazon Giftcard" required>
+                                <input name="giftcard_name" type="text" class="form-control rad8" id="add_sub" placeholder="e.g Amazon Giftcard" required>
                             </div>
-                            <input type="hidden" name="which" value="${content[1]}">
+                            <input type="hidden" name="which" value="sub_category">
                             <input type="hidden" name="parent" value="${parent}"><!-- parent_id should replaced  -->
                             <button type="submit" class="payment text-center mx-auto">Add Sub-category</button>`;
+    each.appendChild(subCatDiv);
     each.appendChild(addDiv);
     div.appendChild(each);
     div.appendChild(form);
-    giftcardFormDiv.appendChild(div);
+    giftcardDiv.appendChild(div);
 }
 addGiftcardForm.onsubmit = event => {
     event.preventDefault();
@@ -171,6 +236,7 @@ addGiftcardForm.onsubmit = event => {
     }); 
     aj.setAfter((data: string) => {
         const arr = JSON.parse(data);
+        console.log(arr)
         const message = arr[0].toLowerCase();
         if (message.indexOf("success") != -1) {
             addGiftCardFun(arr[1]);
@@ -207,3 +273,30 @@ addGiftcardForm.onsubmit = event => {
     })
 }
 )();
+//get all cryptos 
+(function () {
+    
+})();
+//get all giftcards 
+(function () {
+    
+})();
+//get admin bank details 
+(function () {
+    Ajax.fetchPage("php/admin_data.php?which=bank", (data: string) => {
+        const arr = JSON.parse(data);
+        const message:string = arr[0];
+        if (message.toLowerCase().indexOf('success') != -1) {
+            const details: string[] = arr[1];
+            const option = document.createElement("option");
+            option.value = details[0];
+            option.innerText = details[0];
+            option.selected = true;
+            option.hidden = true;
+            option.disabled = true;
+            bankSelect.appendChild(option);
+            accountNumber.value = details[1];
+            accountName.value = details[2];
+        }
+    })
+})();
