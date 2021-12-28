@@ -71,7 +71,7 @@
     <div class="col-6 col-lg-4">
         <div class="no-margin pad">
             <h3>Giftcards</h3>
-            <div class="mx-0 mt-2" id="giftcard-div">
+            <div class="mx-0 mt-2" id="giftcard_div">
                 <div class="cap">
                     <div class="each-giftcard">
                         <div class="inline-block">
@@ -102,28 +102,32 @@
                         </div>
                     </div>
                     <div class="mt-3" id="add_new_giftcard_div">
-                        <form action="" method="post" id="add_new_giftcard_form">
+                        <form action="" method="post" id="add_new_sub_form">
                             <div class="mt-1 my-3">
                                 <label for="add_sub" class="form-label settings">Add sub-category (Amazon Giftcards)</label>
                                 <input name="sub_cat_name" type="text" class="form-control rad8" id="add_sub" placeholder="e.g Amazon Giftcard" required>
                             </div>
-                            <button type="submit" class="payment text-center mx-auto">Add account details</button>
+                            <input type="hidden" name="which" value="sub_category">
+                            <input type="hidden" name="parent" value="parent_id"><!-- parent_id should replaced  -->
+                            <button type="submit" class="payment text-center mx-auto">Add Sub-category</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="add-giftcard mt-2" title="add new giftcard">
+        <div class="add-giftcard mt-2" title="add new giftcard" id="add_giftcard">
             <span class="material-icons add-crypto">add</span>
             <span>Add new giftcard</span>
         </div>
-        <div class="mt-3 pad" id="add_new_giftcard_div">
-            <form action="" method="post" id="add_new_giftcard_form">
+        <div class="pad d-none" id="giftcardFormDiv">
+            <form action="php/add_giftcard.php" method="POST" id="add_new_giftcard_form">
+                <div tabindex="-1" class="alert alert-danger mx-0 d-none text-center" id="errorDiv" role="alert"></div>
                 <div class="mt-1 my-3">
                     <label for="add_giftcard" class="form-label settings">Giftcard name</label>
                     <input name="giftcard_name" type="text" class="form-control rad8" id="add_giftcard" placeholder="e.g Amazon Giftcard" required>
                 </div>
-                <button type="submit" class="payment text-center mx-auto">Add account details</button>
+                <input type="hidden" name="which" value="category">
+                <button type="submit" class="payment text-center mx-auto">Add New Giftcard</button>
             </form>
         </div>
     </div>
@@ -132,6 +136,7 @@
         <p class="text-center mt-2 fw-bold fs-4 mb-1">Account Details</p>
         <form action="php/add_bank.php" method="POST" id="addBankForm">
             <div tabindex="-1" class="alert alert-danger d-none text-center" id="errorDiv" role="alert"></div>
+            <div tabindex="-2" class="alert alert-success d-none text-center" id="successDiv" role="alert"></div>
             <div class="mt-1 my-3">
                 <label for="bankname" class="form-label settings">Bank name</label>
                 <select name="bank_name" class="form-select rad8" id="bankname" required>

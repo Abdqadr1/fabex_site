@@ -12,13 +12,13 @@ $network = mysqli_escape_string($conn, $_POST["network"]);
 $memo = mysqli_escape_string($conn, $_POST["memo"]);
 $address = mysqli_escape_string($conn, $_POST["address"]);
 $name = ucwords(testInput($name));
-$acronym = testInput($acronym);
+$acronym = ucwords(testInput($acronym));
 $network = testInput($network);
 $memo = testInput($memo);
 $address = testInput($address);
 $arr = array();
-$sql = "INSERT INTO cryptos (name, acronym, network, address, memo) VALUES 
-('$name','$acronym','$network', '$address', '$memo')";
+$sql = "INSERT INTO cryptos (name, acronym, network, address, memo, status) VALUES 
+('$name','$acronym','$network', '$address', '$memo', 1)";
 $result = $conn->query($sql);
 if ($result === true) {
     array_push($arr, "Success: product inserted!");
@@ -27,4 +27,5 @@ if ($result === true) {
     echo json_encode($arr);
 } else {
     array_push($arr, "Something went wrong " . $conn->error);
+    echo json_encode($arr);
 }
