@@ -17,6 +17,14 @@ $network = testInput($network);
 $memo = testInput($memo);
 $address = testInput($address);
 $arr = array();
+
+$q = "SELECT * FROM cryptos WHERE address='$address'";
+$res = $conn->query($q);
+if ($res == true && $res->num_rows > 0) {
+    array_push($arr, "Wallet address already exists");
+    exit(json_encode($arr));
+}
+
 $sql = "INSERT INTO cryptos (name, acronym, network, address, memo, status) VALUES 
 ('$name','$acronym','$network', '$address', '$memo', 1)";
 $result = $conn->query($sql);

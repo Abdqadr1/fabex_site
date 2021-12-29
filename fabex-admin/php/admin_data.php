@@ -10,7 +10,7 @@ function getBank(mysqli &$conn)
 {
     $sql = "SELECT * FROM admin_banks WHERE id=1";
     $result = $conn->query($sql);
-    if ($result->num_rows) {
+    if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $arr = array($row["bank_name"], $row["account_number"], $row["account_name"]);
         echo json_encode(array("Success", $arr));
@@ -23,7 +23,7 @@ function getCryptos(mysqli &$conn)
 {
     $sql = "SELECT id, name, acronym, address, status FROM cryptos";
     $result = $conn->query($sql);
-    if ($result->num_rows) {
+    if ($result->num_rows > 0) {
         $array = array();
         while ($row = $result->fetch_assoc()) {
             $isOn = $row['status'] == 1 ? true : false;
@@ -36,9 +36,43 @@ function getCryptos(mysqli &$conn)
     }
 }
 
+function getGiftcards(mysqli &$conn)
+{
+    $cat = array();
+    $sub_cat = array();
+    $sql = "SELECT id, name, status FROM giftcards WHERE type='category'";
+    $result = $conn->query($sql);
+    if ($result == true && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $parent_id = $row['id'];
+            $name = $row["name"];
+            $status = $row['status'];
+            $arr = array($parent_id, $name, "category", $status);
+            array_push($cat, $arr);
+            $query = "SELECT id, name, status FROM giftcards WHERE parent='$parent_id'";
+            $res = $conn->query($query);
+            if ($res == true && $res->num_rows > 0) {
+                while ($roww = $res->fetch_assoc()) {
+                    $id = $roww['id'];
+                    $childName = $roww["name"];
+                    $stat = $roww['status'];
+                    array_push($sub_cat, array($id, $childName, "sub_category", $stat, $parent_id));
+                }
+            } else {
+                array_push($sub_cat, array());
+            }
+        }
+        echo json_encode(array($cat, $sub_cat));
+    } else {
+        exit("No giftcard.");
+    }
+}
+
 switch ($which) {
     case "bank":
         return getBank($conn);
     case "crypto":
         return getCryptos($conn);
+    case "giftcard":
+        return getGiftcards($conn);
 }

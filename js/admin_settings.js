@@ -12,19 +12,12 @@ var accountNumber = addBankForm.querySelector("input#accountnumber");
 var bankErrorDiv = addBankForm.querySelector('div#errorDiv');
 var bankSuccessDiv = addBankForm.querySelector("div#successDiv");
 var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>\n                Please wait... ";
-var all_cryptos = document.querySelectorAll("div.each-crypto input");
 var giftcardDiv = document.querySelector("div#giftcard_div");
 var addGiftcard = document.querySelector("div#add_giftcard");
 var giftcardFormDiv = document.querySelector("div#giftcardFormDiv");
 var addGiftcardForm = document.querySelector("form#add_new_giftcard_form");
 var addGiftcardSubmitBtn = addGiftcardForm.querySelector("button");
 var addGiftcardErrorDiv = addGiftcardForm.querySelector("div#errorDiv");
-//TODO: write function when toggle product
-all_cryptos.forEach(function (input) {
-    input.onchange = function (event) {
-        console.log(input);
-    };
-});
 // show crypto form
 add_crypto.onclick = function (event) {
     addCryptoForm.classList.remove("d-none");
@@ -45,7 +38,7 @@ var addCrypto = function (content) {
     switchInput.className = "form-check-input";
     switchInput.checked = content[content.length - 1];
     switchInput.id = content[0];
-    switchInput.onchange = function (event) { return toggleCrypto(event); };
+    switchInput.onchange = function (event) { return toggleProduct(event, "crypto"); };
     checkSpan.className = "form-switch mx-3";
     checkSpan.appendChild(switchInput);
     nameSpan.className = "d-inline-block crypto-name";
@@ -55,21 +48,6 @@ var addCrypto = function (content) {
     div.appendChild(checkSpan);
     div.appendChild(dotSpan);
     cryptoDiv.appendChild(div);
-};
-// toggle crypto
-var toggleCrypto = function (event) {
-    event.preventDefault();
-    var el = event.target;
-    var status = el.checked ? 1 : 0;
-    Ajax.fetchPage("php/toggle.php?which=crypto&status=" + status + "&id=" + el.id, function (data) {
-        var message = data.toLowerCase();
-        if (message.indexOf('success') != -1) {
-            console.log(message);
-        }
-        else {
-            console.log(message);
-        }
-    });
 };
 // crypto submit
 addCryptoForm.onsubmit = function (event) {
@@ -82,7 +60,6 @@ addCryptoForm.onsubmit = function (event) {
     });
     aj.setAfter(function (responseText) {
         var arr = JSON.parse(responseText);
-        console.log(arr);
         var message = arr[0];
         if (message.toLowerCase().indexOf("success") != -1) {
             addCrypto(arr[1]);
@@ -96,7 +73,7 @@ addCryptoForm.onsubmit = function (event) {
         else {
             cryptoErrorDiv.classList.remove("d-none");
             cryptoErrorDiv.classList.add("d-block");
-            cryptoErrorDiv.textContent = responseText;
+            cryptoErrorDiv.textContent = message;
             cryptoErrorDiv.focus();
         }
         addCryptoSubmitBtn.disabled = false;
@@ -147,7 +124,6 @@ var showFormFunction = function (parent) {
     form.classList.add("d-block");
 };
 var submitSubGiftCard = function (form, subCatDiv) {
-    console.log("submitting...", form);
     if (subCatDiv.innerHTML === "") {
         var span = document.createElement("span");
         span.className = "sub_cat";
@@ -163,13 +139,14 @@ var submitSubGiftCard = function (form, subCatDiv) {
     });
     aj.setAfter(function (data) {
         var arr = JSON.parse(data);
-        console.log(arr);
         var message = arr[0].toLowerCase();
         if (message.indexOf("success") != -1) {
             var content = arr[1];
             var div = document.createElement("div");
             div.className = "inline-block mt-2";
-            div.innerHTML = "<span class=\"d-inline-block crypto-name\">" + content[0] + "</span>\n                                <span class=\"form-switch mx-3\">\n                                    <input class=\"form-check-input\" type=\"checkbox\" role=\"switch\" checked>\n                                </span>\n                                <span class=\"material-icons text-primary three-dots\">more_vert</span>";
+            div.innerHTML = "<span class=\"d-inline-block crypto-name\">" + content[1] + "</span>\n                                <span class=\"form-switch mx-3\">\n                                    <input id='" + content[0] + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\" checked>\n                                </span>\n                                <span class=\"material-icons text-primary three-dots\">more_vert</span>";
+            var input = div.querySelector("input");
+            input.onchange = function (event) { return toggleProduct(event, 'giftcard'); };
             subCatDiv.appendChild(div);
             form.reset();
             form.classList.remove("d-block");
@@ -188,17 +165,37 @@ var submitSubGiftCard = function (form, subCatDiv) {
     });
     aj.start();
 };
-var addGiftCardFun = function (content) {
-    var isChecked = content[2] === 1 ? true : false;
-    var which = "category";
-    var parent = content[3];
+var addGiftCardFun = function (content, children) {
+    var isChecked = content[3] == 1 ? true : false;
+    var which = content[2];
+    var id = content[0];
+    var parent = (which == "category") ? id : "";
     var div = document.createElement("div");
     div.className = "cap";
     var each = document.createElement("div");
     each.className = "each-giftcard";
-    each.innerHTML = "<div class=\"inline-block\">\n                            <span class=\"d-inline-block crypto-name\">" + content[0] + "</span>\n                            <span class=\"form-switch mx-3\">\n                                <input class=\"form-check-input\" type=\"checkbox\" role=\"switch\" onchange=\"\" checked=\"" + isChecked + "\">\n                            </span>\n                            <span class=\"material-icons text-primary three-dots\">more_vert</span>\n                        </div>";
+    each.innerHTML = "<div class=\"inline-block\">\n                            <span class=\"d-inline-block crypto-name\">" + content[1] + "</span>\n                            <span class=\"form-switch mx-3\">\n                                <input id='" + id + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\">\n                            </span>\n                            <span class=\"material-icons text-primary three-dots\">more_vert</span>\n                        </div>";
+    var input = each.querySelector("input");
+    input.checked = isChecked;
+    input.onchange = function (event) { return toggleProduct(event, 'giftcard'); };
     var subCatDiv = document.createElement("div");
     subCatDiv.id = "sub_cat_div";
+    if (children.length > 0) {
+        var span = document.createElement("span");
+        span.className = "sub_cat";
+        span.innerText = "Sub-category";
+        subCatDiv.appendChild(span);
+        children.forEach(function (cat) {
+            var checked = cat[3] == 1 ? true : false;
+            var div = document.createElement("div");
+            div.className = "inline-block mt-2";
+            div.innerHTML = "<span class=\"d-inline-block crypto-name\">" + cat[1] + "</span>\n                                <span class=\"form-switch mx-3\">\n                                    <input id='" + cat[0] + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\">\n                                </span>\n                                <span class=\"material-icons text-primary three-dots\">more_vert</span>";
+            var input = div.querySelector("input");
+            input.checked = checked;
+            input.onchange = function (event) { return toggleProduct(event, 'giftcard'); };
+            subCatDiv.appendChild(div);
+        });
+    }
     var addDiv = document.createElement("div");
     addDiv.className = "add-giftcard mt-2";
     addDiv.title = "add sub category";
@@ -208,10 +205,6 @@ var addGiftCardFun = function (content) {
     };
     addDiv.innerHTML = "<span class=\"material-icons add-crypto\">add</span>\n                            <span>Add Subcategory</span>";
     var form = document.createElement("form");
-    var children = content[4];
-    if (children.length > 0) {
-        console.log('has children...');
-    }
     form.action = "php/add_giftcard.php";
     form.method = "post";
     form.className = "d-none";
@@ -236,10 +229,9 @@ addGiftcardForm.onsubmit = function (event) {
     });
     aj.setAfter(function (data) {
         var arr = JSON.parse(data);
-        console.log(arr);
         var message = arr[0].toLowerCase();
         if (message.indexOf("success") != -1) {
-            addGiftCardFun(arr[1]);
+            addGiftCardFun(arr[1], []);
             addGiftcardForm.reset();
             addGiftcardErrorDiv.classList.remove("d-block");
             addGiftcardErrorDiv.classList.add("d-none");
@@ -251,13 +243,29 @@ addGiftcardForm.onsubmit = function (event) {
         else {
             addGiftcardErrorDiv.classList.remove("d-none");
             addGiftcardErrorDiv.classList.add("d-block");
-            addGiftcardErrorDiv.innerText = data;
+            addGiftcardErrorDiv.innerText = message;
             addGiftcardErrorDiv.focus();
         }
         addGiftcardSubmitBtn.disabled = false;
         addGiftcardSubmitBtn.innerHTML = "Add New Giftcard";
     });
     aj.start();
+};
+// toggle product
+var toggleProduct = function (event, which) {
+    event.preventDefault();
+    var el = event.target;
+    var status = el.checked ? 1 : 0;
+    Ajax.fetchPage("php/toggle.php?which=" + which + "&status=" + status + "&id=" + el.id, function (data) {
+        var message = data.toLowerCase();
+        if (message.indexOf('success') != -1) {
+            console.log(message);
+        }
+        else {
+            console.log(message);
+            el.checked = !el.checked;
+        }
+    });
 };
 // get all banks
 (function () {
@@ -288,6 +296,29 @@ addGiftcardForm.onsubmit = function (event) {
 })();
 //get all giftcards 
 (function () {
+    Ajax.fetchPage("php/admin_data.php?which=giftcard", function (data) {
+        var arr = JSON.parse(data);
+        var cat = arr[0];
+        var subCat = arr[1];
+        if (data.toLowerCase().indexOf('No giftcard.') != -1) {
+            // console.error(data);
+        }
+        else {
+            if (cat.length > 0) {
+                cat.forEach(function (category, index) {
+                    var id = category[0];
+                    var children = [];
+                    subCat.forEach(function (subCategory, i) {
+                        var parentId = subCategory[4];
+                        if (parentId == id) {
+                            children.push(subCategory);
+                        }
+                    });
+                    addGiftCardFun(category, children);
+                });
+            }
+        }
+    });
 })();
 //get admin bank details 
 (function () {

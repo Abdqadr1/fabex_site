@@ -29,4 +29,17 @@ if ($which == "crypto") {
         exit("does not exist.");
     }
 } else {
+    $sql = "SELECT id FROM giftcards WHERE id='$id'";
+    $res = $conn->query($sql);
+    if ($res == true && $res->num_rows > 0) {
+        $query = "UPDATE giftcards SET status='$status' WHERE id='$id'";
+        $result = $conn->query($query);
+        if ($result === true) {
+            echo "success";
+        } else {
+            exit("something went wrong ");
+        }
+    } else {
+        exit("does not exist.");
+    }
 }

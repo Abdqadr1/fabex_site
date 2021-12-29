@@ -18,9 +18,9 @@
                 <span>Add new crypto</span>
             </div>
             <form class="d-none" action="php/add_crypto.php" method="POST" id="add_crypto_form">
-                <div tabindex="-1" class="alert alert-danger mx-0 d-none text-center" id="errorDiv" role="alert"></div>
+                <div tabindex="-1" class="my-2 alert alert-danger mx-0 d-none text-center" id="errorDiv" role="alert"></div>
                 <!-- coin name -->
-                <div class="mt-3">
+                <div class="mt-2">
                     <label for="coin_name" class="form-label">Coin name</label>
                     <input id="coin_name" name="coin_name" type="text" class="form-control form-control-lg rad8" placeholder="Enter coin name" required>
                 </div>
@@ -106,8 +106,8 @@
         </div>
         <div class="pad d-none" id="giftcardFormDiv">
             <form action="php/add_giftcard.php" method="POST" id="add_new_giftcard_form">
-                <div tabindex="-1" class="alert alert-danger mx-0 d-none text-center" id="errorDiv" role="alert"></div>
-                <div class="mt-1 my-3">
+                <div tabindex="-1" class="alert alert-danger mt-2 mx-0 d-none text-center" id="errorDiv" role="alert"></div>
+                <div class="mt-2">
                     <label for="add_giftcard" class="form-label settings">Giftcard name</label>
                     <input name="giftcard_name" type="text" class="form-control rad8" id="add_giftcard" placeholder="e.g Amazon Giftcard" required>
                 </div>

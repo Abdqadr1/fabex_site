@@ -12,13 +12,19 @@ $which = mysqli_escape_string($conn, $_POST["which"]);
 $giftcard_name = testInput($giftcard_name);
 $which = testInput($which);
 $arr = array();
+$q = "SELECT * FROM giftcards WHERE name='$giftcard_name'";
+$res = $conn->query($q);
+if ($res == true && $res->num_rows > 0) {
+    array_push($arr, "Giftcard already exists");
+    exit(json_encode($arr));
+}
 if ($which === "category") {
     $query = "INSERT INTO giftcards (name, type, status)  VALUES ('$giftcard_name','$which',1)";
     $result = $conn->query($query);
     if ($result === true) {
         $id = $conn->insert_id;
         array_push($arr, "Success: product inserted!");
-        $data = array($giftcard_name, $which, 1, $id, array());
+        $data = array($id, $giftcard_name, $which, 1,  array());
         array_push($arr, $data);
         echo json_encode($arr);
     } else {
@@ -34,8 +40,9 @@ if ($which === "category") {
     $query = "INSERT INTO giftcards (name, type, parent, status)  VALUES ('$giftcard_name','$which', '$parent', 1)";
     $result = $conn->query($query);
     if ($result === true) {
+        $id = $conn->insert_id;
         array_push($arr, "Success: product inserted!");
-        $data = array($giftcard_name, $which, 1, $parent, "");
+        $data = array($id, $giftcard_name, $which, 1, $parent, "");
         array_push($arr, $data);
         echo json_encode($arr);
     } else {

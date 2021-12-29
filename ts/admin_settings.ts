@@ -13,7 +13,6 @@ const bankErrorDiv = addBankForm.querySelector('div#errorDiv') as HTMLDivElement
 const bankSuccessDiv = addBankForm.querySelector("div#successDiv") as HTMLDivElement;
 const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>
                 Please wait... `;
-const all_cryptos = document.querySelectorAll("div.each-crypto input") as NodeListOf<HTMLInputElement>;
 
 const giftcardDiv = document.querySelector("div#giftcard_div") as HTMLDivElement;
 const addGiftcard = document.querySelector("div#add_giftcard") as HTMLDivElement;
@@ -21,12 +20,7 @@ const giftcardFormDiv = document.querySelector("div#giftcardFormDiv") as HTMLDiv
 const addGiftcardForm = document.querySelector("form#add_new_giftcard_form") as HTMLFormElement;
 const addGiftcardSubmitBtn = addGiftcardForm.querySelector("button") as HTMLButtonElement;
 const addGiftcardErrorDiv = addGiftcardForm.querySelector("div#errorDiv") as HTMLDivElement;
-//TODO: write function when toggle product
-all_cryptos.forEach(input => {
-    input.onchange = event => {
-        console.log(input);
-    }
-})
+
 
 // show crypto form
 add_crypto.onclick = event => {
@@ -48,7 +42,7 @@ const addCrypto = (content:any[]) => {
     switchInput.className = "form-check-input";
     switchInput.checked = content[content.length - 1];
     switchInput.id = content[0];
-    switchInput.onchange = event => toggleCrypto(event);
+    switchInput.onchange = event => toggleProduct(event, "crypto");
     checkSpan.className = "form-switch mx-3";
     checkSpan.appendChild(switchInput);
     nameSpan.className = "d-inline-block crypto-name";
@@ -59,20 +53,7 @@ const addCrypto = (content:any[]) => {
     div.appendChild(dotSpan);
     cryptoDiv.appendChild(div);
 }
-// toggle crypto
-const toggleCrypto = (event: Event) => {
-    event.preventDefault();
-    const el = event.target as HTMLInputElement;
-    const status = el.checked ? 1 : 0;
-    Ajax.fetchPage(`php/toggle.php?which=crypto&status=${status}&id=${el.id}`, (data: string) => {
-        const message:string = data.toLowerCase();
-        if (message.indexOf('success') != -1) {
-            console.log(message);
-        } else {
-            console.log(message);
-        }
-    })
-}
+
 // crypto submit
 addCryptoForm.onsubmit = event => {
     event.preventDefault();
@@ -84,7 +65,6 @@ addCryptoForm.onsubmit = event => {
     })
     aj.setAfter((responseText:string) => {
         const arr = JSON.parse(responseText);
-        console.log(arr);
         const message = arr[0];
         if (message.toLowerCase().indexOf("success") != -1) {
             addCrypto(arr[1]);
@@ -97,7 +77,7 @@ addCryptoForm.onsubmit = event => {
         } else {
             cryptoErrorDiv.classList.remove("d-none");
             cryptoErrorDiv.classList.add("d-block");
-            cryptoErrorDiv.textContent = responseText;
+            cryptoErrorDiv.textContent = message;
             cryptoErrorDiv.focus()
         }
         addCryptoSubmitBtn.disabled = false;
@@ -148,7 +128,6 @@ const showFormFunction = (parent: HTMLDivElement) => {
     form.classList.add("d-block");
 }
 const submitSubGiftCard = (form: HTMLFormElement, subCatDiv:HTMLDivElement) => {
-    console.log("submitting...", form);
     if (subCatDiv.innerHTML === "") {
         const span = document.createElement("span") as HTMLSpanElement
         span.className = "sub_cat";
@@ -164,17 +143,18 @@ const submitSubGiftCard = (form: HTMLFormElement, subCatDiv:HTMLDivElement) => {
     });
     aj.setAfter((data: string) => {
         const arr = JSON.parse(data);
-        console.log(arr)
         const message = arr[0].toLowerCase();
         if (message.indexOf("success") != -1) {
             const content: any[] = arr[1];
             const div = document.createElement("div") as HTMLDivElement
             div.className = "inline-block mt-2";
-            div.innerHTML = `<span class="d-inline-block crypto-name">${content[0]}</span>
+            div.innerHTML = `<span class="d-inline-block crypto-name">${content[1]}</span>
                                 <span class="form-switch mx-3">
-                                    <input class="form-check-input" type="checkbox" role="switch" checked>
+                                    <input id='${content[0]}' class="form-check-input" type="checkbox" role="switch" checked>
                                 </span>
                                 <span class="material-icons text-primary three-dots">more_vert</span>`;
+            const input = div.querySelector("input") as HTMLInputElement;
+            input.onchange = event => toggleProduct(event, 'giftcard');
             subCatDiv.appendChild(div);
             form.reset();
             form.classList.remove("d-block");
@@ -192,23 +172,47 @@ const submitSubGiftCard = (form: HTMLFormElement, subCatDiv:HTMLDivElement) => {
     })
     aj.start();
 }
-const addGiftCardFun = (content: any[]) => {
-    const isChecked: boolean = content[2] === 1 ? true : false;
-    let which = "category";
-    const parent = content[3]
+const addGiftCardFun = (content: any[], children: any[]) => {
+    const isChecked: boolean = content[3] == 1 ? true : false;
+    let which = content[2];
+    const id = content[0];
+    const parent = (which == "category") ? id : "";
     const div = document.createElement("div") as HTMLDivElement;
     div.className = "cap";
     const each = document.createElement("div") as HTMLDivElement;
     each.className = "each-giftcard";
     each.innerHTML = `<div class="inline-block">
-                            <span class="d-inline-block crypto-name">${content[0]}</span>
+                            <span class="d-inline-block crypto-name">${content[1]}</span>
                             <span class="form-switch mx-3">
-                                <input class="form-check-input" type="checkbox" role="switch" onchange="" checked="${isChecked}">
+                                <input id='${id}' class="form-check-input" type="checkbox" role="switch">
                             </span>
                             <span class="material-icons text-primary three-dots">more_vert</span>
                         </div>`;
+    const input = each.querySelector("input") as HTMLInputElement;
+    input.checked = isChecked;
+    input.onchange = event => toggleProduct(event, 'giftcard');
     const subCatDiv = document.createElement("div") as HTMLDivElement;
     subCatDiv.id = "sub_cat_div";
+    if (children.length > 0) {
+        const span = document.createElement("span") as HTMLSpanElement
+        span.className = "sub_cat";
+        span.innerText = "Sub-category";
+        subCatDiv.appendChild(span);
+        children.forEach((cat: any[]) => {
+            const checked = cat[3] == 1 ? true : false;
+            const div = document.createElement("div") as HTMLDivElement
+            div.className = "inline-block mt-2";
+            div.innerHTML = `<span class="d-inline-block crypto-name">${cat[1]}</span>
+                                <span class="form-switch mx-3">
+                                    <input id='${cat[0]}' class="form-check-input" type="checkbox" role="switch">
+                                </span>
+                                <span class="material-icons text-primary three-dots">more_vert</span>`;
+            const input = div.querySelector("input") as HTMLInputElement;
+            input.checked = checked;
+            input.onchange = event => toggleProduct(event, 'giftcard');
+            subCatDiv.appendChild(div);
+        })
+    }
     const addDiv = document.createElement("div") as HTMLDivElement;
     addDiv.className = "add-giftcard mt-2";
     addDiv.title = "add sub category"
@@ -218,10 +222,6 @@ const addGiftCardFun = (content: any[]) => {
     addDiv.innerHTML = `<span class="material-icons add-crypto">add</span>
                             <span>Add Subcategory</span>`;
     const form = document.createElement("form") as HTMLFormElement;
-    const children:[] = content[4];
-    if (children.length > 0) {
-        console.log('has children...')
-    }
     form.action = "php/add_giftcard.php";
     form.method = "post";
     form.className = "d-none"
@@ -254,10 +254,9 @@ addGiftcardForm.onsubmit = event => {
     }); 
     aj.setAfter((data: string) => {
         const arr = JSON.parse(data);
-        console.log(arr)
         const message = arr[0].toLowerCase();
         if (message.indexOf("success") != -1) {
-            addGiftCardFun(arr[1]);
+            addGiftCardFun(arr[1],[]);
             addGiftcardForm.reset();
             addGiftcardErrorDiv.classList.remove("d-block");
             addGiftcardErrorDiv.classList.add("d-none");
@@ -268,13 +267,28 @@ addGiftcardForm.onsubmit = event => {
         } else {
             addGiftcardErrorDiv.classList.remove("d-none");
             addGiftcardErrorDiv.classList.add("d-block");
-            addGiftcardErrorDiv.innerText = data;
+            addGiftcardErrorDiv.innerText = message;
             addGiftcardErrorDiv.focus();
         }
         addGiftcardSubmitBtn.disabled = false;
         addGiftcardSubmitBtn.innerHTML = "Add New Giftcard";
     }); 
     aj.start();
+}
+// toggle product
+const toggleProduct = (event: Event, which:string) => {
+    event.preventDefault();
+    const el = event.target as HTMLInputElement;
+    const status = el.checked ? 1 : 0;
+    Ajax.fetchPage(`php/toggle.php?which=${which}&status=${status}&id=${el.id}`, (data: string) => {
+        const message:string = data.toLowerCase();
+        if (message.indexOf('success') != -1) {
+            console.log(message);
+        } else {
+            console.log(message);
+            el.checked = !el.checked;
+        }
+    })
 }
 
 // get all banks
@@ -293,7 +307,7 @@ addGiftcardForm.onsubmit = event => {
 )();
 //get all cryptos 
 (function () {
-    Ajax.fetchPage("php/admin_data.php?which=crypto", (data: string) => {
+ Ajax.fetchPage("php/admin_data.php?which=crypto", (data: string) => {
         const object: {success:[][]} = JSON.parse(data);
         const keys = Object.keys(object);
         const message:string = keys[0];
@@ -303,11 +317,32 @@ addGiftcardForm.onsubmit = event => {
                 addCrypto(arr);
             })
         }
-    })
+    })   
 })();
 //get all giftcards 
 (function () {
-    
+    Ajax.fetchPage("php/admin_data.php?which=giftcard", (data: string) => {
+        const arr = JSON.parse(data);
+        const cat:[] = arr[0];
+        const subCat:[] = arr[1];
+        if (data.toLowerCase().indexOf('No giftcard.') != -1) {
+            // console.error(data);
+        } else {
+            if (cat.length > 0) {
+                cat.forEach((category: any[], index) => {
+                    const id = category[0];
+                    const children: any[] = [];
+                    subCat.forEach((subCategory: any[], i) => {
+                        const parentId = subCategory[4];
+                        if (parentId == id) {
+                            children.push(subCategory);
+                        }
+                    })
+                    addGiftCardFun(category, children);
+                })
+            }
+        }
+    })
 })();
 //get admin bank details 
 (function () {
