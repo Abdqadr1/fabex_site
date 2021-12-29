@@ -28,12 +28,13 @@ all_cryptos.forEach(input => {
     }
 })
 
-// add crypto product
+// show crypto form
 add_crypto.onclick = event => {
     addCryptoForm.classList.remove("d-none");
     addCryptoForm.classList.add("d-block");
     add_crypto.classList.add("d-none");
 }
+// add crypto function
 const addCrypto = (content:any[]) => {
     const div = document.createElement("div") as HTMLDivElement;
     const nameSpan = document.createElement("span") as HTMLSpanElement;
@@ -46,16 +47,33 @@ const addCrypto = (content:any[]) => {
     switchInput.setAttribute("role", "switch");
     switchInput.className = "form-check-input";
     switchInput.checked = content[content.length - 1];
+    switchInput.id = content[0];
+    switchInput.onchange = event => toggleCrypto(event);
     checkSpan.className = "form-switch mx-3";
     checkSpan.appendChild(switchInput);
     nameSpan.className = "d-inline-block crypto-name";
-    nameSpan.textContent = `${content[0]} (${content[1]})`;
+    nameSpan.textContent = `${content[1]} (${content[2].toUpperCase()})`;
     div.classList.add("each-crypto");
     div.appendChild(nameSpan);
     div.appendChild(checkSpan);
     div.appendChild(dotSpan);
     cryptoDiv.appendChild(div);
 }
+// toggle crypto
+const toggleCrypto = (event: Event) => {
+    event.preventDefault();
+    const el = event.target as HTMLInputElement;
+    const status = el.checked ? 1 : 0;
+    Ajax.fetchPage(`php/toggle.php?which=crypto&status=${status}&id=${el.id}`, (data: string) => {
+        const message:string = data.toLowerCase();
+        if (message.indexOf('success') != -1) {
+            console.log(message);
+        } else {
+            console.log(message);
+        }
+    })
+}
+// crypto submit
 addCryptoForm.onsubmit = event => {
     event.preventDefault();
     console.log("submitting...");
@@ -275,7 +293,17 @@ addGiftcardForm.onsubmit = event => {
 )();
 //get all cryptos 
 (function () {
-    
+    Ajax.fetchPage("php/admin_data.php?which=crypto", (data: string) => {
+        const object: {success:[][]} = JSON.parse(data);
+        const keys = Object.keys(object);
+        const message:string = keys[0];
+        if (message.toLowerCase().indexOf('success') != -1) {
+            const array: [][] = object.success;
+            array.forEach(arr => {
+                addCrypto(arr);
+            })
+        }
+    })
 })();
 //get all giftcards 
 (function () {

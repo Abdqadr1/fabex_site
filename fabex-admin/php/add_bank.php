@@ -15,10 +15,22 @@ $bank_name = testInput($bank_name);
 $account_number = testInput($account_number);
 $account_name = ucwords(testInput($account_name));
 
-$query = "INSERT INTO admin_banks (bank_name, account_number, account_name) VALUES ('$bank_name','$account_number','$account_name')";
-$result = $conn->query($query);
-if ($result === true) {
-    echo "Success: Bank Inserted..";
+$sql = "SELECT * FROM admin_banks WHERE id=1";
+$res = $conn->query($sql);
+if ($res->num_rows > 0) {
+    $query = "UPDATE admin_banks SET bank_name='$bank_name', account_number='$account_number', account_name='$account_name' WHERE id=1";
+    $result = $conn->query($query);
+    if ($result === true) {
+        echo "Success: Bank Inserted..";
+    } else {
+        exit("Something went wrong " . $conn->error);
+    }
 } else {
-    exit("Something went wrong " . $conn->error);
+    $query = "INSERT INTO admin_banks (bank_name, account_number, account_name) VALUES ('$bank_name','$account_number','$account_name')";
+    $result = $conn->query($query);
+    if ($result === true) {
+        echo "Success: Bank Inserted..";
+    } else {
+        exit("Something went wrong " . $conn->error);
+    }
 }

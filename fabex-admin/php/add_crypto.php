@@ -12,7 +12,7 @@ $network = mysqli_escape_string($conn, $_POST["network"]);
 $memo = mysqli_escape_string($conn, $_POST["memo"]);
 $address = mysqli_escape_string($conn, $_POST["address"]);
 $name = ucwords(testInput($name));
-$acronym = ucwords(testInput($acronym));
+$acronym = strtoupper(testInput($acronym));
 $network = testInput($network);
 $memo = testInput($memo);
 $address = testInput($address);
@@ -21,8 +21,9 @@ $sql = "INSERT INTO cryptos (name, acronym, network, address, memo, status) VALU
 ('$name','$acronym','$network', '$address', '$memo', 1)";
 $result = $conn->query($sql);
 if ($result === true) {
+    $id = $conn->insert_id;
     array_push($arr, "Success: product inserted!");
-    $data = array($name, $acronym, $network, $address, $memo, true);
+    $data = array($id, $name, $acronym, $address, true);
     array_push($arr, $data);
     echo json_encode($arr);
 } else {

@@ -25,12 +25,13 @@ all_cryptos.forEach(function (input) {
         console.log(input);
     };
 });
-// add crypto product
+// show crypto form
 add_crypto.onclick = function (event) {
     addCryptoForm.classList.remove("d-none");
     addCryptoForm.classList.add("d-block");
     add_crypto.classList.add("d-none");
 };
+// add crypto function
 var addCrypto = function (content) {
     var div = document.createElement("div");
     var nameSpan = document.createElement("span");
@@ -43,16 +44,34 @@ var addCrypto = function (content) {
     switchInput.setAttribute("role", "switch");
     switchInput.className = "form-check-input";
     switchInput.checked = content[content.length - 1];
+    switchInput.id = content[0];
+    switchInput.onchange = function (event) { return toggleCrypto(event); };
     checkSpan.className = "form-switch mx-3";
     checkSpan.appendChild(switchInput);
     nameSpan.className = "d-inline-block crypto-name";
-    nameSpan.textContent = content[0] + " (" + content[1] + ")";
+    nameSpan.textContent = content[1] + " (" + content[2].toUpperCase() + ")";
     div.classList.add("each-crypto");
     div.appendChild(nameSpan);
     div.appendChild(checkSpan);
     div.appendChild(dotSpan);
     cryptoDiv.appendChild(div);
 };
+// toggle crypto
+var toggleCrypto = function (event) {
+    event.preventDefault();
+    var el = event.target;
+    var status = el.checked ? 1 : 0;
+    Ajax.fetchPage("php/toggle.php?which=crypto&status=" + status + "&id=" + el.id, function (data) {
+        var message = data.toLowerCase();
+        if (message.indexOf('success') != -1) {
+            console.log(message);
+        }
+        else {
+            console.log(message);
+        }
+    });
+};
+// crypto submit
 addCryptoForm.onsubmit = function (event) {
     event.preventDefault();
     console.log("submitting...");
@@ -255,6 +274,17 @@ addGiftcardForm.onsubmit = function (event) {
 })();
 //get all cryptos 
 (function () {
+    Ajax.fetchPage("php/admin_data.php?which=crypto", function (data) {
+        var object = JSON.parse(data);
+        var keys = Object.keys(object);
+        var message = keys[0];
+        if (message.toLowerCase().indexOf('success') != -1) {
+            var array = object.success;
+            array.forEach(function (arr) {
+                addCrypto(arr);
+            });
+        }
+    });
 })();
 //get all giftcards 
 (function () {

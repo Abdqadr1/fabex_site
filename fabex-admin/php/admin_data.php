@@ -19,7 +19,26 @@ function getBank(mysqli &$conn)
     }
 };
 
+function getCryptos(mysqli &$conn)
+{
+    $sql = "SELECT id, name, acronym, address, status FROM cryptos";
+    $result = $conn->query($sql);
+    if ($result->num_rows) {
+        $array = array();
+        while ($row = $result->fetch_assoc()) {
+            $isOn = $row['status'] == 1 ? true : false;
+            $arr = array($row["id"], $row["name"], $row["acronym"], $row["address"], $isOn);
+            array_push($array, $arr);
+        }
+        echo json_encode(array("success" => $array));
+    } else {
+        exit("Something went wrong");
+    }
+}
+
 switch ($which) {
     case "bank":
         return getBank($conn);
+    case "crypto":
+        return getCryptos($conn);
 }
