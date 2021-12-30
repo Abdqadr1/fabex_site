@@ -140,3 +140,16 @@
         </form>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            <div class="modal-header py-1">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-1 text-success" id="modal_body">
+                ...
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 import { Ajax } from "./ajax.js";
+declare const bootstrap:any;
 const cryptoDiv = document.querySelector("div#crypto_div") as HTMLDivElement;
 const add_crypto = document.querySelector("div#add_crypto") as HTMLDivElement;
 const addCryptoForm = document.querySelector("form#add_crypto_form") as HTMLFormElement;
@@ -281,16 +282,30 @@ const toggleProduct = (event: Event, which:string) => {
     const el = event.target as HTMLInputElement;
     const status = el.checked ? 1 : 0;
     Ajax.fetchPage(`php/toggle.php?which=${which}&status=${status}&id=${el.id}`, (data: string) => {
-        const message:string = data.toLowerCase();
+        const message:string = data;
         if (message.indexOf('success') != -1) {
-            console.log(message);
+            showModal(message);
         } else {
-            console.log(message);
+            showModal(message, "text-danger");
             el.checked = !el.checked;
         }
+        setTimeout(() => {
+            hideModal();
+        }, 2000);
     })
 }
-
+//show and hide modal
+let myModal: any;
+const showModal = (message: string, style:string = "text-success") => {
+    const content = document.querySelector("div#modal_body") as HTMLDivElement;
+    content.innerText = message;
+    content.className = "modal-body py-1 " + style;
+    myModal = new bootstrap.Modal(document.getElementById('modal'), {
+        keyboard: false
+    });
+    myModal.show();
+}
+const hideModal = () => myModal.hide();
 // get all banks
 (function () {
     //TODO: replace url before server

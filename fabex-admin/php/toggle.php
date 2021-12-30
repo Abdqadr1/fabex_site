@@ -13,7 +13,6 @@ $status = mysqli_escape_string($conn, $_GET["status"]);
 $which = testInput($which);
 $id = testInput($id);
 $which = testInput($which);
-
 if ($which == "crypto") {
     $sql = "SELECT id FROM cryptos WHERE id='$id'";
     $res = $conn->query($sql);
@@ -21,7 +20,7 @@ if ($which == "crypto") {
         $query = "UPDATE cryptos SET status='$status' WHERE id='$id'";
         $result = $conn->query($query);
         if ($result === true) {
-            echo "success";
+            echo "Crypto status changed successfully";
         } else {
             exit("something went wrong ");
         }
@@ -35,7 +34,7 @@ if ($which == "crypto") {
         $query = "UPDATE giftcards SET status='$status' WHERE id='$id'";
         $result = $conn->query($query);
         if ($result === true) {
-            echo "success";
+            echo "Giftcard status changed successfully";
         } else {
             exit("something went wrong ");
         }

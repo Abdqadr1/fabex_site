@@ -2,88 +2,41 @@
 <h3 class="text-left mb-3">Rate management</h3>
 <!-- rates -->
 <div class="admin-rate row justify-content-between py-3">
-    <div class="col-6 bordered p-4">
+    <div class="col-6 bordered p-4 rate-column">
         <!-- each rate -->
-        <div class="row justify-content-between mt-3 px-4">
+        <!-- <div class="row justify-content-between mt-3 px-4">
             <div class="col-8 text-muted text-left">
                 <span class="d-inline-block product-name">Crypto</span>
             </div>
             <div class="col-2">
                 <input type="number" class="form-control admin-rate text-center">
             </div>
-        </div>
-        <!-- each rate -->
-        <div class="row justify-content-between mt-3 px-4">
-            <div class="col-8 text-muted text-left">
-                <span class="d-inline-block product-name">Amazon Gift card (200 above)</span>
-            </div>
-            <div class="col-2">
-                <input type="number" class="form-control admin-rate text-center">
-            </div>
-        </div>
-        <!-- each rate -->
-        <div class="row justify-content-between mt-3 px-4">
-            <div class="col-8 text-muted text-left">
-                <span class="d-inline-block product-name">Amazon Gift card (200 above)</span>
-            </div>
-            <div class="col-2">
-                <input type="number" class="form-control admin-rate text-center">
-            </div>
-        </div>
-        <!-- each rate -->
-        <div class="row justify-content-between mt-3 px-4">
-            <div class="col-8 text-muted text-left">
-                <span class="d-inline-block product-name">Crypto</span>
-            </div>
-            <div class="col-2">
-                <input type="number" class="form-control admin-rate text-center">
-            </div>
-        </div>
-        <!-- each rate -->
-        <div class="row justify-content-between mt-3 px-4">
-            <div class="col-8 text-muted text-left">
-                <span class="d-inline-block product-name">Amazon Gift card (200 above)</span>
-            </div>
-            <div class="col-2">
-                <input type="number" class="form-control admin-rate text-center">
-            </div>
-        </div>
-        <!-- each rate -->
-        <div class="row justify-content-between mt-3 px-4">
-            <div class="col-8 text-muted text-left">
-                <span class="d-inline-block product-name">Amazon Gift card (200 above)</span>
-            </div>
-            <div class="col-2">
-                <input type="number" class="form-control admin-rate text-center">
-            </div>
-        </div>
+        </div> -->
     </div>
-    <div class="col-6 p-4">
+    <div class="col-6 p-4 rate-column">
         <!-- each rate -->
-        <div class="row justify-content-between mt-3 px-4">
-            <div class="col-8 text-muted text-left">
+        <!-- <div class="row justify-content-between mt-3 px-4">
+            <div class="col-7 text-muted text-left">
                 <span class="d-inline-block product-name">Crypto</span>
             </div>
             <div class="col-2">
                 <input type="number" class="form-control admin-rate text-center">
             </div>
-        </div>
-        <!-- each rate -->
-        <div class="row justify-content-between mt-3 px-4">
-            <div class="col-8 text-muted text-left">
-                <span class="d-inline-block product-name">Amazon Gift card (200 above)</span>
+            <div class='spinner-border spinner-border-sm mt-2 text-primary d-none' aria-hidden='true' role='status' id="loader"></div>
+            <span class="material-icons text-primary mt-2 d-none" style="width: 24px;" id="icon">done</span>
+        </div> -->
+
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            <div class="modal-header py-1">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="col-2">
-                <input type="number" class="form-control admin-rate text-center">
-            </div>
-        </div>
-        <!-- each rate -->
-        <div class="row justify-content-between mt-3 px-4">
-            <div class="col-8 text-muted text-left">
-                <span class="d-inline-block product-name">Amazon Gift card (200 above)</span>
-            </div>
-            <div class="col-2">
-                <input type="number" class="form-control admin-rate text-center">
+            <div class="modal-body py-1" id="modal_body">
+                ...
             </div>
         </div>
     </div>

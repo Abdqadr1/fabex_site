@@ -8,7 +8,7 @@ $which = mysqli_escape_string($conn, $_GET["which"]);
 $which = testInput($which);
 function getBank(mysqli &$conn)
 {
-    $sql = "SELECT * FROM admin_banks WHERE id=1";
+    $sql = "SELECT * FROM admin_banks LIMIT 1";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
@@ -68,6 +68,32 @@ function getGiftcards(mysqli &$conn)
     }
 }
 
+function getRates(mysqli &$conn)
+{
+    $arr = array();
+    $sql = "SELECT price FROM cryptos LIMIT 1";
+    $res = $conn->query($sql);
+    if ($res == true && $res->num_rows > 0) {
+        $all = $res->fetch_array();
+        array_push($arr, array("crypto", $all[0]));
+        //get giftcards prices
+        $query = "SELECT id, name, price FROM giftcards";
+        $result = $conn->query($query);
+        if ($result == true && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $id = $row['id'];
+                $name = $row['name'];
+                $price = $row['price'];
+                array_push($arr, array("giftcard", $id, $name, $price));
+            }
+            echo json_encode(array("success", $arr));
+        } else {
+            echo json_encode(array("Something went wrong getting giftcards prices."));
+        }
+    } else {
+        echo json_encode(array("Something went wrong getting crypto price " . $conn->error));
+    }
+}
 switch ($which) {
     case "bank":
         return getBank($conn);
@@ -75,4 +101,6 @@ switch ($which) {
         return getCryptos($conn);
     case "giftcard":
         return getGiftcards($conn);
+    case "rates":
+        return getRates($conn);
 }
