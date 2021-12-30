@@ -94,6 +94,28 @@ function getRates(mysqli &$conn)
         echo json_encode(array("Something went wrong getting crypto price " . $conn->error));
     }
 }
+
+function getAllOrders(mysqli &$conn, string $which)
+{
+    if (!isset($_GET["type"]) || empty($_GET["type"])) {
+        exit("Invalid parameters..");
+    }
+    $arr = array();
+    $type = mysqli_escape_string($conn, $_GET["type"]);
+    $type = testInput($type);
+    $sql = "SELECT users.fname, users.lname, trx_history.id FROM trx_history 
+    INNER JOIN users ON trx_history.u_id=users.id AND trx_history.which='$type'";
+    $result = $conn->query($sql);
+    if ($result == true && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($arr, $row);
+        }
+        echo json_encode(array("success", $arr));
+    } else {
+        exit(json_encode(array("No transaction yet..", $arr)));
+    }
+}
+
 switch ($which) {
     case "bank":
         return getBank($conn);
@@ -103,4 +125,6 @@ switch ($which) {
         return getGiftcards($conn);
     case "rates":
         return getRates($conn);
+    case "orders":
+        return getAllOrders($conn, $which);
 }

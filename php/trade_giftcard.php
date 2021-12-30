@@ -41,8 +41,8 @@ function buyGiftcard(&$conn, $amount, $price, $product_id, $product_name)
     $tx_id = getId($conn);
     $desc = "Bought " . $product_name;
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, typ, status) 
-    VALUES ('$uid','$tx_id','$desc', '$amount', '$price','$product_id', 0,0)";
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, typ, status, which) 
+    VALUES ('$uid','$tx_id','$desc', '$amount', '$price','$product_id', 0,0,'giftcard')";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;
@@ -74,8 +74,8 @@ function sellGiftcard(&$conn, $amount, $price, $product_id, $product_name)
         $account_name = mysqli_escape_string($conn, $_POST["account_name"]);
     }
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, typ, status, bank_name, account_number, account_name) 
-    VALUES ('$uid','$tx_id','$desc', '$amount', '$price', '$product_id', 1,0, '$bank_name','$account_number','$account_name')";
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, typ, status, bank_name, account_number, account_name,which) 
+    VALUES ('$uid','$tx_id','$desc', '$amount', '$price', '$product_id', 1,0, '$bank_name','$account_number','$account_name','giftcard')";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;

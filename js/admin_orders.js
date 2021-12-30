@@ -1,8 +1,14 @@
-"use strict";
+import { Ajax } from "./ajax.js";
 var whichSelect = document.querySelector("select#which");
 var buttons = document.querySelectorAll("button.trading");
+var loadingContainer = document.querySelector("div#orders_loading");
+var table = document.querySelector("table#table");
+var giftcardHeader = table.querySelector("thead#giftcard_header");
+var cryptoHeader = table.querySelector("thead#crypto_header");
 var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>\n                Please wait... ";
 var tabs = document.querySelectorAll(".nav-tab");
+var modal = document.querySelector("div#modal");
+var modalBody = modal.querySelector("div.modal-body");
 var filterObj = {
     which: "crypto",
     type: "buy",
@@ -11,7 +17,7 @@ var filterObj = {
 whichSelect.onchange = function (event) {
     if (whichSelect.value != filterObj.which) {
         filterObj.which = whichSelect.value;
-        changeTable(filterObj);
+        fetchOrders(filterObj);
     }
 };
 tabs.forEach((function (tab) {
@@ -35,7 +41,7 @@ tabs.forEach((function (tab) {
                     tb.classList.remove("border-primary");
                 }
             });
-            changeTable(filterObj);
+            fetchOrders(filterObj);
         }
     };
 }));
@@ -59,11 +65,58 @@ buttons.forEach(function (element) {
                     child.classList.remove("active");
                 }
             }
-            changeTable(filterObj);
+            fetchOrders(filterObj);
         }
     };
 });
 // change table 
-var changeTable = function (filters) {
-    console.log("table changing...");
+var changeTable = function (list, filters) {
+    var which = filters.which;
+    if (which == "crypto") {
+        console.log("crypto", list);
+        cryptoHeader.classList.remove("d-none");
+        giftcardHeader.classList.add("d-none");
+    }
+    else {
+        console.log("giftcard", list);
+        giftcardHeader.classList.remove("d-none");
+        cryptoHeader.classList.add("d-none");
+    }
+    table.classList.remove("d-none");
 };
+//show and hide modal
+var myModal;
+var showModal = function (message, style) {
+    modalBody.innerText = message;
+    modalBody.className = "modal-body py-1 " + style;
+    myModal = new bootstrap.Modal(modal, {
+        keyboard: false
+    });
+    myModal.show();
+};
+var hideModal = function () { return myModal.hide(); };
+// fetch orders
+var fetchOrders = function (filters) {
+    var type = filters.which;
+    loadingContainer.classList.remove("d-none");
+    table.classList.add("d-none");
+    Ajax.fetchPage("php/admin_data.php?which=orders&type=" + type, function (data) {
+        var arr = JSON.parse(data);
+        var message = arr[0];
+        if (message.toLowerCase().indexOf("success") != -1) {
+            changeTable(arr[1], filters);
+        }
+        else {
+            var text = "Search queries: " + JSON.stringify(filterObj) + "\n \n" + message;
+            showModal(text, "text-danger");
+            setTimeout(function () {
+                hideModal();
+            }, 3000);
+        }
+        loadingContainer.classList.add("d-none");
+    });
+};
+// get all orders
+(function () {
+    fetchOrders(filterObj);
+})();

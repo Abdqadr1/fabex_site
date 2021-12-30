@@ -20,7 +20,6 @@ navLinks.forEach(function (element) {
             container.innerHTML = loaderHTML;
             //load page asynchronously
             load(text);
-            console.log("loading page...");
             activePage = text;
             navToggleButton.innerText = text;
             var active_1 = "active";

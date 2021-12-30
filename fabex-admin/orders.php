@@ -29,8 +29,13 @@
     </div>
 </nav>
 <!-- order table -->
-<table class="table table-borderless table-hover">
-    <thead class="" style="background-color: var(--todo-bg);" id="crypto_header">
+<div class='d-flex justify-content-center mt-3' id="orders_loading">
+    <div class='spinner-border text-primary' role='status' style='height: 40px; width:40px;'>
+        <span class='visually-hidden'>Loading...</span>
+    </div>
+</div>
+<table class="table table-borderless table-hover d-none" id="table">
+    <thead class="d-none" style="background-color: var(--todo-bg);" id="crypto_header">
         <tr style="color: var(--header);">
             <th scope="col">Transaction ID</th>
             <th scope="col">Name of User</th>
@@ -43,7 +48,7 @@
         </tr>
     </thead>
     <thead class="d-none" style="background-color: var(--todo-bg);" id="giftcard_header">
-        <tr>
+        <tr style="color: var(--header);">
             <th scope="col">Transaction ID</th>
             <th scope="col">Name of User</th>
             <th scope="col">Type</th>
@@ -54,7 +59,7 @@
         </tr>
     </thead>
     <tbody class="td">
-        <tr>
+        <!-- <tr>
             <td>1234567890</td>
             <td>Oyeleye Joseph</td>
             <td>BTC</td>
@@ -89,24 +94,33 @@
                 <button class="action-button approve">Approve</button>
                 <button class="action-button reject">Reject</button>
             </td>
-        </tr>
-        <tr>
+        </tr> -->
+        <!-- <tr>
             <td>1234567890</td>
             <td>Oyeleye Joseph</td>
-            <td>BTC</td>
+            <td>Amazon Gift card</td>
             <td>$29.1<br><span class='extra-detail'>N14,899.2</span></td>
             <td>
-                <span class="val">0x5dCF1A8934234565...<span class="copy material-icons" title="copy address">content_copy</span></span>
-                <br><span class="extra-detail">ERC 20</span>
-            </td>
-            <td>
-                <span class="val">1134<span class="copy material-icons" title="copy memo">content_copy</span></span>
+                <span class="val">josephy123@gmail.com<span class="copy material-icons" title="copy address">content_copy</span></span>
             </td>
             <td>Today, 12:53 pm</td>
             <td class="d-flex justify-content-center align-top">
                 <button class="action-button approve">Approve</button>
                 <button class="action-button reject">Reject</button>
             </td>
-        </tr>
+        </tr> -->
     </tbody>
 </table>
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            <div class="modal-header py-1">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-1 text-success" id="modal_body">
+                ...
+            </div>
+        </div>
+    </div>
+</div>

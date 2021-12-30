@@ -24,7 +24,6 @@ navLinks.forEach(element => {
             container.innerHTML = loaderHTML;
             //load page asynchronously
             load(text);
-            console.log("loading page...");
             activePage = text;
             navToggleButton.innerText = text;
             let active = "active";
