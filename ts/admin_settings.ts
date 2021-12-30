@@ -1,5 +1,7 @@
 import { Ajax } from "./ajax.js";
-declare const bootstrap:any;
+declare const bootstrap: any;
+const cryptoLoading = document.querySelector("div#crypto_loading") as HTMLDivElement;
+const giftcardLoading = document.querySelector("div#giftcard_loading") as HTMLDivElement;
 const cryptoDiv = document.querySelector("div#crypto_div") as HTMLDivElement;
 const add_crypto = document.querySelector("div#add_crypto") as HTMLDivElement;
 const addCryptoForm = document.querySelector("form#add_crypto_form") as HTMLFormElement;
@@ -52,7 +54,7 @@ const addCrypto = (content:any[]) => {
     div.appendChild(nameSpan);
     div.appendChild(checkSpan);
     div.appendChild(dotSpan);
-    cryptoDiv.appendChild(div);
+    cryptoDiv.insertBefore(div, cryptoDiv.lastElementChild);
 }
 
 // crypto submit
@@ -244,7 +246,7 @@ const addGiftCardFun = (content: any[], children: any[]) => {
     each.appendChild(addDiv);
     div.appendChild(each);
     div.appendChild(form);
-    giftcardDiv.appendChild(div);
+    giftcardDiv.insertBefore(div, giftcardDiv.lastElementChild);
 }
 addGiftcardForm.onsubmit = event => {
     event.preventDefault();
@@ -330,7 +332,15 @@ const hideModal = () => myModal.hide();
             const array: [][] = object.success;
             array.forEach(arr => {
                 addCrypto(arr);
-            })
+            });
+            cryptoLoading.classList.add("d-none");
+            cryptoDiv.classList.remove("d-none");
+        } else {
+            cryptoLoading.classList.add("d-none");
+            showModal(data, "text-danger");
+            setTimeout(() => {
+                hideModal();
+            }, 2000);
         }
     })   
 })();
@@ -341,7 +351,8 @@ const hideModal = () => myModal.hide();
         const cat:[] = arr[0];
         const subCat:[] = arr[1];
         if (data.toLowerCase().indexOf('No giftcard.') != -1) {
-            // console.error(data);
+            giftcardLoading.classList.add("d-none");
+            showModal(data, "text-danger");
         } else {
             if (cat.length > 0) {
                 cat.forEach((category: any[], index) => {
@@ -356,6 +367,8 @@ const hideModal = () => myModal.hide();
                     addGiftCardFun(category, children);
                 })
             }
+            giftcardLoading.classList.add("d-none");
+            giftcardDiv.classList.remove("d-none");
         }
     })
 })();

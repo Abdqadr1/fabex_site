@@ -1,9 +1,14 @@
-<div class="row justify-content-start justify-content-lg-around mx-0 p-4">
+<div class="row justify-content-start justify-content-lg-around mx-0 p-4" id="">
     <!-- crypto column -->
-    <div class="col-6 col-lg-4">
+    <div class="col-6 col-lg-5">
         <div class="no-margin pad">
             <h3>Crypto</h3>
-            <div class="mx-0 mt-2" id="crypto_div">
+            <div class='d-flex col-6 col-lg-4 justify-content-center mt-3' id="crypto_loading">
+                <div class='spinner-border text-primary' role='status' style='height: 30px; width:30px;'>
+                    <span class='visually-hidden'>Loading...</span>
+                </div>
+            </div>
+            <div class="mx-0 mt-2 d-none" id="crypto_div">
                 <!-- each crypto -->
                 <!-- <div class="each-crypto">
                     <span class="d-inline-block crypto-name">Bitcoin (BTC)</span>
@@ -12,10 +17,10 @@
                     </span>
                     <span class="material-icons text-primary three-dots">more_vert</span>
                 </div> -->
-            </div>
-            <div class="add-crypto mt-2" title="add new crypto" id="add_crypto">
-                <span class="material-icons add-crypto">add</span>
-                <span>Add new crypto</span>
+                <div class="add-crypto mt-2" title="add new crypto" id="add_crypto">
+                    <span class="material-icons add-crypto">add</span>
+                    <span>Add new crypto</span>
+                </div>
             </div>
             <form class="d-none" action="php/add_crypto.php" method="POST" id="add_crypto_form">
                 <div tabindex="-1" class="my-2 alert alert-danger mx-0 d-none text-center" id="errorDiv" role="alert"></div>
@@ -52,10 +57,15 @@
         </div>
     </div>
     <!-- giftcard column -->
-    <div class="col-6 col-lg-4">
+    <div class="col-6 col-lg-5">
         <div class="no-margin pad">
             <h3>Giftcards</h3>
-            <div class="mx-0 mt-2" id="giftcard_div">
+            <div class='d-flex col-6 col-lg-4 justify-content-center mt-3' id="giftcard_loading">
+                <div class='spinner-border text-primary' role='status' style='height: 30px; width:30px;'>
+                    <span class='visually-hidden'>Loading...</span>
+                </div>
+            </div>
+            <div class="mx-0 mt-2 d-none" id="giftcard_div">
                 <!-- <div class="cap">
                     <div class="each-giftcard">
                         <div class="inline-block">
@@ -98,11 +108,11 @@
                         </form>
                     </div>
                 </div> -->
+                <div class="add-giftcard mt-2" title="add new giftcard" id="add_giftcard">
+                    <span class="material-icons add-crypto">add</span>
+                    <span>Add new giftcard</span>
+                </div>
             </div>
-        </div>
-        <div class="add-giftcard mt-2" title="add new giftcard" id="add_giftcard">
-            <span class="material-icons add-crypto">add</span>
-            <span>Add new giftcard</span>
         </div>
         <div class="pad d-none" id="giftcardFormDiv">
             <form action="php/add_giftcard.php" method="POST" id="add_new_giftcard_form">
@@ -117,7 +127,7 @@
         </div>
     </div>
     <!-- bank column -->
-    <div class="col-6 col-lg-4 bank-div mt-5">
+    <div class="col-6 col-lg-5 bank-div mt-5">
         <p class="text-center mt-2 fw-bold fs-4 mb-1">Account Details</p>
         <form action="php/add_bank.php" method="POST" id="addBankForm">
             <div tabindex="-1" class="alert alert-danger d-none text-center" id="errorDiv" role="alert"></div>

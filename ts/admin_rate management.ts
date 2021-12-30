@@ -1,6 +1,8 @@
 import { Ajax } from "./ajax.js";
 declare const bootstrap: any;
 let modal: any;
+const adminRateDiv = document.querySelector("div#admin_rate") as HTMLDivElement;
+const loadingContainer = document.querySelector("div#loading") as HTMLDivElement;
 const rateColumns = document.querySelectorAll("div.rate-column") as NodeListOf<HTMLDivElement>;
 const modalTag = document.querySelector("div#modal") as HTMLDivElement;
 const modalBody = modalTag.querySelector("div#modal_body") as HTMLDivElement;
@@ -23,7 +25,7 @@ const addProducts = (arr: [][]) => {
             <input which='${which}' type="number" class="form-control admin-rate text-center" id='${id}' value='${price}'>
         </div>
         <div class='spinner-border spinner-border-sm mt-2 text-primary d-none' aria-hidden='true' role='status' id="loader"></div>
-        <span class="material-icons text-primary mt-2 d-none" style="width: 24px;" id="icon">done</span>`;
+        <span class="material-icons text-primary mt-2 d-none" style="width: 24px;" id="mark_icon">done</span>`;
 
         const input = rowDiv.querySelector("input") as HTMLInputElement;
         input.onchange = event => {
@@ -36,7 +38,20 @@ const addProducts = (arr: [][]) => {
 }
 //update price function 
 const updatePrice = (input: HTMLInputElement, row: HTMLDivElement) => {
-    console.log(input, row)
+    const which = input.getAttribute("which");
+    const id = input.id;
+    const price = input.value;
+    const loader = row.querySelector("div#loader") as HTMLDivElement;
+    loader.classList.remove("d-none");
+    const icon = row.querySelector("span#mark_icon") as HTMLSpanElement;
+    Ajax.fetchPage(`php/update_prices.php?which=${which}&id=${id}&price=${price}`, (data: string) => {
+        if (data.toLowerCase().indexOf("success") != -1) {
+            showModal(data);
+        } else {
+            showModal(data, "text-danger");
+        }
+        loader.classList.add("d-none");
+    });
 }
 //get all rates
 (function () {
@@ -44,8 +59,11 @@ const updatePrice = (input: HTMLInputElement, row: HTMLDivElement) => {
         const arr:any[] = JSON.parse(data);
         const message:string = arr[0];
         if (message.toLowerCase().indexOf('success') != -1) {
+            loadingContainer.classList.add("d-none");
+            adminRateDiv.classList.remove("d-none");
             addProducts(arr[1]);
         } else {
+            loadingContainer.classList.add("d-none");
             showModal(message, "text-danger");
             setTimeout(() => {
                 hideModal();
@@ -62,5 +80,8 @@ const showModal = (message: string, colorClass: string = "text-success") => {
         keyboard: false
     });
     modal.show();
+    setTimeout(() => {
+        modal.hide();
+    }, 2000);
 }
 const hideModal = () => modal.hide();

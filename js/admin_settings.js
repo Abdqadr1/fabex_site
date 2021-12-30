@@ -1,4 +1,6 @@
 import { Ajax } from "./ajax.js";
+var cryptoLoading = document.querySelector("div#crypto_loading");
+var giftcardLoading = document.querySelector("div#giftcard_loading");
 var cryptoDiv = document.querySelector("div#crypto_div");
 var add_crypto = document.querySelector("div#add_crypto");
 var addCryptoForm = document.querySelector("form#add_crypto_form");
@@ -47,7 +49,7 @@ var addCrypto = function (content) {
     div.appendChild(nameSpan);
     div.appendChild(checkSpan);
     div.appendChild(dotSpan);
-    cryptoDiv.appendChild(div);
+    cryptoDiv.insertBefore(div, cryptoDiv.lastElementChild);
 };
 // crypto submit
 addCryptoForm.onsubmit = function (event) {
@@ -218,7 +220,7 @@ var addGiftCardFun = function (content, children) {
     each.appendChild(addDiv);
     div.appendChild(each);
     div.appendChild(form);
-    giftcardDiv.appendChild(div);
+    giftcardDiv.insertBefore(div, giftcardDiv.lastElementChild);
 };
 addGiftcardForm.onsubmit = function (event) {
     event.preventDefault();
@@ -307,6 +309,15 @@ var hideModal = function () { return myModal.hide(); };
             array.forEach(function (arr) {
                 addCrypto(arr);
             });
+            cryptoLoading.classList.add("d-none");
+            cryptoDiv.classList.remove("d-none");
+        }
+        else {
+            cryptoLoading.classList.add("d-none");
+            showModal(data, "text-danger");
+            setTimeout(function () {
+                hideModal();
+            }, 2000);
         }
     });
 })();
@@ -317,7 +328,8 @@ var hideModal = function () { return myModal.hide(); };
         var cat = arr[0];
         var subCat = arr[1];
         if (data.toLowerCase().indexOf('No giftcard.') != -1) {
-            // console.error(data);
+            giftcardLoading.classList.add("d-none");
+            showModal(data, "text-danger");
         }
         else {
             if (cat.length > 0) {
@@ -333,6 +345,8 @@ var hideModal = function () { return myModal.hide(); };
                     addGiftCardFun(category, children);
                 });
             }
+            giftcardLoading.classList.add("d-none");
+            giftcardDiv.classList.remove("d-none");
         }
     });
 })();

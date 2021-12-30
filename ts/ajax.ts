@@ -62,7 +62,7 @@ export class Ajax{
         else this.ajax();
     }
 
-    public static fetchPage(url:string, doAfter:Function) {
+    public static fetchPage(url: string, doAfter: Function) {
         fetch(url).then(response => response.text())
             .then(data => doAfter(data))
             .catch(error => console.error("An error occurred", error));

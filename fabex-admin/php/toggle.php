@@ -12,7 +12,7 @@ $id = mysqli_escape_string($conn, $_GET["id"]);
 $status = mysqli_escape_string($conn, $_GET["status"]);
 $which = testInput($which);
 $id = testInput($id);
-$which = testInput($which);
+$status = testInput($status);
 if ($which == "crypto") {
     $sql = "SELECT id FROM cryptos WHERE id='$id'";
     $res = $conn->query($sql);

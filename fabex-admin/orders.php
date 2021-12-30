@@ -1,15 +1,15 @@
 <!-- headers -->
 <div class="d-flex flex-column flex-md-row justify-content-between">
     <h2>Orders</h2>
-    <select class="form-select rad8" id="bankName" style="width: 200px;">
+    <select class="form-select rad8" id="which" style="width: 200px;">
         <option value="crypto" selected>Crypto</option>
-        <option value="giftcard" selected>Giftcard</option>
+        <option value="giftcard">Giftcard</option>
     </select>
 </div>
 <!-- buy and sell buttons -->
 <div class="d-flex justify-content-center mt-3" id="action_buttons">
-    <button class="btn btn-outline-secondary mr-3 buy trading">Buy Orders</button>
-    <button class="btn btn-outline-secondary ml-3 buy active trading">Sell Orders</button>
+    <button class="btn btn-outline-secondary mr-3 buy active trading" type="buy">Buy Orders</button>
+    <button class="btn btn-outline-secondary ml-3 buy trading" type="sell">Sell Orders</button>
 </div>
 <!-- tabs -->
 <nav class="navbar navbar-expand-md py-0 text-black">
@@ -53,7 +53,7 @@
             <th scope="col">Action</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="td">
         <tr>
             <td>1234567890</td>
             <td>Oyeleye Joseph</td>

@@ -77,7 +77,7 @@ function getRates(mysqli &$conn)
         $all = $res->fetch_array();
         array_push($arr, array("crypto", $all[0]));
         //get giftcards prices
-        $query = "SELECT id, name, price FROM giftcards";
+        $query = "SELECT id, name, price FROM giftcards where type='sub_category'";
         $result = $conn->query($query);
         if ($result == true && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {

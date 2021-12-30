@@ -519,13 +519,16 @@ button.reject:hover {
 td span.extra-detail {
   color: #8c8c8c;
 }
+.td {
+  font-size: 14px;
+}
 td span.val {
   display: inline-block;
   word-break: break-all;
 }
 td span.copy {
   color: #8c8c8c;
-  font-size: 15px;
+  font-size: 14px;
   margin-left: 5px;
   cursor: pointer;
 }
@@ -574,7 +577,8 @@ span.three-dots:hover {
 div.add-crypto,
 div.add-giftcard {
   cursor: pointer;
-  display: inline-block;
+  display: block;
+  width: 200px;
   color: var(--primary-color);
 }
 div.add-crypto > span,

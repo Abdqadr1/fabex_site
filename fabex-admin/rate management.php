@@ -1,7 +1,12 @@
 <!-- header -->
 <h3 class="text-left mb-3">Rate management</h3>
+<div class='d-flex align-items-center justify-content-center' style='height: 50%;' id="loading">
+    <div class='spinner-border text-primary' role='status' style='height: 60px; width:60px;'>
+        <span class='visually-hidden'>Loading...</span>
+    </div>
+</div>
 <!-- rates -->
-<div class="admin-rate row justify-content-between py-3">
+<div class="admin-rate row justify-content-between py-3 d-none" id="admin_rate">
     <div class="col-6 bordered p-4 rate-column">
         <!-- each rate -->
         <!-- <div class="row justify-content-between mt-3 px-4">
