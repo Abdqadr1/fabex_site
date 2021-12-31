@@ -70,7 +70,7 @@ foreach ($_FILES["upload"]['tmp_name'] as $key => $tmp_name) {
 
 if (count($uploaded) === $number) {
     $up = implode(",", $uploaded);
-    $sql = "UPDATE trx_history SET proof='$up' WHERE tx_id='$tx_id'";
+    $sql = "UPDATE trx_history SET proof='$up', status=1 WHERE tx_id='$tx_id'";
     $result = $conn->query($sql);
     if ($result === true) {
         $_SESSION['tx_id'] = "";

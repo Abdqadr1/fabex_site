@@ -515,6 +515,15 @@ button.reject:hover {
   color: white;
   background-color: var(--red);
 }
+button.undo {
+  color: var(--header);
+  border-color: var(--header);
+  border: 1px solid var(--header);
+}
+button.undo:hover {
+  color: white;
+  background-color: var(--header);
+}
 
 td span.extra-detail {
   color: #8c8c8c;

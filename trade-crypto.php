@@ -25,6 +25,7 @@ include_once "header.php"; ?>
                     <label for="assets" class="form-label">Assets</label>
                     <select name="asset" class="form-select rad8" id="assets" required>
                         <option value="" selected hidden>Select coin...</option>
+                        <option value="BTC">Bitcoin</option>
                     </select>
                 </div>
                 <!-- amount -->
@@ -48,6 +49,11 @@ include_once "header.php"; ?>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
                         </select>
+                    </div>
+                    <!-- amount -->
+                    <div class="for-buy">
+                        <label for="memo" class="form-label mb-1 mt-3">Memo</label>
+                        <input name="memo" type="text" class="form-control form-control-lg buyInput" id="memo" placeholder="Enter memo" required>
                     </div>
                 </div>
 

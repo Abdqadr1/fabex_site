@@ -97,14 +97,29 @@ function getRates(mysqli &$conn)
 
 function getAllOrders(mysqli &$conn, string $which)
 {
-    if (!isset($_GET["type"]) || empty($_GET["type"])) {
+    if (!isset($_GET["type"]) || empty($_GET["type"]) || !isset($_GET["action"]) || !isset($_GET["status"])) {
         exit("Invalid parameters..");
     }
     $arr = array();
     $type = mysqli_escape_string($conn, $_GET["type"]);
+    $action = mysqli_escape_string($conn, $_GET["action"]);
+    $status = mysqli_escape_string($conn, $_GET["status"]);
     $type = testInput($type);
-    $sql = "SELECT users.fname, users.lname, trx_history.id FROM trx_history 
-    INNER JOIN users ON trx_history.u_id=users.id AND trx_history.which='$type'";
+    $action = testInput($action);
+    $status = testInput($status);
+    $need = "";
+    if ($type == "crypto") {
+        $need = 'CONCAT (users.fname, users.lname) AS name, users.bank_name AS user_bank, users.account_number AS user_account_number, trx_history.id, trx_history.product, 
+        trx_history.amount, trx_history.price, trx_history.wallet_address, trx_history.time, trx_history.status, 
+        trx_history.type, trx_history.bank_name, trx_history.account_number, trx_history.memo, trx_history.which, trx_history.network';
+    } else {
+        $need = 'CONCAT (users.fname, users.lname) AS name, users.bank_name AS user_bank, users.account_number AS user_account_number,users.email, trx_history.id, trx_history.product, 
+        trx_history.amount, trx_history.price, trx_history.time, trx_history.status, trx_history.type, 
+        trx_history.bank_name, trx_history.account_number, trx_history.which';
+    }
+    $sql = "SELECT " . $need . " FROM trx_history INNER JOIN users ON trx_history.u_id=users.id 
+    AND trx_history.which='$type' AND trx_history.type='$action' AND trx_history.status='$status' ORDER BY trx_history.time DESC";
+
     $result = $conn->query($sql);
     if ($result == true && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
@@ -112,7 +127,7 @@ function getAllOrders(mysqli &$conn, string $which)
         }
         echo json_encode(array("success", $arr));
     } else {
-        exit(json_encode(array("No transaction yet..", $arr)));
+        exit(json_encode(array("No transaction yet.." . $conn->error, $arr)));
     }
 }
 

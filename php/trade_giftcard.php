@@ -41,7 +41,7 @@ function buyGiftcard(&$conn, $amount, $price, $product_id, $product_name)
     $tx_id = getId($conn);
     $desc = "Bought " . $product_name;
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, typ, status, which) 
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, type, status, which) 
     VALUES ('$uid','$tx_id','$desc', '$amount', '$price','$product_id', 0,0,'giftcard')";
     $res = $conn->query($sql);
     if ($res === true) {
@@ -74,7 +74,7 @@ function sellGiftcard(&$conn, $amount, $price, $product_id, $product_name)
         $account_name = mysqli_escape_string($conn, $_POST["account_name"]);
     }
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, typ, status, bank_name, account_number, account_name,which) 
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, type, status, bank_name, account_number, account_name,which) 
     VALUES ('$uid','$tx_id','$desc', '$amount', '$price', '$product_id', 1,0, '$bank_name','$account_number','$account_name','giftcard')";
     $res = $conn->query($sql);
     if ($res === true) {
