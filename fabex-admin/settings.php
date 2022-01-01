@@ -120,7 +120,7 @@
                 </div>
             </div>
         </div>
-        <div class="pad d-none" id="giftcardFormDiv">
+        <div class="pad d-none mt-2" id="giftcardFormDiv">
             <form action="php/add_giftcard.php" method="POST" id="add_new_giftcard_form">
                 <div tabindex="-1" class="alert alert-danger mt-2 mx-0 d-none text-center" id="errorDiv" role="alert"></div>
                 <div class="mt-2">
@@ -165,6 +165,23 @@
             </div>
             <div class="modal-body py-1 text-success" id="modal_body">
                 ...
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit Product Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-header py-1">
+                <h6 class="modal-title text-primary">Edit product name</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-1 text-success" id="edit_body">
+                <input name="name" class="form-control rad8 mt-3" id="email" placeholder="Enter Email address" required>
+            </div>
+            <div class="modal-footer">
+                <button id="submitBtn" type="submit" class="btn btn-primary">Change</button>
             </div>
         </div>
     </div>

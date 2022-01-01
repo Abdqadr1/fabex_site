@@ -32,11 +32,11 @@ add_crypto.onclick = event => {
     add_crypto.classList.add("d-none");
 }
 // add crypto function
-const addCrypto = (content:any[]) => {
+const addCrypto = (content: any[]) => {
     const div = document.createElement("div") as HTMLDivElement;
     div.className = "each-crypto";
     const name = `${content[1]} (${content[2].toUpperCase()})`;
-    div.innerHTML = `<span class="d-inline-block crypto-name" tabindex="-1">${name}</span>
+    div.innerHTML = `<span id='${content[0]}' class="d-inline-block crypto-name" tabindex="-1">${name}</span>
                     <span class="form-switch mx-3">
                         <input id='${content[0]}' class="form-check-input" type="checkbox" role="switch">
                     </span>
@@ -49,12 +49,13 @@ const addCrypto = (content:any[]) => {
                     </div>`;
     const switchInput = div.querySelector("input") as HTMLInputElement;
     const deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
+    const editAction = div.querySelector("span#edit") as HTMLSpanElement;
+    editAction.onclick = () => showEdit("crypto", content);
     deleteAction.onclick = () => deleteProduct("crypto", div);
     switchInput.checked = content[content.length - 1];
     switchInput.onchange = event => toggleProduct(event, "crypto");
     cryptoDiv.insertBefore(div, cryptoDiv.lastElementChild);
 }
-
 // crypto submit
 addCryptoForm.onsubmit = event => {
     event.preventDefault();
@@ -86,7 +87,6 @@ addCryptoForm.onsubmit = event => {
     })
     aj.start()
 }
-
 // add admin bank
 addBankForm.onsubmit = event => {
     event.preventDefault();
@@ -149,7 +149,7 @@ const submitSubGiftCard = (form: HTMLFormElement, subCatDiv:HTMLDivElement) => {
             const content: any[] = arr[1];
             const div = document.createElement("div") as HTMLDivElement
             div.className = "inline-block mt-2";
-            div.innerHTML = `<span class="d-inline-block crypto-name">${content[1]}</span>
+            div.innerHTML = `<span id='${content[0]}' class="d-inline-block crypto-name">${content[1]}</span>
                                 <span class="form-switch mx-3">
                                     <input id='${content[0]}' class="form-check-input" type="checkbox" role="switch" checked>
                                 </span>
@@ -162,7 +162,9 @@ const submitSubGiftCard = (form: HTMLFormElement, subCatDiv:HTMLDivElement) => {
                                 </div>`;
             const input = div.querySelector("input") as HTMLInputElement;
             const deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
-            deleteAction.onclick = () => deleteProduct("crypto", div);
+            const editAction = div.querySelector("span#edit") as HTMLSpanElement;
+            editAction.onclick = () => showEdit("giftcard", content);
+            deleteAction.onclick = () => deleteProduct("giftcard", div);
             input.onchange = event => toggleProduct(event, 'giftcard');
             subCatDiv.appendChild(div);
             form.reset();
@@ -191,7 +193,7 @@ const addGiftCardFun = (content: any[], children: any[]) => {
     const each = document.createElement("div") as HTMLDivElement;
     each.className = "each-giftcard";
     each.innerHTML = `<div class="inline-block">
-                            <span class="d-inline-block crypto-name">${content[1]}</span>
+                            <span id='${id}' class="d-inline-block crypto-name">${content[1]}</span>
                             <span class="form-switch mx-3">
                                 <input id='${id}' class="form-check-input" type="checkbox" role="switch">
                             </span>
@@ -206,6 +208,8 @@ const addGiftCardFun = (content: any[], children: any[]) => {
     const input = each.querySelector("input") as HTMLInputElement;
     input.checked = isChecked;
     let deleteAction = each.querySelector("span#delete") as HTMLSpanElement;
+    let editAction = each.querySelector("span#edit") as HTMLSpanElement;
+    editAction.onclick = () => showEdit("giftcard", content);
     deleteAction.onclick = () => deleteProduct("giftcard", div);
     input.onchange = event => toggleProduct(event, 'giftcard');
     const subCatDiv = document.createElement("div") as HTMLDivElement;
@@ -219,7 +223,7 @@ const addGiftCardFun = (content: any[], children: any[]) => {
             const checked = cat[3] == 1 ? true : false;
             const div = document.createElement("div") as HTMLDivElement
             div.className = "inline-block mt-2";
-            div.innerHTML = `<span class="d-inline-block crypto-name">${cat[1]}</span>
+            div.innerHTML = `<span id='${cat[0]}' class="d-inline-block crypto-name">${cat[1]}</span>
                                 <span class="form-switch mx-3">
                                     <input id='${cat[0]}' class="form-check-input" type="checkbox" role="switch">
                                 </span>
@@ -233,6 +237,8 @@ const addGiftCardFun = (content: any[], children: any[]) => {
             const input = div.querySelector("input") as HTMLInputElement;
             input.checked = checked;   
             let deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
+            let editAction = div.querySelector("span#edit") as HTMLSpanElement;
+            editAction.onclick = () => showEdit("giftcard", cat);
             deleteAction.onclick = () => deleteProduct("giftcard", div);
             input.onchange = event => toggleProduct(event, 'giftcard');
             subCatDiv.appendChild(div);
@@ -335,9 +341,73 @@ const showModal = (message: string, style:string = "text-success", duration:numb
         }, duration);
     }
 }
+const showEdit = (which: string, arr: any[]) => {
+    const editModal = document.querySelector("div#editModal") as HTMLDivElement;
+    const body = editModal.querySelector("div#edit_body") as HTMLDivElement;
+    body.innerHTML = "";
+    if (which === "crypto") {
+        body.innerHTML = `
+        <div tabindex="-1" class="my-2 alert alert-danger mx-0 d-none text-center" id="errorDiv" role="alert"></div>
+        <div tabindex="-1" class="my-2 alert alert-success mx-0 d-none text-center" id="successDiv" role="alert"></div>
+        <input value='${arr[1]}' name="coin_name" class="form-control form-control-lg rad8 mt-3" placeholder="Enter coin name" required>
+        <input value='${arr[2]}' name="short_name" class="form-control form-control-lg rad8 mt-3" placeholder="Short name" required>
+        <input value='${arr[3]}' name="network" class="form-control form-control-lg rad8 mt-3" placeholder="Enter network" required>
+        <input value='${arr[4]}' name="address" class="form-control form-control-lg rad8 mt-3" placeholder="Enter wallet address" required>
+        <input value='${arr[6]}' name="memo" class="form-control form-control-lg rad8 mt-3" placeholder="Memo" required>
+        <input id="hidden" type="hidden" value='${which}' name='which'>
+        <input type="hidden" value='${arr[0]}' name='id'>`;
+    } else {
+        body.innerHTML = `
+        <div tabindex="-1" class="my-2 alert alert-danger mx-0 d-none text-center" id="errorDiv" role="alert"></div>
+        <div tabindex="-1" class="my-2 alert alert-success mx-0 d-none text-center" id="successDiv" role="alert"></div>
+        <input value='${arr[1]}' name="name" class="form-control rad8 mt-3" placeholder="Enter giftcard name" required>
+        <input type="hidden" value='${which}' name='which'>
+        <input type="hidden" value='${arr[0]}' name='id'>`;
+    }
+    const submitBtn = editModal.querySelector("button#submitBtn") as HTMLButtonElement;
+    submitBtn.onclick = (event) => updateProduct(which, editModal, arr);
+    // show modal
+    const modal = new bootstrap.Modal(editModal, {
+        keyboard: false
+    });
+    modal.show();
+}
 const hideModal = () => myModal.hide();
 
-//deleteProduct
+const updateProduct = (which: string, modal: HTMLDivElement, data: any[]) => {
+    const btn = modal.querySelector("button#submitBtn") as HTMLButtonElement;
+    const body = modal.querySelector("div#edit_body") as HTMLDivElement;
+    const errorDiv = body.querySelector("div#errorDiv") as HTMLDivElement;
+    const successDiv = body.querySelector("div#successDiv") as HTMLDivElement;
+    const inputs = body.querySelectorAll("input") as NodeListOf<HTMLInputElement>;
+    const params:any = {};
+    inputs.forEach(input => {
+        params[input.name] = input.value;
+    });
+    const id = data[0];
+    let parent: HTMLDivElement = which === "crypto" ? cryptoDiv : giftcardDiv;
+    const nameSpan = parent.querySelector("span#" + CSS.escape(id)) as HTMLSpanElement;
+    btn.disabled = true; btn.innerHTML = spinner;
+    Ajax.fetchPage("php/edit_product.php", (data: string) => {
+        if (data.indexOf("success") != -1) {
+            if (which === "giftcard") { 
+                nameSpan.innerText = params.name;
+            } else {
+                nameSpan.innerText = `${params.coin_name} (${params.short_name})`;
+            }
+            errorDiv.classList.add("d-none");
+            successDiv.innerText = data;
+            successDiv.classList.remove("d-none");
+        } else {
+            errorDiv.innerText = data;
+            errorDiv.classList.remove("d-none");
+            successDiv.classList.add("d-none");
+        }
+        btn.disabled = false; btn.innerText = "Change";
+    }, params);
+}
+
+//delete product
 const deleteProduct = (which: string, el: HTMLSpanElement) => {
     const parent = el.parentElement as HTMLDivElement;
     const input = parent.querySelector("input") as HTMLInputElement;
@@ -354,7 +424,6 @@ const deleteProduct = (which: string, el: HTMLSpanElement) => {
 }
 // get all banks
 (function () {
-    //TODO: replace url before server
     Ajax.fetchPage("/fabex/php/data.php?which=banks", (data: string) => {
         const bankList:[] = JSON.parse(data);
         bankList.forEach((bank:string) => {
@@ -397,10 +466,10 @@ const getAllGiftcards = () => {
             showModal(data, "text-danger");
         } else {
             if (cat.length > 0) {
-                cat.forEach((category: any[], index) => {
+                cat.forEach((category: any[]) => {
                     const id = category[0];
                     const children: any[] = [];
-                    subCat.forEach((subCategory: any[], i) => {
+                    subCat.forEach((subCategory: any[]) => {
                         const parentId = subCategory[4];
                         if (parentId == id) {
                             children.push(subCategory);

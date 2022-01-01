@@ -19,11 +19,6 @@ input[type="number"] {
 div#errorDiv {
   word-break: break-all;
 }
-input,
-span,
-p {
-  text-transform: capitalize;
-}
 .text-caps {
   text-transform: capitalize !important;
 }

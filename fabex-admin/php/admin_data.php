@@ -21,13 +21,13 @@ function getBank(mysqli &$conn)
 
 function getCryptos(mysqli &$conn)
 {
-    $sql = "SELECT id, name, acronym, address, status FROM cryptos";
+    $sql = "SELECT id, name, acronym, network, address, status, memo FROM cryptos";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $array = array();
         while ($row = $result->fetch_assoc()) {
             $isOn = $row['status'] == 1 ? true : false;
-            $arr = array($row["id"], $row["name"], $row["acronym"], $row["address"], $isOn);
+            $arr = array($row["id"], $row["name"], $row["acronym"], $row["network"], $row["address"], $row['status'], $row['memo'], $isOn);
             array_push($array, $arr);
         }
         echo json_encode(array("success" => $array));

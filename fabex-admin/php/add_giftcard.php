@@ -16,7 +16,7 @@ $q = "SELECT * FROM giftcards WHERE name='$giftcard_name'";
 $res = $conn->query($q);
 if ($res == true && $res->num_rows > 0) {
     array_push($arr, "Giftcard already exists");
-    echo (json_encode($arr));
+    exit(json_encode($arr, $conn->close()));
 }
 if ($which === "category") {
     $query = "INSERT INTO giftcards (name, type, status)  VALUES ('$giftcard_name','$which',1)";
