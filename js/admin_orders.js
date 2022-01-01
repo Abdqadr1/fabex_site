@@ -6,10 +6,11 @@ var table = document.querySelector("table#table");
 var tableHeader = table.querySelector("thead#header");
 var headers = tableHeader.querySelectorAll("tr.heading");
 var tableBody = table.querySelector("tbody#table_body");
-var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>\n                Please wait... ";
+var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>";
 var tabs = document.querySelectorAll(".nav-tab");
 var modal = document.querySelector("div#modal");
 var modalBody = modal.querySelector("div.modal-body");
+var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 var filterObj = {
     which: "crypto",
     type: 0,
@@ -93,12 +94,10 @@ var cellNames = {
 // change table 
 var changeTable = function (list, filters) {
     showHeader(filters);
-    var which = filters.which;
     var w = filters.which == "crypto" ? 0 : 1;
     var cell = cellNames[filters.type + "" + w];
     var numberOfCells = cell[0];
     tableBody.innerHTML = "";
-    console.log(list);
     if (list.length > 0) {
         list.forEach(function (order) {
             var tr = document.createElement("tr");
@@ -107,12 +106,23 @@ var changeTable = function (list, filters) {
                 var name_1 = cellNames[i];
                 var td = document.createElement("td");
                 if (typeof name_1 === "string") {
-                    td.innerText = order[name_1];
-                    if (name_1 === "memo") {
+                    var val = order[name_1];
+                    td.innerText = val.length > 20 ? val.substring(0, 17) + "..." : val;
+                    if (name_1 === "memo" || name_1 === "email") {
                         td.innerHTML += "<span class='copy material-icons' title='copy full text'>content_copy</span>";
                         var copy = td.querySelector("span.copy");
                         if (copy)
                             copy.onclick = function () { return copyFunc(order[name_1]); };
+                    }
+                    if (name_1 === "time") {
+                        // const date = new Date(order[name]);
+                        // const today = new Date();
+                        // const isToday = date.toDateString() === today.toDateString();
+                        // const day = isToday ? 'Today' : date.toDateString();
+                        // const amPm = date.getHours() > 12 ? "pm" : "am";
+                        // if (isToday) {
+                        // }
+                        // console.log(date.toDateString() + day);
                     }
                 }
                 else if (name_1 instanceof Array) {
@@ -132,7 +142,6 @@ var changeTable = function (list, filters) {
                         copy.onclick = function () { return copyFunc(td.querySelector("input#hidden")); };
                 }
                 else {
-                    console.log(i, "Not defined", filters.status);
                     var id = order['id'];
                     var first = filters.status === 2 ? "reject" : "approve";
                     var second = filters.status === 1 ? "reject" : "undo";
@@ -141,10 +150,7 @@ var changeTable = function (list, filters) {
                     //registering click events for buttons
                     td.querySelectorAll("button").forEach(function (btn) {
                         btn.onclick = function () {
-                            var id = btn.getAttribute("aria-id");
-                            var val = btn.innerText;
-                            console.log("clicking ", id, val);
-                            // change the transaction status
+                            changeStatus(btn);
                         };
                     });
                 }
@@ -164,15 +170,20 @@ var changeTable = function (list, filters) {
 };
 //show and hide modal
 var myModal;
-var showModal = function (message, style) {
+var showModal = function (message, style, duration) {
+    if (duration === void 0) { duration = 0; }
     modalBody.innerText = message;
     modalBody.className = "modal-body py-1 " + style;
     myModal = new bootstrap.Modal(modal, {
         keyboard: false
     });
     myModal.show();
+    if (duration > 0) {
+        setTimeout(function () {
+            myModal.hide();
+        }, duration);
+    }
 };
-var hideModal = function () { return myModal.hide(); };
 // fetch orders
 var fetchOrders = function (filters) {
     var which = filters.which;
@@ -180,23 +191,37 @@ var fetchOrders = function (filters) {
     var action = filters.type;
     loadingContainer.classList.remove("d-none");
     table.classList.add("d-none");
-    Ajax.fetchPage("php/admin_data.php?which=orders&type=" + which + "&action=" + action + "&status=" + status, function (data) {
-        // console.log(data);
+    Ajax.fetchPage("php/admin_data.php?which=orders", function (data) {
         var arr = JSON.parse(data);
         var message = arr[0];
         if (message.toLowerCase().indexOf("success") != -1) {
             changeTable(arr[1], filters);
         }
         else {
-            var text = "Search queries: " + JSON.stringify(filterObj) + "\n \n" + message;
-            showModal(text, "text-danger");
+            showModal(message, "text-danger", 3000);
             changeTable([], filters);
-            setTimeout(function () {
-                hideModal();
-            }, 3000);
         }
         loadingContainer.classList.add("d-none");
-    });
+    }, { "type": which, "action": action, "status": status });
+};
+//change order status 
+var changeStatus = function (btn) {
+    var id = btn.getAttribute("aria-id");
+    var val = btn.innerText.toLowerCase();
+    // console.log("clicking ", id, val);
+    // change the transaction status
+    btn.innerHTML = spinner;
+    Ajax.fetchPage("php/change_tx_status.php", function (data) {
+        var _a;
+        if (data.indexOf("success") != -1) {
+            var tr = (_a = btn.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement;
+            tableBody.removeChild(tr);
+        }
+        else {
+            btn.innerText = val;
+            showModal(data, "text-danger", 3000);
+        }
+    }, { "code": id, "action": val });
 };
 // get all orders
 (function () {

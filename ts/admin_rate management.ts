@@ -44,14 +44,14 @@ const updatePrice = (input: HTMLInputElement, row: HTMLDivElement) => {
     const loader = row.querySelector("div#loader") as HTMLDivElement;
     loader.classList.remove("d-none");
     const icon = row.querySelector("span#mark_icon") as HTMLSpanElement;
-    Ajax.fetchPage(`php/update_prices.php?which=${which}&id=${id}&price=${price}`, (data: string) => {
+    Ajax.fetchPage(`php/update_prices.php`, (data: string) => {
         if (data.toLowerCase().indexOf("success") != -1) {
             showModal(data);
         } else {
             showModal(data, "text-danger");
         }
         loader.classList.add("d-none");
-    });
+    }, {which, id, price});
 }
 //get all rates
 (function () {

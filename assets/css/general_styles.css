@@ -560,6 +560,12 @@ input.admin-rate {
 }
 
 /* admin settings page */
+span.three-dots.dropdown-toggle::after {
+  content: none !important;
+}
+span.dropdown-item {
+  cursor: pointer;
+}
 div.each-crypto {
   background-color: var(--todo-bg);
   display: inline-block;

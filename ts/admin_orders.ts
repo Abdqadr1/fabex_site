@@ -7,12 +7,12 @@ const table = document.querySelector("table#table") as HTMLTableElement;
 const tableHeader = table.querySelector("thead#header") as HTMLTableSectionElement
 const headers = tableHeader.querySelectorAll("tr.heading") as NodeListOf<HTMLTableRowElement>;
 const tableBody = table.querySelector("tbody#table_body") as HTMLTableSectionElement
-const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>
-                Please wait... `;
+const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>`;
 const tabs = document.querySelectorAll(".nav-tab") as NodeListOf<HTMLAnchorElement>;
 const modal = document.querySelector("div#modal") as HTMLDivElement;
 const modalBody = modal.querySelector("div.modal-body") as HTMLDivElement;
 type filterType = { which: string, type: number, status: number };
+const days: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const filterObj:filterType  = {
     which: "crypto",
     type: 0,
@@ -96,12 +96,10 @@ const cellNames:any = {
 // change table 
 const changeTable = (list: any[], filters: filterType) => {
     showHeader(filters);
-    const which = filters.which;
     const w = filters.which == "crypto" ? 0 : 1;
     const cell:any[] = cellNames[filters.type +""+ w];
     const numberOfCells = cell[0];
     tableBody.innerHTML = "";
-    console.log(list);
     if (list.length > 0) {
         list.forEach(order => {
             const tr = document.createElement("tr") as HTMLTableRowElement;
@@ -110,11 +108,23 @@ const changeTable = (list: any[], filters: filterType) => {
                 const name = cellNames[i];
                 const td = document.createElement("td") as HTMLTableCellElement;
                 if (typeof name === "string") {
-                    td.innerText = order[name];
-                    if (name === "memo") {
+                    const val:string = order[name];
+                    td.innerText = val.length > 20 ? val.substring(0, 17)+"..." : val;
+                    if (name === "memo" || name === "email") {
                         td.innerHTML += "<span class='copy material-icons' title='copy full text'>content_copy</span>";
                         const copy = td.querySelector("span.copy") as HTMLSpanElement;
                         if(copy) copy.onclick = () => copyFunc(order[name]);
+                    }
+                    if (name === "time") {
+                        // const date = new Date(order[name]);
+                        // const today = new Date();
+                        // const isToday = date.toDateString() === today.toDateString();
+                        // const day = isToday ? 'Today' : date.toDateString();
+                        // const amPm = date.getHours() > 12 ? "pm" : "am";
+                        // if (isToday) {
+
+                        // }
+                        // console.log(date.toDateString() + day);
                     }
                 } else if (name instanceof Array) {
                     let content:string = order[name[0]];
@@ -133,7 +143,6 @@ const changeTable = (list: any[], filters: filterType) => {
                     const copy = td.querySelector("span.copy") as HTMLSpanElement;
                     if(copy) copy.onclick = () => copyFunc(td.querySelector("input#hidden") as HTMLInputElement);
                 } else {
-                    console.log(i, "Not defined", filters.status);
                     const id = order['id'];
                     const first = filters.status === 2 ? "reject" : "approve";
                     const second = filters.status === 1 ? "reject" : "undo"
@@ -143,11 +152,7 @@ const changeTable = (list: any[], filters: filterType) => {
                     //registering click events for buttons
                     td.querySelectorAll("button").forEach(btn => {
                         btn.onclick = () => {
-                            const id = btn.getAttribute("aria-id");
-                            const val = btn.innerText;
-                            console.log("clicking ", id, val);
-                            // change the transaction status
-                            
+                            changeStatus(btn as HTMLButtonElement);
                         }
                     })
                 }
@@ -165,15 +170,19 @@ const changeTable = (list: any[], filters: filterType) => {
 
 //show and hide modal
 let myModal: any;
-const showModal = (message: string, style: string) => {
+const showModal = (message: string, style: string, duration:number = 0) => {
     modalBody.innerText = message;
     modalBody.className = "modal-body py-1 " + style;
     myModal = new bootstrap.Modal(modal, {
         keyboard: false
     });
-    myModal.show(); 
+    myModal.show();
+    if (duration > 0) {
+        setTimeout(() => {
+            myModal.hide();
+        }, duration);
+    }
 }
-const hideModal = () => myModal.hide();
 // fetch orders
 const fetchOrders = (filters:filterType) => {
     const which = filters.which;
@@ -181,22 +190,34 @@ const fetchOrders = (filters:filterType) => {
     const action = filters.type;
     loadingContainer.classList.remove("d-none");
     table.classList.add("d-none");
-    Ajax.fetchPage(`php/admin_data.php?which=orders&type=${which}&action=${action}&status=${status}`, (data: string) => {
-        // console.log(data);
+    Ajax.fetchPage(`php/admin_data.php?which=orders`, (data: string) => {
         const arr: any[] = JSON.parse(data);
         const message: string = arr[0];
         if (message.toLowerCase().indexOf("success") != -1) {
             changeTable(arr[1], filters);
         } else {
-            const text = "Search queries: " + JSON.stringify(filterObj) + "\n \n" + message;
-            showModal(text, "text-danger");
+            showModal(message, "text-danger", 3000);
             changeTable([], filters);
-            setTimeout(() => {
-                hideModal();
-            }, 3000);
         }
         loadingContainer.classList.add("d-none");
-    })
+    }, { "type": which, "action":action, "status":status });
+}
+//change order status 
+const changeStatus = (btn:HTMLButtonElement) => {
+    const id = btn.getAttribute("aria-id");
+    const val = btn.innerText.toLowerCase();
+    // console.log("clicking ", id, val);
+    // change the transaction status
+    btn.innerHTML = spinner;
+    Ajax.fetchPage(`php/change_tx_status.php`, (data: string) => {
+        if (data.indexOf("success") != -1) {
+            const tr = btn.parentElement?.parentElement as HTMLTableRowElement;
+            tableBody.removeChild(tr);
+        } else {
+            btn.innerText = val;
+            showModal(data, "text-danger", 3000);
+        }
+    }, {"code":id,"action":val})
 }
 
 // get all orders

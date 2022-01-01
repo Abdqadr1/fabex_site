@@ -33,7 +33,7 @@ var updatePrice = function (input, row) {
     var loader = row.querySelector("div#loader");
     loader.classList.remove("d-none");
     var icon = row.querySelector("span#mark_icon");
-    Ajax.fetchPage("php/update_prices.php?which=" + which + "&id=" + id + "&price=" + price, function (data) {
+    Ajax.fetchPage("php/update_prices.php", function (data) {
         if (data.toLowerCase().indexOf("success") != -1) {
             showModal(data);
         }
@@ -41,7 +41,7 @@ var updatePrice = function (input, row) {
             showModal(data, "text-danger");
         }
         loader.classList.add("d-none");
-    });
+    }, { which: which, id: id, price: price });
 };
 //get all rates
 (function () {

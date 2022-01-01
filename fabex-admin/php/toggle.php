@@ -1,15 +1,16 @@
 <?php
 include_once "../../php/connect_db.php";
+$headers = getallheaders();
 if (
-    !isset($_GET["which"]) || empty($_GET["which"]) || !isset($_GET["id"]) || empty($_GET["id"])
-    || !isset($_GET["status"])
+    !isset($headers["which"]) || empty($headers["which"]) || !isset($headers["id"]) || empty($headers["id"])
+    || !isset($headers["status"])
 ) {
-    exit("Invalid parameters..");
+    echo ("Invalid parameters..");
 }
 
-$which = mysqli_escape_string($conn, $_GET["which"]);
-$id = mysqli_escape_string($conn, $_GET["id"]);
-$status = mysqli_escape_string($conn, $_GET["status"]);
+$which = mysqli_escape_string($conn, $headers["which"]);
+$id = mysqli_escape_string($conn, $headers["id"]);
+$status = mysqli_escape_string($conn, $headers["status"]);
 $which = testInput($which);
 $id = testInput($id);
 $status = testInput($status);
@@ -22,10 +23,10 @@ if ($which == "crypto") {
         if ($result === true) {
             echo "Crypto status changed successfully";
         } else {
-            exit("something went wrong ");
+            echo ("something went wrong ");
         }
     } else {
-        exit("does not exist.");
+        echo ("does not exist.");
     }
 } else {
     $sql = "SELECT id FROM giftcards WHERE id='$id'";
@@ -36,9 +37,10 @@ if ($which == "crypto") {
         if ($result === true) {
             echo "Giftcard status changed successfully";
         } else {
-            exit("something went wrong ");
+            echo ("something went wrong ");
         }
     } else {
-        exit("does not exist.");
+        echo ("does not exist.");
     }
 }
+$conn->close();

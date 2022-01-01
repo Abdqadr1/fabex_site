@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var Ajax = /** @class */ (function () {
     function Ajax(form, isF) {
         var _this = this;
@@ -67,8 +78,11 @@ var Ajax = /** @class */ (function () {
         else
             this.ajax();
     };
-    Ajax.fetchPage = function (url, doAfter) {
-        fetch(url).then(function (response) { return response.text(); })
+    Ajax.fetchPage = function (url, doAfter, headers) {
+        if (headers === void 0) { headers = {}; }
+        fetch(url, {
+            headers: __assign({}, headers),
+        }).then(function (response) { return response.text(); })
             .then(function (data) { return doAfter(data); })
             .catch(function (error) { return console.error("An error occurred", error); });
     };

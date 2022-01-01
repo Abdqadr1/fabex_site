@@ -1,11 +1,11 @@
 <?php
-include_once "../../php/connect_db.php";
 if (!isset($_GET["which"]) || empty($_GET["which"])) {
-    exit("Invalid parameters..");
+    echo ("Invalid parameters..");
 }
-
+include_once "../../php/connect_db.php";
 $which = mysqli_escape_string($conn, $_GET["which"]);
 $which = testInput($which);
+
 function getBank(mysqli &$conn)
 {
     $sql = "SELECT * FROM admin_banks LIMIT 1";
@@ -97,13 +97,14 @@ function getRates(mysqli &$conn)
 
 function getAllOrders(mysqli &$conn, string $which)
 {
-    if (!isset($_GET["type"]) || empty($_GET["type"]) || !isset($_GET["action"]) || !isset($_GET["status"])) {
-        exit("Invalid parameters..");
+    $header = getallheaders();
+    if (!isset($header["type"]) || empty($header["type"]) || !isset($header["action"]) || !isset($header["status"])) {
+        echo ("Invalid parameters..");
     }
     $arr = array();
-    $type = mysqli_escape_string($conn, $_GET["type"]);
-    $action = mysqli_escape_string($conn, $_GET["action"]);
-    $status = mysqli_escape_string($conn, $_GET["status"]);
+    $type = mysqli_escape_string($conn, $header["type"]);
+    $action = mysqli_escape_string($conn, $header["action"]);
+    $status = mysqli_escape_string($conn, $header["status"]);
     $type = testInput($type);
     $action = testInput($action);
     $status = testInput($status);
@@ -127,7 +128,8 @@ function getAllOrders(mysqli &$conn, string $which)
         }
         echo json_encode(array("success", $arr));
     } else {
-        exit(json_encode(array("No transaction yet.." . $conn->error, $arr)));
+        array_push($arr, "type: " . $type, "action: " . $action, "status: " . $status);
+        echo (json_encode(array("No transaction found for the search queries \n\n" . json_encode($arr), $arr)));
     }
 }
 
@@ -143,3 +145,4 @@ switch ($which) {
     case "orders":
         return getAllOrders($conn, $which);
 }
+$conn->close();

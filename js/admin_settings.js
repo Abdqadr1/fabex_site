@@ -29,26 +29,14 @@ add_crypto.onclick = function (event) {
 // add crypto function
 var addCrypto = function (content) {
     var div = document.createElement("div");
-    var nameSpan = document.createElement("span");
-    var checkSpan = document.createElement("span");
-    var switchInput = document.createElement("input");
-    var dotSpan = document.createElement("span");
-    dotSpan.className = "material-icons text-primary three-dots";
-    dotSpan.textContent = "more_vert";
-    switchInput.type = "checkbox";
-    switchInput.setAttribute("role", "switch");
-    switchInput.className = "form-check-input";
+    div.className = "each-crypto";
+    var name = content[1] + " (" + content[2].toUpperCase() + ")";
+    div.innerHTML = "<span class=\"d-inline-block crypto-name\" tabindex=\"-1\">" + name + "</span>\n                    <span class=\"form-switch mx-3\">\n                        <input id='" + content[0] + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\">\n                    </span>\n                    <div class=\"d-inline-block\">\n                        <span data-bs-toggle=\"dropdown\" id=\"dropdown\" class=\"material-icons text-primary three-dots dropdown-toggle\" aria-expanded='false'>more_vert</span>\n                        <ul class=\"dropdown-menu\" aria-labelledby=\"dropdown\">\n                            <li><span id='edit' class=\"dropdown-item text-primary\">Edit</span></li>\n                            <li><span id='delete' class=\"dropdown-item text-danger\">Delete</span></li>\n                        </ul>\n                    </div>";
+    var switchInput = div.querySelector("input");
+    var deleteAction = div.querySelector("span#delete");
+    deleteAction.onclick = function () { return deleteProduct("crypto", div); };
     switchInput.checked = content[content.length - 1];
-    switchInput.id = content[0];
     switchInput.onchange = function (event) { return toggleProduct(event, "crypto"); };
-    checkSpan.className = "form-switch mx-3";
-    checkSpan.appendChild(switchInput);
-    nameSpan.className = "d-inline-block crypto-name";
-    nameSpan.textContent = content[1] + " (" + content[2].toUpperCase() + ")";
-    div.classList.add("each-crypto");
-    div.appendChild(nameSpan);
-    div.appendChild(checkSpan);
-    div.appendChild(dotSpan);
     cryptoDiv.insertBefore(div, cryptoDiv.lastElementChild);
 };
 // crypto submit
@@ -144,12 +132,14 @@ var submitSubGiftCard = function (form, subCatDiv) {
         var message = arr[0].toLowerCase();
         if (message.indexOf("success") != -1) {
             var content = arr[1];
-            var div = document.createElement("div");
-            div.className = "inline-block mt-2";
-            div.innerHTML = "<span class=\"d-inline-block crypto-name\">" + content[1] + "</span>\n                                <span class=\"form-switch mx-3\">\n                                    <input id='" + content[0] + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\" checked>\n                                </span>\n                                <span class=\"material-icons text-primary three-dots\">more_vert</span>";
-            var input = div.querySelector("input");
+            var div_1 = document.createElement("div");
+            div_1.className = "inline-block mt-2";
+            div_1.innerHTML = "<span class=\"d-inline-block crypto-name\">" + content[1] + "</span>\n                                <span class=\"form-switch mx-3\">\n                                    <input id='" + content[0] + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\" checked>\n                                </span>\n                                <div class=\"d-inline-block\">\n                                    <span data-bs-toggle=\"dropdown\" id=\"dropdown\" class=\"material-icons text-primary three-dots dropdown-toggle\" aria-expanded='false'>more_vert</span>\n                                    <ul class=\"dropdown-menu\" aria-labelledby=\"dropdown\">\n                                        <li><span id='edit' class=\"dropdown-item text-primary\">Edit</span></li>\n                                        <li><span id='delete' class=\"dropdown-item text-danger\">Delete</span></li>\n                                    </ul>\n                                </div>";
+            var input = div_1.querySelector("input");
+            var deleteAction = div_1.querySelector("span#delete");
+            deleteAction.onclick = function () { return deleteProduct("crypto", div_1); };
             input.onchange = function (event) { return toggleProduct(event, 'giftcard'); };
-            subCatDiv.appendChild(div);
+            subCatDiv.appendChild(div_1);
             form.reset();
             form.classList.remove("d-block");
             form.classList.add("d-none");
@@ -176,9 +166,11 @@ var addGiftCardFun = function (content, children) {
     div.className = "cap";
     var each = document.createElement("div");
     each.className = "each-giftcard";
-    each.innerHTML = "<div class=\"inline-block\">\n                            <span class=\"d-inline-block crypto-name\">" + content[1] + "</span>\n                            <span class=\"form-switch mx-3\">\n                                <input id='" + id + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\">\n                            </span>\n                            <span class=\"material-icons text-primary three-dots\">more_vert</span>\n                        </div>";
+    each.innerHTML = "<div class=\"inline-block\">\n                            <span class=\"d-inline-block crypto-name\">" + content[1] + "</span>\n                            <span class=\"form-switch mx-3\">\n                                <input id='" + id + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\">\n                            </span>\n                            <div class=\"d-inline-block\">\n                                    <span data-bs-toggle=\"dropdown\" id=\"dropdown\" class=\"material-icons text-primary three-dots dropdown-toggle\" aria-expanded='false'>more_vert</span>\n                                    <ul class=\"dropdown-menu\" aria-labelledby=\"dropdown\">\n                                        <li><span id='edit' class=\"dropdown-item text-primary\">Edit</span></li>\n                                        <li><span id='delete' class=\"dropdown-item text-danger\">Delete</span></li>\n                                    </ul>\n                                </div>\n                        </div>";
     var input = each.querySelector("input");
     input.checked = isChecked;
+    var deleteAction = each.querySelector("span#delete");
+    deleteAction.onclick = function () { return deleteProduct("giftcard", div); };
     input.onchange = function (event) { return toggleProduct(event, 'giftcard'); };
     var subCatDiv = document.createElement("div");
     subCatDiv.id = "sub_cat_div";
@@ -191,9 +183,11 @@ var addGiftCardFun = function (content, children) {
             var checked = cat[3] == 1 ? true : false;
             var div = document.createElement("div");
             div.className = "inline-block mt-2";
-            div.innerHTML = "<span class=\"d-inline-block crypto-name\">" + cat[1] + "</span>\n                                <span class=\"form-switch mx-3\">\n                                    <input id='" + cat[0] + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\">\n                                </span>\n                                <span class=\"material-icons text-primary three-dots\">more_vert</span>";
+            div.innerHTML = "<span class=\"d-inline-block crypto-name\">" + cat[1] + "</span>\n                                <span class=\"form-switch mx-3\">\n                                    <input id='" + cat[0] + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\">\n                                </span>\n                                <div class=\"d-inline-block\">\n                                    <span data-bs-toggle=\"dropdown\" id=\"dropdown\" class=\"material-icons text-primary three-dots dropdown-toggle\" aria-expanded='false'>more_vert</span>\n                                    <ul class=\"dropdown-menu\" aria-labelledby=\"dropdown\">\n                                        <li><span id='edit' class=\"dropdown-item text-primary\">Edit</span></li>\n                                        <li><span id='delete' class=\"dropdown-item text-danger\">Delete</span></li>\n                                    </ul>\n                                </div>";
             var input = div.querySelector("input");
             input.checked = checked;
+            var deleteAction = div.querySelector("span#delete");
+            deleteAction.onclick = function () { return deleteProduct("giftcard", div); };
             input.onchange = function (event) { return toggleProduct(event, 'giftcard'); };
             subCatDiv.appendChild(div);
         });
@@ -257,8 +251,9 @@ addGiftcardForm.onsubmit = function (event) {
 var toggleProduct = function (event, which) {
     event.preventDefault();
     var el = event.target;
+    var id = el.id;
     var status = el.checked ? 1 : 0;
-    Ajax.fetchPage("php/toggle.php?which=" + which + "&status=" + status + "&id=" + el.id, function (data) {
+    Ajax.fetchPage("php/toggle.php", function (data) {
         var message = data;
         if (message.indexOf('success') != -1) {
             showModal(message);
@@ -270,12 +265,13 @@ var toggleProduct = function (event, which) {
         setTimeout(function () {
             hideModal();
         }, 2000);
-    });
+    }, { status: status, id: id, which: which });
 };
 //show and hide modal
 var myModal;
-var showModal = function (message, style) {
+var showModal = function (message, style, duration) {
     if (style === void 0) { style = "text-success"; }
+    if (duration === void 0) { duration = 0; }
     var content = document.querySelector("div#modal_body");
     content.innerText = message;
     content.className = "modal-body py-1 " + style;
@@ -283,8 +279,29 @@ var showModal = function (message, style) {
         keyboard: false
     });
     myModal.show();
+    if (duration > 0) {
+        setTimeout(function () {
+            myModal.hide();
+        }, duration);
+    }
 };
 var hideModal = function () { return myModal.hide(); };
+//deleteProduct
+var deleteProduct = function (which, el) {
+    var parent = el.parentElement;
+    var input = parent.querySelector("input");
+    var id = input.id;
+    Ajax.fetchPage("php/delete_product.php", function (data) {
+        if (data.toLowerCase().indexOf("success") != -1) {
+            showModal(data, "text-success", 3000);
+            //remove element
+            parent.removeChild(el);
+        }
+        else {
+            showModal(data, "text-danger", 3000);
+        }
+    }, { which: which, id: id });
+};
 // get all banks
 (function () {
     //TODO: replace url before server
@@ -298,8 +315,7 @@ var hideModal = function () { return myModal.hide(); };
         });
     });
 })();
-//get all cryptos 
-(function () {
+var getAllCryptos = function () {
     Ajax.fetchPage("php/admin_data.php?which=crypto", function (data) {
         var object = JSON.parse(data);
         var keys = Object.keys(object);
@@ -320,9 +336,8 @@ var hideModal = function () { return myModal.hide(); };
             }, 2000);
         }
     });
-})();
-//get all giftcards 
-(function () {
+};
+var getAllGiftcards = function () {
     Ajax.fetchPage("php/admin_data.php?which=giftcard", function (data) {
         var arr = JSON.parse(data);
         var cat = arr[0];
@@ -349,6 +364,14 @@ var hideModal = function () { return myModal.hide(); };
             giftcardDiv.classList.remove("d-none");
         }
     });
+};
+//get all cryptos 
+(function () {
+    getAllCryptos();
+})();
+//get all giftcards 
+(function () {
+    getAllGiftcards();
 })();
 //get admin bank details 
 (function () {

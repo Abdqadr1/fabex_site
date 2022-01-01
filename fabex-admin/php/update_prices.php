@@ -1,14 +1,15 @@
 <?php
 include_once "../../php/connect_db.php";
+$headers = getallheaders();
 if (
-    !isset($_GET["which"]) || empty($_GET["which"]) || !isset($_GET["id"])
-    || !isset($_GET["price"]) || empty($_GET["price"])
+    !isset($headers["which"]) || empty($headers["which"]) || !isset($headers["id"])
+    || !isset($headers["price"]) || empty($headers["price"])
 ) {
-    exit("Invalid parameters..");
+    echo ("Invalid parameters..");
 }
-$which = mysqli_escape_string($conn, $_GET["which"]);
-$id = mysqli_escape_string($conn, $_GET["id"]);
-$price = mysqli_escape_string($conn, $_GET["price"]);
+$which = mysqli_escape_string($conn, $headers["which"]);
+$id = mysqli_escape_string($conn, $headers["id"]);
+$price = mysqli_escape_string($conn, $headers["price"]);
 $which = testInput($which);
 $id = testInput($id);
 $price = testInput($price);
@@ -19,7 +20,7 @@ if ($which == "crypto") {
     if ($result == true) {
         echo "Crypto price changed successfully";
     } else {
-        exit("Something went wrong updating crypto prices, Try again.");
+        echo ("Something went wrong updating crypto prices, Try again.");
     }
 } else {
     $sql = "UPDATE giftcards SET price='$price' WHERE id='$id'";
@@ -27,6 +28,7 @@ if ($which == "crypto") {
     if ($result == true) {
         echo "Giftcard price changed successfully";
     } else {
-        exit("Something went wrong updating giftcard price, Try again.");
+        echo ("Something went wrong updating giftcard price, Try again.");
     }
 }
+$conn->close();

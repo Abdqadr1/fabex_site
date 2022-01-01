@@ -11,11 +11,17 @@
             <div class="mx-0 mt-2 d-none" id="crypto_div">
                 <!-- each crypto -->
                 <!-- <div class="each-crypto">
-                    <span class="d-inline-block crypto-name">Bitcoin (BTC)</span>
+                    <span class="d-inline-block crypto-name" contenteditable tabindex="-1">Bitcoin (BTC)</span>
                     <span class="form-switch mx-3">
                         <input class="form-check-input" type="checkbox" role="switch">
                     </span>
-                    <span class="material-icons text-primary three-dots">more_vert</span>
+                    <div class="d-inline-block">
+                        <span data-bs-toggle="dropdown" id="dropdown" class="material-icons text-primary three-dots dropdown-toggle" aria-expanded='false'>more_vert</span>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown">
+                            <li><span class="dropdown-item text-primary">Edit</span></li>
+                            <li><span class="dropdown-item text-danger">Delete</span></li>
+                        </ul>
+                    </div>
                 </div> -->
                 <div class="add-crypto mt-2" title="add new crypto" id="add_crypto">
                     <span class="material-icons add-crypto">add</span>

@@ -1,11 +1,11 @@
 <?php
 include_once "../../php/connect_db.php";
 if (!isset($_POST["bank_name"]) || !isset($_POST["account_number"]) || !isset($_POST["account_name"])) {
-    exit("Incomplete parameters!");
+    echo ("Incomplete parameters!");
 }
 
 if (empty($_POST["bank_name"]) || empty($_POST["account_number"]) || empty($_POST["account_name"])) {
-    exit("Invalid parameters!");
+    echo ("Invalid parameters!");
 }
 
 $bank_name = mysqli_escape_string($conn, $_POST["bank_name"]);
@@ -23,7 +23,7 @@ if ($res->num_rows > 0) {
     if ($result === true) {
         echo "Success: Bank Inserted..";
     } else {
-        exit("Something went wrong " . $conn->error);
+        echo ("Something went wrong " . $conn->error);
     }
 } else {
     $query = "INSERT INTO admin_banks (bank_name, account_number, account_name) VALUES ('$bank_name','$account_number','$account_name')";
@@ -31,6 +31,7 @@ if ($res->num_rows > 0) {
     if ($result === true) {
         echo "Success: Bank Inserted..";
     } else {
-        exit("Something went wrong " . $conn->error);
+        echo ("Something went wrong " . $conn->error);
     }
 }
+$conn->close();

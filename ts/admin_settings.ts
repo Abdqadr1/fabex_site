@@ -34,26 +34,24 @@ add_crypto.onclick = event => {
 // add crypto function
 const addCrypto = (content:any[]) => {
     const div = document.createElement("div") as HTMLDivElement;
-    const nameSpan = document.createElement("span") as HTMLSpanElement;
-    const checkSpan = document.createElement("span") as HTMLSpanElement;
-    const switchInput = document.createElement("input") as HTMLInputElement;
-    const dotSpan = document.createElement("span") as HTMLSpanElement;
-    dotSpan.className = "material-icons text-primary three-dots";
-    dotSpan.textContent = "more_vert";
-    switchInput.type = "checkbox";
-    switchInput.setAttribute("role", "switch");
-    switchInput.className = "form-check-input";
+    div.className = "each-crypto";
+    const name = `${content[1]} (${content[2].toUpperCase()})`;
+    div.innerHTML = `<span class="d-inline-block crypto-name" tabindex="-1">${name}</span>
+                    <span class="form-switch mx-3">
+                        <input id='${content[0]}' class="form-check-input" type="checkbox" role="switch">
+                    </span>
+                    <div class="d-inline-block">
+                        <span data-bs-toggle="dropdown" id="dropdown" class="material-icons text-primary three-dots dropdown-toggle" aria-expanded='false'>more_vert</span>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown">
+                            <li><span id='edit' class="dropdown-item text-primary">Edit</span></li>
+                            <li><span id='delete' class="dropdown-item text-danger">Delete</span></li>
+                        </ul>
+                    </div>`;
+    const switchInput = div.querySelector("input") as HTMLInputElement;
+    const deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
+    deleteAction.onclick = () => deleteProduct("crypto", div);
     switchInput.checked = content[content.length - 1];
-    switchInput.id = content[0];
     switchInput.onchange = event => toggleProduct(event, "crypto");
-    checkSpan.className = "form-switch mx-3";
-    checkSpan.appendChild(switchInput);
-    nameSpan.className = "d-inline-block crypto-name";
-    nameSpan.textContent = `${content[1]} (${content[2].toUpperCase()})`;
-    div.classList.add("each-crypto");
-    div.appendChild(nameSpan);
-    div.appendChild(checkSpan);
-    div.appendChild(dotSpan);
     cryptoDiv.insertBefore(div, cryptoDiv.lastElementChild);
 }
 
@@ -155,8 +153,16 @@ const submitSubGiftCard = (form: HTMLFormElement, subCatDiv:HTMLDivElement) => {
                                 <span class="form-switch mx-3">
                                     <input id='${content[0]}' class="form-check-input" type="checkbox" role="switch" checked>
                                 </span>
-                                <span class="material-icons text-primary three-dots">more_vert</span>`;
+                                <div class="d-inline-block">
+                                    <span data-bs-toggle="dropdown" id="dropdown" class="material-icons text-primary three-dots dropdown-toggle" aria-expanded='false'>more_vert</span>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown">
+                                        <li><span id='edit' class="dropdown-item text-primary">Edit</span></li>
+                                        <li><span id='delete' class="dropdown-item text-danger">Delete</span></li>
+                                    </ul>
+                                </div>`;
             const input = div.querySelector("input") as HTMLInputElement;
+            const deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
+            deleteAction.onclick = () => deleteProduct("crypto", div);
             input.onchange = event => toggleProduct(event, 'giftcard');
             subCatDiv.appendChild(div);
             form.reset();
@@ -189,10 +195,18 @@ const addGiftCardFun = (content: any[], children: any[]) => {
                             <span class="form-switch mx-3">
                                 <input id='${id}' class="form-check-input" type="checkbox" role="switch">
                             </span>
-                            <span class="material-icons text-primary three-dots">more_vert</span>
+                            <div class="d-inline-block">
+                                    <span data-bs-toggle="dropdown" id="dropdown" class="material-icons text-primary three-dots dropdown-toggle" aria-expanded='false'>more_vert</span>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown">
+                                        <li><span id='edit' class="dropdown-item text-primary">Edit</span></li>
+                                        <li><span id='delete' class="dropdown-item text-danger">Delete</span></li>
+                                    </ul>
+                                </div>
                         </div>`;
     const input = each.querySelector("input") as HTMLInputElement;
     input.checked = isChecked;
+    let deleteAction = each.querySelector("span#delete") as HTMLSpanElement;
+    deleteAction.onclick = () => deleteProduct("giftcard", div);
     input.onchange = event => toggleProduct(event, 'giftcard');
     const subCatDiv = document.createElement("div") as HTMLDivElement;
     subCatDiv.id = "sub_cat_div";
@@ -209,9 +223,17 @@ const addGiftCardFun = (content: any[], children: any[]) => {
                                 <span class="form-switch mx-3">
                                     <input id='${cat[0]}' class="form-check-input" type="checkbox" role="switch">
                                 </span>
-                                <span class="material-icons text-primary three-dots">more_vert</span>`;
+                                <div class="d-inline-block">
+                                    <span data-bs-toggle="dropdown" id="dropdown" class="material-icons text-primary three-dots dropdown-toggle" aria-expanded='false'>more_vert</span>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown">
+                                        <li><span id='edit' class="dropdown-item text-primary">Edit</span></li>
+                                        <li><span id='delete' class="dropdown-item text-danger">Delete</span></li>
+                                    </ul>
+                                </div>`;
             const input = div.querySelector("input") as HTMLInputElement;
-            input.checked = checked;
+            input.checked = checked;   
+            let deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
+            deleteAction.onclick = () => deleteProduct("giftcard", div);
             input.onchange = event => toggleProduct(event, 'giftcard');
             subCatDiv.appendChild(div);
         })
@@ -282,8 +304,9 @@ addGiftcardForm.onsubmit = event => {
 const toggleProduct = (event: Event, which:string) => {
     event.preventDefault();
     const el = event.target as HTMLInputElement;
+    const id = el.id;
     const status = el.checked ? 1 : 0;
-    Ajax.fetchPage(`php/toggle.php?which=${which}&status=${status}&id=${el.id}`, (data: string) => {
+    Ajax.fetchPage(`php/toggle.php`, (data: string) => {
         const message:string = data;
         if (message.indexOf('success') != -1) {
             showModal(message);
@@ -294,11 +317,11 @@ const toggleProduct = (event: Event, which:string) => {
         setTimeout(() => {
             hideModal();
         }, 2000);
-    })
+    }, {status, id, which})
 }
 //show and hide modal
 let myModal: any;
-const showModal = (message: string, style:string = "text-success") => {
+const showModal = (message: string, style:string = "text-success", duration:number = 0) => {
     const content = document.querySelector("div#modal_body") as HTMLDivElement;
     content.innerText = message;
     content.className = "modal-body py-1 " + style;
@@ -306,8 +329,29 @@ const showModal = (message: string, style:string = "text-success") => {
         keyboard: false
     });
     myModal.show();
+    if (duration > 0) {
+        setTimeout(() => {
+            myModal.hide();
+        }, duration);
+    }
 }
 const hideModal = () => myModal.hide();
+
+//deleteProduct
+const deleteProduct = (which: string, el: HTMLSpanElement) => {
+    const parent = el.parentElement as HTMLDivElement;
+    const input = parent.querySelector("input") as HTMLInputElement;
+    const id = input.id;
+    Ajax.fetchPage("php/delete_product.php", (data: string) => {
+        if (data.toLowerCase().indexOf("success") != -1) {
+            showModal(data, "text-success", 3000);
+            //remove element
+            parent.removeChild(el);
+        } else {
+            showModal(data, "text-danger", 3000);
+        }
+    },{which, id})
+}
 // get all banks
 (function () {
     //TODO: replace url before server
@@ -322,12 +366,11 @@ const hideModal = () => myModal.hide();
     })
 }
 )();
-//get all cryptos 
-(function () {
- Ajax.fetchPage("php/admin_data.php?which=crypto", (data: string) => {
-        const object: {success:[][]} = JSON.parse(data);
+const getAllCryptos = () => {
+    Ajax.fetchPage("php/admin_data.php?which=crypto", (data: string) => {
+        const object: { success: [][] } = JSON.parse(data);
         const keys = Object.keys(object);
-        const message:string = keys[0];
+        const message: string = keys[0];
         if (message.toLowerCase().indexOf('success') != -1) {
             const array: [][] = object.success;
             array.forEach(arr => {
@@ -342,10 +385,9 @@ const hideModal = () => myModal.hide();
                 hideModal();
             }, 2000);
         }
-    })   
-})();
-//get all giftcards 
-(function () {
+    }); 
+}
+const getAllGiftcards = () => {
     Ajax.fetchPage("php/admin_data.php?which=giftcard", (data: string) => {
         const arr = JSON.parse(data);
         const cat:[] = arr[0];
@@ -371,6 +413,14 @@ const hideModal = () => myModal.hide();
             giftcardDiv.classList.remove("d-none");
         }
     })
+}
+//get all cryptos 
+(function () {
+    getAllCryptos();
+})();
+//get all giftcards 
+(function () {
+    getAllGiftcards();
 })();
 //get admin bank details 
 (function () {
