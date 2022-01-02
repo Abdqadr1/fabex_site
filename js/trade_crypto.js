@@ -152,15 +152,13 @@ buttons.forEach(function (element) {
 });
 // get all banks
 (function () {
-    //TODO: replace url before server
-    Ajax.fetchPage("/fabex/php/data.php?which=banks", function (data) {
+    Ajax.fetchPage("php/data.php?which=banks", function (data) {
         bankList = JSON.parse(data);
     });
 })();
 // get all banks
 (function () {
-    //TODO: replace url before server
-    Ajax.fetchPage("/fabex/php/data.php?which=coins", function (data) {
+    Ajax.fetchPage("php/data.php?which=coins", function (data) {
         var coinList = JSON.parse(data);
         var keys = Object.keys(coinList);
         console.log(keys);

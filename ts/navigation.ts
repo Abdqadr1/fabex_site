@@ -1,5 +1,6 @@
 declare const fname: string;
-let version = 1.00;
+declare let version: number;
+declare let activePage:string;
 import { Ajax } from "./ajax.js";
 const jsFolder = "js/";
 const navLinks = document.querySelectorAll("li>a.nav-link") as NodeListOf<HTMLAnchorElement>;
@@ -11,13 +12,12 @@ const loaderHTML = `<div class='d-flex align-items-center justify-content-center
                 <span class='visually-hidden'>Loading...</span>
             </div>
         </div>`;
-let activePage = "Dashboard";
 navLinks.forEach(element => {
     element.onclick = (event) => {
         event.preventDefault();
         (navToggleButton.parentElement as HTMLButtonElement).classList.add("collapsed");
         (navToggleButton.parentElement as HTMLButtonElement).setAttribute("aria-expanded", "false");
-        console.log(navToggleButton.parentElement);
+        // console.log(navToggleButton.parentElement);
         navLinkDiv.classList.remove("show");
         let text = element.innerText;
         if (activePage !== text) {

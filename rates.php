@@ -5,8 +5,7 @@
         </div>
         <div class="mx-auto" id="rates_container">
             <p class="trans-history">Exchange rates</p>
-            <div class="rates">
-                <!-- each rate -->
+            <!-- <div class="rates">
                 <div class="row justify-content-between rate">
                     <div class="col-9 ml-2">
                         <span class="rate-title">Crypto</span><br>
@@ -17,7 +16,6 @@
                 </div>
             </div>
             <div class="rates">
-                <!-- each transaction -->
                 <div class="row justify-content-between rate">
                     <div class="col-9 ml-2">
                         <span class="rate-title">Amazon Gift card (200 above)</span><br>
@@ -42,7 +40,7 @@
                         <span class="rate-price">185/$</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
 
     </div>

@@ -30,7 +30,7 @@
                     </div>
                     <div class="col-11 col-md-5 mx-auto">
                         <label for="email" class="form-label settings">Email</label>
-                        <input name="email" type="email" class="form-control rad8" id="email" placeholder="josephy123@gmail.com" required disabled>
+                        <input name="email" type="email" class="form-control rad8" id="email" placeholder="josephy123@gmail.com" disabled>
                     </div>
                 </div>
                 <p class="fw-bold mt-3 mx-3 mx-md-4 fs-5">Bank Information</p>
@@ -49,7 +49,7 @@
                 <div class="row justify-content-between gap no-margin mt-1 my-3">
                     <div class="col-11 col-md-5 mx-auto">
                         <label for="bvn" class="form-label settings">Bank verification number</label>
-                        <input name="bvn" type="text" class="form-control rad8" id="bvn" placeholder="2222225555" required>
+                        <input name="bvn" type="text" class="form-control rad8" id="bvn" placeholder="2222225555" disabled>
                     </div>
                     <div class="col-11 col-md-5 mx-auto">
                     </div>
@@ -67,17 +67,20 @@
                 <div class="row justify-content-center">
                     <div tabindex="-1" class="alert alert-success col-10 d-none text-center" id="successDiv" role="alert"></div>
                     <div tabindex="-1" class="alert alert-danger col-10 d-none text-center" id="errorDiv" role="alert"></div>
-                    <div class="col-10 mt-1 my-3">
+                    <div class="col-10 mt-1 my-3 position-relative">
                         <label for="currentpass" class="form-label settings">Current password</label>
                         <input name="current_password" type="password" class="form-control rad8" id="currentpass" placeholder="" required>
+                        <span class="material-icons toggle-password">visibility</span>
                     </div>
-                    <div class="col-10 mt-1 my-3">
+                    <div class="col-10 mt-1 my-3 position-relative">
                         <label for="newpass" class="form-label settings">New password</label>
                         <input name="new_password" type="password" class="form-control rad8" id="newpass" placeholder="At least 8 characters" required>
+                        <span class="material-icons toggle-password">visibility</span>
                     </div>
-                    <div class="col-10 mt-1 my-3">
+                    <div class="col-10 mt-1 my-3 position-relative">
                         <label for="conpass" class="form-label settings">Confirm password</label>
                         <input name="con_password" type="password" class="form-control rad8" id="conpass" placeholder="At least 8 characters" required>
+                        <span class="material-icons toggle-password">visibility</span>
                     </div>
 
                     <div class="row justify-content-center">

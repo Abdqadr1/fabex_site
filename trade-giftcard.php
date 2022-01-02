@@ -1,13 +1,10 @@
 <?php
 session_start();
-if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
-    header("location: login");
-}
-$fname = $_SESSION["fname"];
-if (!isset($_SESSION["id"]) || !isset($_SESSION["fname"]) || empty($_SESSION["id"]) || empty($_SESSION["fname"])) {
-    header("location: login");
-    exit();
-}
+
+include_once "functions.php";
+isTimeout();
+isLoggedIn();
+
 include_once "header.php"; ?>
 
 <body>

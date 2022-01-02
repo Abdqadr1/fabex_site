@@ -1,4 +1,8 @@
-<?php include_once "header.php"; ?>
+<?php
+session_start();
+$_SESSION = array();
+
+include_once "header.php"; ?>
 
 <body>
     <div class="body no-margin">

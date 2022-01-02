@@ -148,8 +148,7 @@ class User
     public function changeInfo(mysqli &$conn)
     {
         $sql = "UPDATE users SET fname='{$this->fname}', lname='{$this->lname}' ,phone='{$this->phone}',
-         bank_name='{$this->bank_name}', account_number='{$this->account_number}', bvn='{$this->bvn}' 
-        WHERE id='{$this->id}'";
+         bank_name='{$this->bank_name}', account_number='{$this->account_number}' WHERE id='{$this->id}'";
         $result = $conn->query($sql);
         if ($result === true) {
             echo "Success: info updated!";
@@ -160,12 +159,23 @@ class User
 
     public function changeCurrentPassword(mysqli &$conn, string $newPass)
     {
-        $query = "UPDATE users SET pword='$newPass' WHERE id='{$this->id}' AND pword='{$this->pword}'";
-        $bank_query = $conn->query($query);
-        if ($bank_query === true) {
-            echo "Password changed successfully";
-        } else {
-            echo "Error updating record: " . $conn->error;
+        //get current password
+        $sql = "SELECT pword FROM users WHERE id='{$this->id}'";
+        $res = $conn->query($sql);
+        if ($res == true && $res->num_rows == 1) {
+            $r = $res->fetch_assoc();
+            $pword = $r['pword'];
+            if (password_verify($this->pword, $pword)) {
+                $query = "UPDATE users SET pword='$newPass' WHERE id='{$this->id}'";
+                $bank_query = $conn->query($query);
+                if ($bank_query === true) {
+                    echo "Password changed successfully";
+                } else {
+                    echo "Error updating record: " . $conn->error;
+                }
+            } else {
+                exit("Current password wrong!");
+            }
         }
     }
 }

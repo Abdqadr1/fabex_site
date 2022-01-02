@@ -9,7 +9,6 @@ if (!isset($_SESSION['id']) || empty($_SESSION['id'])) {
     exit("No valid user");
 }
 $id = $_SESSION['id'];
-$output = array();
 
 function getStatusColor($stat)
 {
@@ -57,9 +56,12 @@ function getTimeDiff($date)
     if ($i > 0) return plural($i, "minute") . " ago";
     if ($s > 0) return plural($s, "second") . " ago";
 };
-$sql = "SELECT descrip, time, amount, id, status FROM trx_history WHERE u_id='$id' AND status>0 ORDER BY time DESC";
+
+$output = array();
+
+$sql = "SELECT descrip, time, amount, id, status FROM trx_history WHERE u_id='$id' AND status != 0 ORDER BY time DESC";
 $result = $conn->query($sql);
-if ($result->num_rows > 0) {
+if ($result == true && $result->num_rows > 0) {
     while ($rows = $result->fetch_assoc()) {
         $desc = $rows["descrip"];
         $amount = $rows['amount'];
@@ -68,22 +70,19 @@ if ($result->num_rows > 0) {
         $time = getTimeDiff($rows['time']);
         $statText = getStatusText($rows['status']);
 
-        $each = "<div class='row justify-content-between transaction' id='$tid'>
-                <div class='col-8 ml-2'>
-                    <span class='trans-title'>$desc</span><br>
-                    <span class='trans-status'>
-                        <span class='ellipse' style='--type: var(--$status);'></span>$statText</span>
-                </div>
-                <div class='col-3 text-to-right'>
-                    <span class='trans-amount'>N$amount</span><br>
-                    <span class='trans-time'>$time</span>
-                </div>
-            </div>";
-        array_push($output, $each);
+        // $each = "<div class='row justify-content-between transaction' id='$tid'>
+        //         <div class='col-8 ml-2'>
+        //             <span class='trans-title'>$desc</span><br>
+        //             <span class='trans-status'>
+        //                 <span class='ellipse' style='--type: var(--$status);'></span>$statText</span>
+        //         </div>
+        //         <div class='col-3 text-to-right'>
+        //             <span class='trans-amount'>N$amount</span><br>
+        //             <span class='trans-time'>$time</span>
+        //         </div>
+        //     </div>";
+        array_push($output, array($tid, $desc, $amount, $time, $status, $statText));
     }
-} else {
-    $no = "no history";
-    array_push($output, $no);
 }
 
-echo implode("", $output);
+echo json_encode($output);

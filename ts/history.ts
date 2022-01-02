@@ -1,28 +1,40 @@
 import { Ajax } from "./ajax.js";
-const noHistory = document.querySelector("div#no-history") as HTMLDivElement;
-const history = document.querySelector("div#history") as HTMLDivElement;
-
+const historyDiv = document.querySelector("div#historyDiv") as HTMLDivElement;
 const loadingContainer = document.querySelector("div#loadingContainer") as HTMLDivElement;
+const noHistory = document.querySelector("div#no-history") as HTMLDivElement;
 
+const addHistory = (list: [][]) => {
+    const history = document.createElement("div") as HTMLDivElement;
+    history.className = "history";
+    list.forEach((each:any[]) => {
+        const div = document.createElement("div") as HTMLDivElement;
+        div.className = "row justify-content-between transaction";
+        div.innerHTML = `<div class="col-8 ml-2">
+                        <span class="trans-title">${each[1]}</span><br>
+                        <span class="trans-status">
+                            <span class="ellipse" style="--type: var(--${each[4]});"></span>${each[5]}</span>
+                    </div>
+                    <div class="col-3 text-to-right">
+                        <span class="trans-amount">${each[2]}</span><br>
+                        <span class="trans-time">${each[3]}</span>
+                    </div>`;
+        history.appendChild(div);
+    });
+    historyDiv.appendChild(history);
+}
+
+// get history 
 (
     function () {
-    // TODO: dont forget to change the url before uploading to the server
-        //TODO: get user history
         console.info("fetching history from server...");
-        Ajax.fetchPage(/** correct the url before server */"/fabex/php/get_history.php", (data: string) => {
-            // console.log(data);
-            if (data.toLowerCase().indexOf("no history") != -1) {
-                noHistory.classList.remove("d-none");
-                noHistory.classList.add("d-flex");
+        Ajax.fetchPage("php/get_history.php", (data: string) => {
+            const arr:any[] = JSON.parse(data);
+            // console.log(arr);
+            if (arr.length > 0) {
+                addHistory(arr);
             } else {
-                noHistory.classList.remove("d-flex");
-                noHistory.classList.add("d-none");
-                history.innerHTML = "";
-                history.innerHTML = data;
-                history.classList.remove("d-none");
-                history.classList.add("d-block");
+                noHistory.classList.remove("d-none");
             }
-            loadingContainer.classList.remove("d-block");
             loadingContainer.classList.add("d-none");
         });
     }

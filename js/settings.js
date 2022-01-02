@@ -13,6 +13,22 @@ var changeInfoErrorDiv = changeInfoForm.querySelector("div#errorDiv");
 var changePassErrorDiv = changePassForm.querySelector("div#errorDiv");
 var changeInfoSuccessDiv = changeInfoForm.querySelector("div#successDiv");
 var changePassSuccessDiv = changePassForm.querySelector("div#successDiv");
+var toggleIcons = changePassForm.querySelectorAll("span.toggle-password");
+var passwordInputs = changePassForm.querySelectorAll('input[type=password]');
+toggleIcons.forEach(function (icon, index) {
+    icon.onclick = function (event) {
+        event.stopPropagation();
+        var passwordInput = passwordInputs[index];
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            icon.innerText = "visibility_off";
+        }
+        else {
+            passwordInput.type = "password";
+            icon.innerText = "visibility";
+        }
+    };
+});
 var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div> Please wait...";
 changePassAnchor.onclick = function (event) {
     event.preventDefault();
@@ -98,7 +114,7 @@ changePassForm.onsubmit = function (event) {
 (function () {
     // TODO: dont forget to change the url before uploading to the server
     console.info("fetching data from the server...");
-    Ajax.fetchPage(/** correct the url before server */ "/fabex/php/get_user_data.php", function (data) {
+    Ajax.fetchPage("php/get_user_data.php", function (data) {
         var json = JSON.parse(data);
         changeInfoForm.querySelector("input#firstname").value = json.fname;
         changeInfoForm.querySelector("input#lastname").value = json.lname;

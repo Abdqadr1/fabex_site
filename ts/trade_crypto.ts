@@ -155,16 +155,14 @@ buttons.forEach(element => {
 
 // get all banks
 (function () {
-    //TODO: replace url before server
-    Ajax.fetchPage("/fabex/php/data.php?which=banks", (data: string) => {
+    Ajax.fetchPage("php/data.php?which=banks", (data: string) => {
         bankList = JSON.parse(data);
     })
 })();
 
 // get all banks
 (function () {
-    //TODO: replace url before server
-    Ajax.fetchPage("/fabex/php/data.php?which=coins", (data: string) => {
+    Ajax.fetchPage("php/data.php?which=coins", (data: string) => {
         const coinList = JSON.parse(data);
         const keys:string[] = Object.keys(coinList);
         console.log(keys);

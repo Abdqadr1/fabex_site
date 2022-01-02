@@ -28,8 +28,7 @@ addBankForm.onsubmit = function (event) {
 };
 // get all banks
 (function () {
-    //TODO: replace url before server
-    Ajax.fetchPage("/fabex/php/data.php?which=banks", function (data) {
+    Ajax.fetchPage("php/data.php?which=banks", function (data) {
         var bankList = JSON.parse(data);
         bankList.forEach(function (bank) {
             var option = document.createElement("option");

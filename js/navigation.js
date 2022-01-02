@@ -1,4 +1,3 @@
-var version = 1.00;
 import { Ajax } from "./ajax.js";
 var jsFolder = "js/";
 var navLinks = document.querySelectorAll("li>a.nav-link");
@@ -6,13 +5,12 @@ var navToggleButton = document.querySelector(".dropdown-toggle");
 var container = document.querySelector("div#container");
 var navLinkDiv = document.querySelector("div#navbarTogglerDemo03");
 var loaderHTML = "<div class='d-flex align-items-center justify-content-center' style='height: 100%;'>\n            <div class='spinner-border text-primary' role='status' style='height: 60px; width:60px;'>\n                <span class='visually-hidden'>Loading...</span>\n            </div>\n        </div>";
-var activePage = "Dashboard";
 navLinks.forEach(function (element) {
     element.onclick = function (event) {
         event.preventDefault();
         navToggleButton.parentElement.classList.add("collapsed");
         navToggleButton.parentElement.setAttribute("aria-expanded", "false");
-        console.log(navToggleButton.parentElement);
+        // console.log(navToggleButton.parentElement);
         navLinkDiv.classList.remove("show");
         var text = element.innerText;
         if (activePage !== text) {

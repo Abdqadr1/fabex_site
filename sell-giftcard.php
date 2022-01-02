@@ -1,19 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
-    header("location: login");
-}
-if (!isset($_SESSION["id"])) header("location : login");
+include_once "functions.php";
+isTimeout();
+isLoggedIn();
+
+isTransaction();
 
 $amount = $_SESSION["amount"];
-if (!isset($_SESSION["amount"]) || !isset($_SESSION["tx_id"]) || !isset($_SESSION["which"]) || !isset($_SESSION["act"])) {
-    echo ("Invalid credentials!");
-    header("location: giftcard");
-}
-if (empty($_SESSION["amount"]) || empty($_SESSION["tx_id"]) || empty($_SESSION["which"]) || empty($_SESSION["act"])) {
-    echo ("Invalid credentials!");
-    header("location: giftcard");
-}
 
 if ($_SESSION["act"] != "sell") {
     echo ("Wrong transaction!");

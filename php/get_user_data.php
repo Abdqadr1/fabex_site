@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+
+if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
+    exit("Session timeout: Login again");
+}
+
 include_once "connect_db.php";
 
 
@@ -22,3 +28,4 @@ if ($result->num_rows > 0) {
 } else {
     exit("No valid user presents!");
 }
+$conn->close();

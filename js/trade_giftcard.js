@@ -167,8 +167,7 @@ actionButtons.forEach(function (element) {
 var banks = tradeGiftcardForm.querySelector("select#bankName");
 // get all banks
 (function () {
-    //TODO: replace url before server
-    Ajax.fetchPage("/fabex/php/data.php?which=banks", function (data) {
+    Ajax.fetchPage("php/data.php?which=banks", function (data) {
         bankList = JSON.parse(data);
     });
 })();

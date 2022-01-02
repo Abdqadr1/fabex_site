@@ -1,22 +1,20 @@
 <?php
 session_start();
 
-include_once "connect_db.php";
-include_once "user_actions.php";
 
 if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
     exit("Session timeout: Login again");
 }
 
 if (
-    !isset($_POST["fname"]) || !isset($_POST["lname"]) ||
-    !isset($_POST["phone"]) ||
-    !isset($_POST["bank_name"]) || !isset($_POST["account_number"])
-    || !isset($_POST["bvn"]) || !$_SESSION["id"]
+    !isset($_POST["fname"]) || !isset($_POST["lname"]) || !isset($_POST["phone"]) ||
+    !isset($_POST["bank_name"]) || !isset($_POST["account_number"]) || !$_SESSION["id"]
 ) {
     exit("Invalid credentials!");
 }
 
+include_once "connect_db.php";
+include_once "user_actions.php";
 $id = $_SESSION["id"];
 
 $fname = mysqli_escape_string($conn, $_POST["fname"]);
@@ -24,10 +22,13 @@ $lname = mysqli_escape_string($conn, $_POST["lname"]);
 $phone = mysqli_escape_string($conn, $_POST["phone"]);
 $bank_name = mysqli_escape_string($conn, $_POST["bank_name"]);
 $account_number = mysqli_escape_string($conn, $_POST["account_number"]);
-$bvn = mysqli_escape_string($conn, $_POST["bvn"]);
+$fname = testInput($fname);
+$lname = testInput($lname);
+$phone = testInput($phone);
+$bank_name = testInput($bank_name);
+$account_number = testInput($account_number);
 if (
-    !empty($bank_name) && !empty($account_number) && !empty($bvn)
-    && !empty($fname) && !empty($lname) && !empty($phone)
+    !empty($bank_name) && !empty($account_number) && !empty($fname) && !empty($lname) && !empty($phone)
 ) {
     $user = new User("", "");
     $user->setId($id);
@@ -39,5 +40,7 @@ if (
     $user->setBvn($bvn);
     $user->changeInfo($conn);
 } else {
+    $conn->close();
     exit("All fields are required!");
 }
+$conn->close();

@@ -16,7 +16,21 @@ const changeInfoErrorDiv = changeInfoForm.querySelector("div#errorDiv") as HTMLD
 const changePassErrorDiv = changePassForm.querySelector("div#errorDiv") as HTMLDivElement;
 const changeInfoSuccessDiv = changeInfoForm.querySelector("div#successDiv") as HTMLDivElement;
 const changePassSuccessDiv = changePassForm.querySelector("div#successDiv") as HTMLDivElement;
-
+const toggleIcons = changePassForm.querySelectorAll("span.toggle-password") as NodeListOf<HTMLSpanElement>;
+const passwordInputs = changePassForm.querySelectorAll('input[type=password]') as NodeListOf<HTMLInputElement>;
+toggleIcons.forEach((icon, index) => {
+    icon.onclick = event => {
+        event.stopPropagation();
+        const passwordInput = passwordInputs[index];
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.innerText = "visibility_off"
+    } else {
+        passwordInput.type = "password";
+        icon.innerText = "visibility";
+    }
+}
+})
 
 const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div> Please wait...`;
 
@@ -107,7 +121,7 @@ changePassForm.onsubmit = event => {
 (function () {
     // TODO: dont forget to change the url before uploading to the server
     console.info("fetching data from the server...");
-    Ajax.fetchPage(/** correct the url before server */"/fabex/php/get_user_data.php", (data: string) => {
+    Ajax.fetchPage("php/get_user_data.php", (data: string) => {
         type user_data = {
             fname: string, lname: string, phone: string, email: string,
             bank_name: string, account_number: string, bvn: string
