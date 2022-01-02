@@ -8,10 +8,9 @@ include_once "header.php"; ?>
         <div class="row justify-content-center mt-4">
             <div class="col-9 col-md-5 col-lg-5" id="settings_pass_div">
                 <img src="assets/images/FabEx.png" class="mx-auto d-block" alt="Logo">
-                <p class="text-center mt-2 fw-bold fs-4">Congratulations!<br>
-                    Your account has been verified</p>
+                <p class="text-center my-2 fw-bold fs-4">Your password has been reset
                 <div class="row justify-content-center">
-                    <button class="col-10 settings text-center mx-auto"><a href="login.php" class="text-white">Go to login</a></button>
+                    <button class="col-10 settings text-center mx-auto"><a href="login" class="text-white">Go to login</a></button>
                 </div>
             </div>
         </div>

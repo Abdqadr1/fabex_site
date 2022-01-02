@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
+    exit("Session timeout: Login again");
+}
+
 include_once "connect_db.php";
 
 
@@ -20,7 +25,7 @@ $result = $conn->query($query);
 if ($result->num_rows > 0) {
     $sql = "SELECT * FROM products";
     $res = $conn->query($sql);
-    if ($res->num_rows > 0) {
+    if ($res == true && $res->num_rows > 0) {
         $rows = $res->fetch_assoc();
         echo json_encode($rows);
     } else {

@@ -456,6 +456,18 @@ p.info {
   font-size: 14px !important;
 }
 /* login page styles */
+span.toggle-password {
+  color: var(--header);
+  cursor: pointer;
+  font-size: 20px;
+  position: absolute;
+  right: 15px;
+  top: 50px;
+  transform: translateY(-50%);
+}
+span.toggle-password:hover {
+  color: var(--gray);
+}
 p.forgotpass {
   text-align: right !important;
   font-size: 16px;

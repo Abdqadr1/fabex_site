@@ -4,6 +4,19 @@ const button = loginForm.querySelector('button') as HTMLButtonElement;
 const errorDiv = loginForm.querySelector("#errorDiv") as HTMLDivElement;
 const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>
                 Please wait... `;
+const toggleIcon = loginForm.querySelector("span.toggle-password") as HTMLSpanElement;
+const passwordInput = loginForm.querySelector('input[type=password]') as HTMLInputElement;
+toggleIcon.onclick = event => {
+    event.stopPropagation();
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.innerText = "visibility_off"
+    } else {
+        passwordInput.type = "password";
+        toggleIcon.innerText = "visibility";
+    }
+}
+
 const timeout = () : void => {
     errorDiv.innerText = "Request taking too long, Check your internet connection";
     errorDiv.classList.remove("d-none");

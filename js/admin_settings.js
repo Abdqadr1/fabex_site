@@ -44,7 +44,6 @@ var addCrypto = function (content) {
 // crypto submit
 addCryptoForm.onsubmit = function (event) {
     event.preventDefault();
-    console.log("submitting...");
     var aj = new Ajax(addCryptoForm);
     aj.setBefore(function () {
         addCryptoSubmitBtn.disabled = true;

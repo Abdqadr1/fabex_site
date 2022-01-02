@@ -14,9 +14,10 @@
                             <label for="email" class="form-label settings">Email</label>
                             <input name="email" type="text" class="form-control rad8" id="email" placeholder="Enter Email address" required>
                         </div>
-                        <div class="col-10 mt-1 my-3">
+                        <div class="col-10 mt-1 my-3 position-relative">
                             <label for="password" class="form-label settings">Password</label>
                             <input name="password" type="password" class="form-control rad8" id="password" placeholder="Enter password" required>
+                            <span class="material-icons toggle-password">visibility</span>
                             <p class="forgotpass"><a href="reset">Forgot password?</a></p>
                         </div>
                     </div>

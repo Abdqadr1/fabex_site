@@ -1,7 +1,7 @@
 RewriteEngine On    # Turn on the rewriting engine
 
-RewriteRule    ^login/?$    login.php    [NC,L]   
-RewriteRule    ^signup/?$    register.php    [NC,L]   
+RewriteRule    ^login/?$    login.php    [NC,L]    
+RewriteRule    ^register/?$    register.php    [NC,L]   
 
 RewriteRule    ^logout/?$    logout.php    [NC,L]  
 

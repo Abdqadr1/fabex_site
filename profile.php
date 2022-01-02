@@ -1,10 +1,13 @@
 <?php
 session_start();
-$fname = $_SESSION["fname"];
+if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
+    header("location: login");
+}
 if (!isset($_SESSION["id"]) || !isset($_SESSION["fname"]) || empty($_SESSION["id"]) || empty($_SESSION["fname"])) {
     header("location: login");
     exit();
 }
+$fname = $_SESSION["fname"];
 include "header.php"; ?>
 <script>
     <?php echo "const fname = '$fname'" ?>

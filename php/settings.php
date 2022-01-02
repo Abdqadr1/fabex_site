@@ -4,6 +4,10 @@ session_start();
 include_once "connect_db.php";
 include_once "user_actions.php";
 
+if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
+    exit("Session timeout: Login again");
+}
+
 if (
     !isset($_POST["fname"]) || !isset($_POST["lname"]) ||
     !isset($_POST["phone"]) ||

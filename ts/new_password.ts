@@ -4,6 +4,23 @@ const errorDiv = document.querySelector("#errorDiv") as HTMLDivElement;
 const submitBtn = newPassword.querySelector("button") as HTMLButtonElement;
 const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>
                 Please wait... `;
+
+const toggleIcons = newPassword.querySelectorAll("span.toggle-password") as NodeListOf<HTMLSpanElement>;
+const passwordInputs = newPassword.querySelectorAll('input[type=password]') as NodeListOf<HTMLInputElement>;
+toggleIcons.forEach((icon, index) => {
+    icon.onclick = event => {
+        event.stopPropagation();
+        const passwordInput = passwordInputs[index];
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.innerText = "visibility_off"
+    } else {
+        passwordInput.type = "password";
+        icon.innerText = "visibility";
+    }
+}
+})
+
 newPassword.onsubmit = (event) => {
     event.preventDefault();
     submitBtn.disabled = true;
@@ -13,7 +30,7 @@ newPassword.onsubmit = (event) => {
     });
     aj.setAfter((responseText: string) => {
         console.log(responseText);
-        if (responseText.indexOf("success") != -1) location.href = "congrats.php";
+        if (responseText.indexOf("success") != -1) location.href = "reset-success.php";
         else {
             errorDiv.innerHTML = responseText;
             errorDiv.classList.remove("d-none");

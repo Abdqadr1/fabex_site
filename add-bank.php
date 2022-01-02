@@ -1,4 +1,11 @@
-<?php include_once "header.php"; ?>
+<?php
+session_start();
+if (!isset($_SESSION["id"]) || empty($_SESSION["id"])) {
+    echo ("Invalid parameters..");
+    sleep(2);
+    header("location: login.php");
+}
+include_once "header.php"; ?>
 
 <body>
     <div class="body no-margin">
@@ -18,10 +25,6 @@
                     <div class="mt-1 my-3">
                         <label for="accountnumber" class="form-label settings">Account number</label>
                         <input name="account_number" type="text" class="form-control rad8" id="accountnumber" placeholder="2222225555" maxlength="10" required>
-                    </div>
-                    <div class="mt-1 my-3">
-                        <label for="accountname" class="form-label settings">Account name</label>
-                        <input name="account_name" type="text" class="form-control rad8" id="accountname" placeholder="Joseph Ayodele" required>
                     </div>
                     <div class="mt-1 mt-3 mb-1">
                         <label for="bvn" class="form-label settings">Bank verification number</label>

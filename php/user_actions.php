@@ -49,27 +49,32 @@ class User
     }
     public function login(mysqli &$conn)
     {
-        $login_query = "SELECT id, fname, verified FROM users WHERE email = '{$this->email}' AND pword = '{$this->pword}'";
+        $login_query = "SELECT id, fname, verified, pword FROM users WHERE email = '{$this->email}'";
         $result = $conn->query($login_query);
-        if ($result->num_rows > 0) {
+        if ($result->num_rows === 1) {
             $row = $result->fetch_assoc();
+            $password = $row["pword"];
             if ($row["verified"] == 1) {
-                $_SESSION["id"] = $row["id"];
-                $_SESSION["fname"] = $row["fname"];
-                echo "Success: Account found and verified!";
+                if (password_verify($this->pword, $password)) {
+                    $_SESSION["id"] = $row["id"];
+                    $_SESSION["fname"] = $row["fname"];
+                    echo "Success: Account found and verified!";
+                } else {
+                    echo "Wrong password!";
+                }
             } else {
                 echo "Your email is not verified! Check your mail";
             }
         } else {
-            echo "Invalid email or password!";
+            echo "Invalid email address";
         }
     }
     public function register(mysqli &$conn)
     {
+        // TODO: change url 
         $verify_url = "localhost/fabex/php/verify_email.php?email=" . $this->email . "&verify=";
         $code = md5($this->email . $this->phone . $this->email);
         $verify_url = $verify_url . $code;
-        echo $verify_url;
         $email_query = "SELECT email FROM users WHERE email = '{$this->email}'";
         $email_result = $conn->query($email_query);
         $register_query =
@@ -97,11 +102,11 @@ class User
     {
         $sql = "SELECT email, fname FROM users WHERE id='{$this->id}'";
         $res = $conn->query($sql);
+        if ($res == false || $res->num_rows != 1) exit("Invalid param " . $conn->close());
         $row = $res->fetch_assoc();
         $_SESSION['fname'] = $row["fname"];
         $_SESSION['email'] = $row["email"];
-        $query = "UPDATE users SET bank_name='{$this->bank_name}', account_number='{$this->account_number}',
-        account_name='{$this->account_name}', bvn='{$this->bvn}' WHERE id='{$this->id}'";
+        $query = "UPDATE users SET bank_name='{$this->bank_name}', account_number='{$this->account_number}', bvn='{$this->bvn}' WHERE id='{$this->id}'";
         $bank_query = $conn->query($query);
         if ($bank_query === true) {
             echo "Bank details added successfully";
@@ -111,6 +116,7 @@ class User
     }
     public function resetPassword(mysqli &$conn)
     {
+        // TODO: change url
         $verify_url = "localhost/fabex/php/reset_password.php?email=" . $this->email . "&verify=";
         $code = md5($this->email . time());
         $verify_url = $verify_url . $code;

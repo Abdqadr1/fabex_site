@@ -15,6 +15,10 @@ if ($which === "giftcard") {
     if (!isset($headers["name"]) || empty($headers["name"])) exit("Incomplete parameters.." . $conn->close());
     $name = mysqli_escape_string($conn, $headers["name"]);
     $name = testInput($name);
+    $q = "SELECT * FROM giftcards WHERE name='$name'";
+    $res = $conn->query($q);
+    if ($res == false || $res->num_rows != 0) exit("Name already exists " . $conn->close());
+
     $sql = "UPDATE giftcards SET name='$name' WHERE id='$id'";
     $result = $conn->query($sql);
     if ($result === true) echo "Giftcard updated successfully";
@@ -34,6 +38,10 @@ if ($which === "giftcard") {
     $network = testInput($network);
     $address = testInput($address);
     $memo = testInput($memo);
+
+    $q = "SELECT * FROM cryptos WHERE address='$address' AND id !='$id'";
+    $res = $conn->query($q);
+    if ($res == false || $res->num_rows != 0) exit("Wallet address already exists " . $conn->close());
 
     $sql = "UPDATE cryptos SET name='$name', acronym='$short_name', network='$network',address='$address',memo='$memo' WHERE id='$id'";
     $result = $conn->query($sql);

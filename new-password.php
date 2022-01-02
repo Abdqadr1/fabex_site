@@ -1,4 +1,12 @@
-<?php include_once "header.php"; ?>
+<?php
+session_start();
+if (!isset($_SESSION["id"]) || empty($_SESSION["id"])) {
+    echo ("Invalid parameters..");
+    sleep(2);
+    header("location: login");
+}
+
+include_once "header.php"; ?>
 
 <body>
     <div class="body no-margin">
@@ -10,13 +18,15 @@
                 <form action="php/new_password.php" method="POST" id="newPassword">
                     <div tabindex="-1" class="alert alert-danger col-10 mx-auto d-none text-center" id="errorDiv" role="alert"></div>
                     <div class="row justify-content-center" id="change_row">
-                        <div class="col-10 mt-1 my-3">
+                        <div class="col-10 mt-1 my-3  position-relative">
                             <label for="password" class="form-label settings">New password</label>
-                            <input name="password" type="text" class="form-control rad8" id="password" placeholder="At least 8 characters">
+                            <input name="password" type="password" class="form-control rad8" id="password" placeholder="At least 8 characters">
+                            <span class="material-icons toggle-password">visibility</span>
                         </div>
-                        <div class="col-10 mt-1 my-3">
+                        <div class="col-10 mt-1 my-3  position-relative">
                             <label for="con-password" class="form-label settings">Confirm password</label>
-                            <input name="con_password" type="text" class="form-control rad8" id="con-password" placeholder="At least 8 characters">
+                            <input name="con_password" type="password" class="form-control rad8" id="con-password" placeholder="At least 8 characters">
+                            <span class="material-icons toggle-password">visibility</span>
                         </div>
                     </div>
 

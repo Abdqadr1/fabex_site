@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
+    header("location: login");
+}
 $amount = $_SESSION["amount"];
 if (!isset($_SESSION["id"]) || empty($_SESSION["id"])) {
     header("location: login");
