@@ -37,7 +37,6 @@ if (
     $user->setLname($lname);
     $user->setBankName($bank_name);
     $user->setAccountNumber($account_number);
-    $user->setBvn($bvn);
     $user->changeInfo($conn);
 } else {
     $conn->close();

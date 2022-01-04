@@ -88,10 +88,10 @@ const copyFunc = (input: HTMLInputElement | string) => {
     alert("Text copied!")
 }
 const cellNames:any = { 
-    "00": [8,[ "id","name","product", ["amount","price"], ["wallet_address", "network"], "memo", "time"]],
-    "10":[7,["id", "name", "product",["amount", "price"], ["account_number", "bank_name"], "time"]],
-    "01":[7,["id", "name",  "product", ["amount", "price"],"email","time"]],
-    "11":[7,["id", "name", "product", ["amount", "price"],["account_number", "bank_name"],"time"]]
+    "00": [8,[ "id","name","product", ["price","amount"], ["wallet_address", "network"], "memo", "time"]],
+    "10":[7,["id", "name", "product",["price","amount"], ["account_number", "bank_name"], "time"]],
+    "01":[7,["id", "name",  "product", ["price","amount"],"email","time"]],
+    "11":[7,["id", "name", "product", ["price","amount"],["account_number", "bank_name"],"time"]]
 }
 // change table 
 const changeTable = (list: any[], filters: filterType) => {
@@ -134,8 +134,13 @@ const changeTable = (list: any[], filters: filterType) => {
                         content = order[name[0]] || order["user_account_number"];
                         extra = order[name[1]] || order["user_bank"];
                     }
+                    //for price and amount
+                    if (name[0] == 'price') {
+                        extra = "N" + order[name[1]];
+                        content = "$" + order[name[0]];
+                    }
                     // Don't show copy icon for amount cell
-                    const addCopy = name[0] == "amount"?"":"<span class='copy material-icons' title='copy full text'>content_copy</span>";
+                    const addCopy = name[0] == "price"?"":"<span class='copy material-icons' title='copy full text'>content_copy</span>";
                     const val = content.length > 18 ? content.substring(0,18)+"..." : content;
                         td.innerHTML = `<span class="val">${val}${addCopy}
                         </span><br><span class="extra-detail">${extra}</span>

@@ -18,10 +18,29 @@ var sellingFields = document.querySelector("div#sellingFields");
 var buyingFields = document.querySelector("div#buyingFields");
 var tradeCryptoForm = document.querySelector("form#tradeCryptoForm");
 var submitBtn = tradeCryptoForm.querySelector("button");
+var productIdInput = tradeCryptoForm.querySelector("input#productId");
+var priceInput = tradeCryptoForm.querySelector("input#priceInput");
+var totalInput = tradeCryptoForm.querySelector("input#totalInput");
+var amountInput = tradeCryptoForm.querySelector("input#amount");
 var bankInputs = tradeCryptoForm.querySelectorAll(".bankInput");
 var buyInputs = tradeCryptoForm.querySelectorAll(".buyInput");
 var errorDiv = tradeCryptoForm.querySelector("div#errorDiv");
 var act = tradeCryptoForm.querySelector("input#hidden");
+var amountParagraph = tradeCryptoForm.querySelector("p#amount");
+amountInput.onkeyup = function (event) { return changeAmount(); };
+var changeAmount = function () {
+    var price = Number(priceInput.value);
+    var amount = amountInput.valueAsNumber;
+    console.log(price, amount);
+    if (price && amount && amount > 0 && price > 0) {
+        totalInput.value = "" + (price * amount);
+        amountParagraph.innerText = "Total: N" + (price * amount);
+    }
+    else {
+        totalInput.value = "" + (price * amount);
+        amountParagraph.innerText = "Total: N0";
+    }
+};
 var changeDisability = function (node, show) {
     node.forEach(function (el) {
         var element;
@@ -45,7 +64,6 @@ var changeDisability = function (node, show) {
 var timeoutFun = function () {
     errorDiv.innerText = "Request taking too long, Check your internet connection";
     errorDiv.classList.remove("d-none");
-    errorDiv.classList.add("d-block");
     submitBtn.disabled = false;
     submitBtn.innerHTML = action + " crypto";
     changeDisability(buttons, false);
@@ -62,6 +80,7 @@ tradeCryptoForm.onsubmit = function (event) {
         changeDisability(buttons, true);
     });
     aj.setAfter(function (responseText) {
+        console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
             if (action === "buy") {
                 location.href = "payment";
@@ -73,7 +92,6 @@ tradeCryptoForm.onsubmit = function (event) {
         else {
             errorDiv.innerText = responseText;
             errorDiv.classList.remove("d-none");
-            errorDiv.classList.add("d-block");
             errorDiv.focus();
         }
         submitBtn.disabled = false;
@@ -156,17 +174,29 @@ buttons.forEach(function (element) {
         bankList = JSON.parse(data);
     });
 })();
-// get all banks
+//get all cryptos
 (function () {
-    Ajax.fetchPage("php/data.php?which=coins", function (data) {
-        var coinList = JSON.parse(data);
-        var keys = Object.keys(coinList);
-        console.log(keys);
-        keys.forEach(function (key) {
+    Ajax.fetchPage("php/data.php?which=cryptos", function (data) {
+        var arr = JSON.parse(data);
+        if (arr.length > 0) {
+            arr.forEach(function (crypto) {
+                var option = document.createElement("option");
+                option.innerText = crypto.name;
+                option.value = crypto.acronym;
+                option.onclick = function (event) {
+                    console.log(crypto);
+                    priceInput.value = crypto.price;
+                    productIdInput.value = crypto.id;
+                    changeAmount();
+                };
+                assets.appendChild(option);
+            });
+        }
+        else {
             var option = document.createElement("option");
-            option.value = key;
-            option.innerText = coinList[key];
+            option.innerText = "No crypto available, contact admin";
+            option.disabled = true;
             assets.appendChild(option);
-        });
+        }
     });
 })();

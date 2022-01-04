@@ -78,42 +78,6 @@
 
     </thead>
     <tbody class="td" id="table_body">
-        <tr>
-            <td>1234567890</td>
-            <td>Oyeleye Joseph</td>
-            <td>BTC</td>
-            <td><span class="val">$29.1</span><br><span class='extra-detail'>N14,899.2</span></td>
-            <td>
-                <span class="val">0x5dCF1A8934234565...<span class="copy material-icons" title="copy address">content_copy</span></span>
-                <br><span class="extra-detail">ERC 20</span>
-            </td>
-            <td>
-                <span class="val">1134<span class="copy material-icons" title="copy memo">content_copy</span></span>
-            </td>
-            <td>Today, 12:53 pm</td>
-            <td class="d-flex justify-content-center align-top">
-                <button class="action-button approve">Approve</button>
-                <button class="action-button reject">Reject</button>
-            </td>
-        </tr>
-        <tr>
-            <td>1234567890</td>
-            <td>Oyeleye Joseph</td>
-            <td>BTC</td>
-            <td>$29.1<br><span class='extra-detail'>N14,899.2</span></td>
-            <td>
-                <span class="val">0x5dCF1A8934234565...<span class="copy material-icons" title="copy address">content_copy</span></span>
-                <br><span class="extra-detail">ERC 20</span>
-            </td>
-            <td>
-                <span class="val">1134<span class="copy material-icons" title="copy memo">content_copy</span></span>
-            </td>
-            <td>Today, 12:53 pm</td>
-            <td class="d-flex justify-content-center align-top">
-                <button class="action-button approve">Approve</button>
-                <button class="action-button reject">Reject</button>
-            </td>
-        </tr>
         <!-- <tr>
             <td>1234567890</td>
             <td>Oyeleye Joseph</td>

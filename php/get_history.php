@@ -10,6 +10,9 @@ if (!isset($_SESSION['id']) || empty($_SESSION['id'])) {
 }
 $id = $_SESSION['id'];
 
+$r_time = $conn->query("SELECT CURRENT_TIMESTAMP()");
+$current_time = $r_time->fetch_array()[0];
+
 function getStatusColor($stat)
 {
     switch ($stat) {
@@ -39,10 +42,10 @@ function plural($val, $unit)
     };
     return "$val $unit";
 };
-function getTimeDiff($date)
+function getTimeDiff($date, $current_time)
 {
     $date1 = new DateTime($date);
-    $since = $date1->diff(new DateTime());
+    $since = $date1->diff(new DateTime(date($current_time)));
     $y = $since->y;
     $m = $since->m;
     $d = $since->d;
@@ -67,20 +70,9 @@ if ($result == true && $result->num_rows > 0) {
         $amount = $rows['amount'];
         $tid = $rows['id'];
         $status = getStatusColor($rows['status']);
-        $time = getTimeDiff($rows['time']);
+        $time = getTimeDiff($rows['time'], $current_time);
         $statText = getStatusText($rows['status']);
 
-        // $each = "<div class='row justify-content-between transaction' id='$tid'>
-        //         <div class='col-8 ml-2'>
-        //             <span class='trans-title'>$desc</span><br>
-        //             <span class='trans-status'>
-        //                 <span class='ellipse' style='--type: var(--$status);'></span>$statText</span>
-        //         </div>
-        //         <div class='col-3 text-to-right'>
-        //             <span class='trans-amount'>N$amount</span><br>
-        //             <span class='trans-time'>$time</span>
-        //         </div>
-        //     </div>";
         array_push($output, array($tid, $desc, $amount, $time, $status, $statText));
     }
 }

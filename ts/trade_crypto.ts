@@ -20,10 +20,29 @@ const sellingFields = document.querySelector("div#sellingFields") as HTMLDivElem
 const buyingFields = document.querySelector("div#buyingFields") as HTMLDivElement;
 const tradeCryptoForm = document.querySelector("form#tradeCryptoForm") as HTMLFormElement;
 const submitBtn = tradeCryptoForm.querySelector("button") as HTMLButtonElement;
+const productIdInput = tradeCryptoForm.querySelector("input#productId") as HTMLInputElement;
+const priceInput = tradeCryptoForm.querySelector("input#priceInput") as HTMLInputElement;
+const totalInput = tradeCryptoForm.querySelector("input#totalInput") as HTMLInputElement;
+const amountInput = tradeCryptoForm.querySelector("input#amount") as HTMLInputElement;
 const bankInputs = tradeCryptoForm.querySelectorAll(".bankInput") as NodeListOf<HTMLElement>;
 const buyInputs = tradeCryptoForm.querySelectorAll(".buyInput") as NodeListOf<HTMLElement>;
 const errorDiv = tradeCryptoForm.querySelector("div#errorDiv") as HTMLDivElement;
 const act = tradeCryptoForm.querySelector("input#hidden") as HTMLInputElement;
+const amountParagraph = tradeCryptoForm.querySelector("p#amount") as HTMLParagraphElement;
+
+amountInput.onkeyup = event => changeAmount();
+const changeAmount = () => {
+    const price:number = Number(priceInput.value);
+    const amount = amountInput.valueAsNumber;
+    console.log(price, amount);
+    if (price && amount && amount > 0 && price > 0) {
+        totalInput.value = "" + (price * amount);
+        amountParagraph.innerText = "Total: N" + (price * amount);
+    } else {
+        totalInput.value = "" + (price * amount);
+        amountParagraph.innerText = "Total: N0";
+    }
+}
 
 const changeDisability = (node:NodeListOf<HTMLElement>,show:boolean) => {
     node.forEach(el => {
@@ -48,7 +67,6 @@ const changeDisability = (node:NodeListOf<HTMLElement>,show:boolean) => {
 const timeoutFun = () => {
     errorDiv.innerText = "Request taking too long, Check your internet connection";
     errorDiv.classList.remove("d-none");
-    errorDiv.classList.add("d-block");
     submitBtn.disabled = false;
     submitBtn.innerHTML = action + " crypto";
     changeDisability(buttons, false);
@@ -65,7 +83,8 @@ tradeCryptoForm.onsubmit = event => {
         submitBtn.innerHTML = spinner;
         changeDisability(buttons, true);
     })
-    aj.setAfter((responseText:string) => {
+    aj.setAfter((responseText: string) => {
+        console.log(responseText)
         if (responseText.toLowerCase().indexOf("success") != -1) {
             if (action === "buy") {
                 location.href = "payment";
@@ -75,7 +94,6 @@ tradeCryptoForm.onsubmit = event => {
         } else {
             errorDiv.innerText = responseText;
             errorDiv.classList.remove("d-none");
-            errorDiv.classList.add("d-block");
             errorDiv.focus();
         }
         submitBtn.disabled = false;
@@ -160,17 +178,29 @@ buttons.forEach(element => {
     })
 })();
 
-// get all banks
+
+//get all cryptos
 (function () {
-    Ajax.fetchPage("php/data.php?which=coins", (data: string) => {
-        const coinList = JSON.parse(data);
-        const keys:string[] = Object.keys(coinList);
-        console.log(keys);
-        keys.forEach((key:string) => {
+    Ajax.fetchPage("php/data.php?which=cryptos", (data: string) => {
+        const arr: any[] = JSON.parse(data);
+        if (arr.length > 0) {
+            arr.forEach((crypto: any) => {
+                const option = document.createElement("option");
+                option.innerText = crypto.name;
+                option.value = crypto.acronym;
+                option.onclick = event => {
+                    console.log(crypto);
+                    priceInput.value = crypto.price;
+                    productIdInput.value = crypto.id;
+                    changeAmount();
+                }
+                assets.appendChild(option);
+            })
+        } else {
             const option = document.createElement("option");
-            option.value = key;
-            option.innerText = coinList[key];
+            option.innerText = "No crypto available, contact admin";
+            option.disabled = true;
             assets.appendChild(option);
-        })
+        }
     })
 })()

@@ -86,10 +86,10 @@ var copyFunc = function (input) {
     alert("Text copied!");
 };
 var cellNames = {
-    "00": [8, ["id", "name", "product", ["amount", "price"], ["wallet_address", "network"], "memo", "time"]],
-    "10": [7, ["id", "name", "product", ["amount", "price"], ["account_number", "bank_name"], "time"]],
-    "01": [7, ["id", "name", "product", ["amount", "price"], "email", "time"]],
-    "11": [7, ["id", "name", "product", ["amount", "price"], ["account_number", "bank_name"], "time"]]
+    "00": [8, ["id", "name", "product", ["price", "amount"], ["wallet_address", "network"], "memo", "time"]],
+    "10": [7, ["id", "name", "product", ["price", "amount"], ["account_number", "bank_name"], "time"]],
+    "01": [7, ["id", "name", "product", ["price", "amount"], "email", "time"]],
+    "11": [7, ["id", "name", "product", ["price", "amount"], ["account_number", "bank_name"], "time"]]
 };
 // change table 
 var changeTable = function (list, filters) {
@@ -133,8 +133,13 @@ var changeTable = function (list, filters) {
                         content = order[name_1[0]] || order["user_account_number"];
                         extra = order[name_1[1]] || order["user_bank"];
                     }
+                    //for price and amount
+                    if (name_1[0] == 'price') {
+                        extra = "N" + order[name_1[1]];
+                        content = "$" + order[name_1[0]];
+                    }
                     // Don't show copy icon for amount cell
-                    var addCopy = name_1[0] == "amount" ? "" : "<span class='copy material-icons' title='copy full text'>content_copy</span>";
+                    var addCopy = name_1[0] == "price" ? "" : "<span class='copy material-icons' title='copy full text'>content_copy</span>";
                     var val = content.length > 18 ? content.substring(0, 18) + "..." : content;
                     td.innerHTML = "<span class=\"val\">" + val + addCopy + "\n                        </span><br><span class=\"extra-detail\">" + extra + "</span>\n                        <input type=\"hidden\" id=\"hidden\" value=\"" + content + "\"/>";
                     var copy = td.querySelector("span.copy");

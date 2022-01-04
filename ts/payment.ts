@@ -60,4 +60,5 @@ copy_icon.onclick = (e) => {
     console.log(e.target);
     const acct = document.querySelector("span.account-number") as HTMLParagraphElement;
     navigator.clipboard.writeText(acct.innerText);
+    alert("Text copied!")
 }

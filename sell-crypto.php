@@ -7,29 +7,32 @@ isLoggedIn();
 isTransaction();
 $amount = $_SESSION["amount"];
 
-if ($_SESSION["act"] != "sell") {
-    echo ("Wrong transaction!");
-    header("location: crypto");
-}
-if ($_SESSION["which"] != "crypto") {
-    echo ("Wrong transaction!");
-    header("location: crypto");
+if ($_SESSION["act"] != "sell" || $_SESSION["which"] != "crypto" || !isset($_SESSION["product_id"]) || empty($_SESSION["product_id"])) {
+    exit("Wrong transaction!");
 }
 
 $tx_id = $_SESSION["tx_id"];
 $act = $_SESSION["act"];
+$product_id = $_SESSION["product_id"];
+
 include_once "php/connect_db.php";
-$sql = "SELECT typ, u_id FROM trx_history WHERE tx_id='$tx_id'";
+$sql = "SELECT type FROM trx_history WHERE tx_id='$tx_id'";
 $res = $conn->query($sql);
 if ($res->num_rows == 1) {
     $row = $res->fetch_assoc();
-    if ($row["typ"] == 0 && $act != "buy") {
+    if ($row["type"] != 1 || $act != "sell") {
         header("location: giftcard");
-    } elseif ($row["typ"] == 1 && $act != "sell") {
-        header("location: crypto");
-    }
-    if ($row['u_id'] !== $_SESSION["id"]) {
-        header("location: crypto");
+    } else {
+        $query = "SELECT network, address,memo  FROM cryptos WHERE id='$product_id'";
+        $result = $conn->query($query);
+        if ($result == true && $result->num_rows == 1) {
+            $r = $result->fetch_assoc();
+            $network = $r["network"];
+            $address = $r["address"];
+            $memo = $r["memo"];
+        } else {
+            exit("Error getting crypto details...");
+        }
     }
 } else {
     header("location: crypto");
@@ -48,13 +51,13 @@ include_once "header.php"; ?>
                 <div class="details my-3  row p-2 rounded border paybg">
                     <div class="col-8 p-0">
                         <span class="d-block title">Network</span>
-                        <span class="value">LTC</span>
+                        <span class="value"><?php echo $network; ?></span>
                     </div>
                 </div>
                 <div class="details my-3 row p-2 rounded border justify-content-between paybg">
                     <div class="col-10 p-0">
                         <span class="d-block title">Address</span>
-                        <span class="value account-number">e1t2f2yff3fnfjh3rf2f89e2fffef2fiu2fnsge</span>
+                        <span class="value account-number"><?php echo $address; ?></span>
                     </div>
                     <div class="col-1 text-center">
                         <span class="tt" title="Copy account number">
@@ -68,7 +71,7 @@ include_once "header.php"; ?>
                 <div class="details my-3 row p-2 rounded border justify-content-between paybg">
                     <div class="col-8 p-0">
                         <span class="d-block title">Memo</span>
-                        <span class="value account-number">1214</span>
+                        <span class="value account-number"><?php echo $memo; ?></span>
                     </div>
                     <div class="col-1 text-center">
                         <span class="tt" title="Copy account number">

@@ -9,32 +9,28 @@ isTransaction();
 $amount = $_SESSION["amount"];
 
 if ($_SESSION["act"] != "sell") {
-    echo ("Wrong transaction!");
+    echo ("Wrong transaction!1");
     header("location: giftcard");
 }
 if ($_SESSION["which"] != "giftcard") {
-    echo ("Wrong transaction!");
+    echo ("Wrong transaction!2");
     header("location: giftcard");
 }
 
 $tx_id = $_SESSION["tx_id"];
 $act = $_SESSION["act"];
 include_once "php/connect_db.php";
-$sql = "SELECT typ, u_id FROM trx_history WHERE tx_id='$tx_id'";
+$sql = "SELECT type, u_id FROM trx_history WHERE tx_id='$tx_id'";
 $res = $conn->query($sql);
-if ($res->num_rows == 1) {
+if ($res == true && $res->num_rows == 1) {
     $row = $res->fetch_assoc();
-    if ($row["typ"] == 0 && $act != "buy") {
-        header("location: giftcard");
-    } elseif ($row["typ"] == 1 && $act != "sell") {
-        header("location: giftcard");
-    }
-    if ($row['u_id'] !== $_SESSION["id"]) {
+    if ($row["type"] != 1 || $act != "sell") {
         header("location: giftcard");
     }
 } else {
     header("location: giftcard");
 }
+
 include_once "header.php";
 ?>
 

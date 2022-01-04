@@ -3,6 +3,9 @@ include "header.php"; ?>
 
 <body>
     <?php include_once "navbar.php" ?>
+    <script>
+        let version = 0.6;
+    </script>
     <div id="container" class="px-4 mt-4">
         <div class='d-flex align-items-center justify-content-center' style='height: 100%;'>
             <div class='spinner-border text-primary' role='status' style='height: 60px; width:60px;'>

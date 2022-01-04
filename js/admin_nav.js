@@ -1,4 +1,3 @@
-var version = 1.00;
 import { Ajax } from "./ajax.js";
 var jsFolder = "../js/admin_";
 var navLinks = document.querySelectorAll("li>a.nav-link");

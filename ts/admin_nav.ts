@@ -1,4 +1,4 @@
-let version = 1.00;
+declare let version:number;
 import { Ajax } from "./ajax.js";
 const jsFolder = "../js/admin_";
 const navLinks = document.querySelectorAll("li>a.nav-link") as NodeListOf<HTMLAnchorElement>;

@@ -48,7 +48,27 @@ var tradeGiftcardForm = document.querySelector("form#tradeGiftcardForm");
 var submitBtn = tradeGiftcardForm.querySelector("button");
 var hiddenInput = tradeGiftcardForm.querySelector("input#hidden");
 var priceInput = tradeGiftcardForm.querySelector("input#priceInput");
+var totalInput = tradeGiftcardForm.querySelector("input#totalInput");
+var amountInput = tradeGiftcardForm.querySelector("input#amount");
 var errorDiv = tradeGiftcardForm.querySelector("#errorDiv");
+var categories = tradeGiftcardForm.querySelector("select#category");
+var subCategories = tradeGiftcardForm.querySelector("select#subCategory");
+var amountParagraph = tradeGiftcardForm.querySelector("p#amount");
+amountInput.onkeyup = function (event) { return changeAmount(); };
+var changeAmount = function () {
+    var price = Number(priceInput.value);
+    var amount = amountInput.valueAsNumber;
+    console.log(price, amount);
+    if (price && amount && amount > 0 && price > 0) {
+        totalInput.value = "" + (price * amount);
+        amountParagraph.innerText = "Total: N" + (price * amount);
+    }
+    else {
+        totalInput.value = "" + (price * amount);
+        amountParagraph.innerText = "Total: N0";
+    }
+};
+console.log(amountInput);
 var timeoutFun = function () {
     errorDiv.innerText = "Request taking too long, Check your internet connection";
     errorDiv.classList.remove("d-none");
@@ -61,6 +81,7 @@ var timeoutFun = function () {
 tradeGiftcardForm.onsubmit = function (event) {
     event.preventDefault();
     hiddenInput.value = action;
+    var act = action;
     console.log("submitting...");
     var aj = new Ajax(tradeGiftcardForm);
     aj.setTimer(timeoutFun, 120000);
@@ -72,7 +93,7 @@ tradeGiftcardForm.onsubmit = function (event) {
     aj.setAfter(function (responseText) {
         console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
-            if (action === "buy") {
+            if (act === "buy") {
                 location.href = "payment";
             }
             else {
@@ -82,9 +103,9 @@ tradeGiftcardForm.onsubmit = function (event) {
         else {
             errorDiv.innerText = responseText;
             errorDiv.classList.remove("d-none");
-            errorDiv.classList.add("d-block");
             errorDiv.focus();
         }
+        changeDisability(actionButtons, false);
         submitBtn.innerText = action + " giftcard";
         submitBtn.disabled = false;
     });
@@ -170,4 +191,55 @@ var banks = tradeGiftcardForm.querySelector("select#bankName");
     Ajax.fetchPage("php/data.php?which=banks", function (data) {
         bankList = JSON.parse(data);
     });
+})();
+var cats = [];
+var subCats = [];
+var changeSub = function (id) {
+    var sub = subCats.filter(function (each) { return each.parent == id; });
+    console.log(id, sub);
+    if (sub.length > 0) {
+        subCategories.innerHTML = "<option value=\"\" selected hidden>Select sub...</option>";
+        sub.forEach(function (giftcard) {
+            var option = document.createElement("option");
+            option.innerText = giftcard.name;
+            option.value = giftcard.name;
+            option.onclick = function (event) {
+                priceInput.value = giftcard.price;
+                changeAmount();
+            };
+            subCategories.appendChild(option);
+        });
+    }
+    else {
+        subCategories.innerHTML = "<option value=\"\" selected hidden>No sub category found</option>";
+    }
+};
+// get giftcards
+(function () {
+    Ajax.fetchPage("php/data.php?which=giftcards", (function (data) {
+        var result = JSON.parse(data);
+        var el = result[0];
+        if (typeof el === "string") {
+            var option = document.createElement("option");
+            option.innerText = el;
+            option.value = "";
+            option.disabled = true;
+            categories.appendChild(option);
+        }
+        if (typeof el === "object") {
+            cats = result.filter(function (each) { return each.type === "category"; });
+            subCats = result.filter(function (each) { return each.type === "sub_category" && each.price > 0; });
+            cats.forEach(function (category) {
+                var option = document.createElement("option");
+                option.id = category.id;
+                option.value = category.name;
+                option.innerText = category.name;
+                option.onclick = function (event) {
+                    categories.setAttribute("aria-id", option.id);
+                    changeSub(category.id);
+                };
+                categories.appendChild(option);
+            });
+        }
+    }));
 })();

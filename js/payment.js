@@ -55,4 +55,5 @@ copy_icon.onclick = function (e) {
     console.log(e.target);
     var acct = document.querySelector("span.account-number");
     navigator.clipboard.writeText(acct.innerText);
+    alert("Text copied!");
 };

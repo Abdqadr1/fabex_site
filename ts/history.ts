@@ -15,7 +15,7 @@ const addHistory = (list: [][]) => {
                             <span class="ellipse" style="--type: var(--${each[4]});"></span>${each[5]}</span>
                     </div>
                     <div class="col-3 text-to-right">
-                        <span class="trans-amount">${each[2]}</span><br>
+                        <span class="trans-amount">N${each[2]}</span><br>
                         <span class="trans-time">${each[3]}</span>
                     </div>`;
         history.appendChild(div);
@@ -28,8 +28,8 @@ const addHistory = (list: [][]) => {
     function () {
         console.info("fetching history from server...");
         Ajax.fetchPage("php/get_history.php", (data: string) => {
+            // console.log(data);
             const arr:any[] = JSON.parse(data);
-            // console.log(arr);
             if (arr.length > 0) {
                 addHistory(arr);
             } else {

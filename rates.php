@@ -1,8 +1,5 @@
 <div class="body row justify-content-center">
     <div class="col-md-5 col-lg-5 col-10" id="">
-        <div class="col-4 mx-auto my-5 text-center d-block" id="loadingContainer">
-            <div class='spinner-border spinner-border-sm text-primary' aria-hidden='true' role='status' style='width:4em;height:4em;'></div>
-        </div>
         <div class="mx-auto" id="rates_container">
             <p class="trans-history">Exchange rates</p>
             <!-- <div class="rates">
@@ -43,5 +40,8 @@
             </div> -->
         </div>
 
+        <div class="col-4 mx-auto my-5 text-center d-block" id="loadingContainer">
+            <div class='spinner-border spinner-border-sm text-primary' aria-hidden='true' role='status' style='width:4em;height:4em;'></div>
+        </div>
     </div>
 </div>

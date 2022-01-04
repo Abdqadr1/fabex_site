@@ -21,3 +21,18 @@ function testInput($data)
     $data = htmlspecialchars($data);
     return $data;
 }
+
+// get id for transaction
+function getId(&$conn)
+{
+    $tx_id = substr(md5(time(), false), 0, 10);
+    $sql = "SELECT COUNT(*) FROM tx_history WHERE tx_id='$tx_id'";
+    while (($res = $conn->query($sql)) > 0) {
+        $uniq = uniqid(
+            "trx",
+            true
+        );
+        $tx_id = substr(md5(time() . $uniq, false), 0, 10);
+    }
+    return $tx_id;
+}

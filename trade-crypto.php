@@ -25,14 +25,15 @@ include_once "header.php"; ?>
                     <label for="assets" class="form-label">Assets</label>
                     <select name="asset" class="form-select rad8" id="assets" required>
                         <option value="" selected hidden>Select coin...</option>
-                        <option value="BTC">Bitcoin</option>
                     </select>
                 </div>
                 <!-- amount -->
                 <label for="amount" class="form-label mb-1 mt-3">Amount ($)</label>
-                <input name="amount" type="text" class="form-control form-control-lg" id="amount" required>
-                <p class="mt-2 mb-0 fw-bold">Total: N33,000</p>
-                <input type="hidden" name="price" value="33,00">
+                <input name="amount" type="number" class="form-control form-control-lg" id="amount" required>
+                <p class="mt-2 mb-0 fw-bold" id="amount">Total: N0</p>
+                <input type="hidden" name="price" value="" id="priceInput" required>
+                <input type="hidden" name="total" value="0" id="totalInput" required>
+                <input type="hidden" name="product_id" value="0" id="productId" required>
                 <div id="buyingFields" class="no-margin">
                     <!-- amount -->
                     <div class="for-buy">

@@ -33,7 +33,6 @@ if (
     if ($new_password == $current_password) {
         exit("Old and new password must be different!");
     }
-    //TODO: hash password
     $user = new User("", $current_password);
     $user->setId($id);
     $user->changeCurrentPassword($conn, password_hash($new_password, PASSWORD_DEFAULT));

@@ -18,21 +18,26 @@ $d = "d-none";
 $tx_id = $_SESSION["tx_id"];
 $act = $_SESSION["act"];
 include_once "php/connect_db.php";
-$sql = "SELECT typ, u_id FROM trx_history WHERE tx_id='$tx_id'";
+$sql = "SELECT type, u_id FROM trx_history WHERE tx_id='$tx_id'";
 $res = $conn->query($sql);
 if ($res->num_rows == 1) {
     $row = $res->fetch_assoc();
-    if ($row["typ"] == 0 && $act != "buy") {
-        header("location: dashboard");
-    } elseif ($row["typ"] == 1 && $act != "sell") {
-        header("location: dashboard");
-    }
-    if ($row['u_id'] !== $_SESSION["id"]) {
+    if ($row["type"] != 0 || $act != "buy") {
         header("location: dashboard");
     }
 } else {
     header("location: dashboard");
 }
+// get admin bank
+$query = "SELECT bank_name, account_number, account_name FROM admin_banks WHERE id=1";
+$result = $conn->query($query);
+if ($result == true && $result->num_rows == 1) {
+    $row = $result->fetch_assoc();
+    $bank = $row["bank_name"];
+    $accountNumber = $row["account_number"];
+    $accountName = $row["account_name"];
+}
+
 include_once "header.php";
 ?>
 <script>
@@ -51,13 +56,13 @@ include_once "header.php";
             <div class="details my-3  row p-2 rounded border paybg">
                 <div class="col-8 p-0">
                     <span class="d-block title">Bank Name</span>
-                    <span class="value">FirstBank</span>
+                    <span class="value"><?php echo $bank; ?></span>
                 </div>
             </div>
             <div class="details my-3 row p-2 rounded border justify-content-between paybg">
                 <div class="col-8 p-0">
                     <span class="d-block title">Account number</span>
-                    <span class="value account-number">3848543594</span>
+                    <span class="value account-number"><?php echo $accountNumber; ?></span>
                 </div>
                 <div class="col-1 text-center">
                     <span class="tt" title="Copy account number">
@@ -71,7 +76,7 @@ include_once "header.php";
             <div class="details mt-3 mb-4 row p-2 rounded border justify-content-between paybg">
                 <div class="col-8 p-0">
                     <span class="d-block title">Account name</span>
-                    <span class="value">Fabex Global</span>
+                    <span class="value"><?php echo $accountName; ?></span>
                 </div>
             </div>
             <p tabindex="-2" class="text-danger note"><b>Note:</b> Third party payments are not allowed! You should only pay from an account registered with your name.</p>

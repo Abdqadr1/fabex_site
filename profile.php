@@ -12,7 +12,7 @@ include "header.php"; ?>
 </script>
 
 <body>
-    <?php include_once "navbar.php" ?>
+    <?php include_once "navbar.php"; ?>
     <script>
         let dash_version = 1.0;
         let version = 0.6;

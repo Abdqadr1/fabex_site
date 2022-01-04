@@ -1,48 +1,45 @@
 <?php
 session_start();
-include_once "connect_db.php";
-include_once "user_actions.php";
 
 if (!isset($_SESSION["id"])) {
     exit("No valid user!");
 }
 if ($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["act"]) || !isset($_SESSION["id"])) {
-    header("location: ../login");
+    exit("Invalid parameters!");
 }
 
+$action = $_POST["act"];
+$asset = $_POST["asset"];
+$amount = $_POST["amount"];
+$total = $_POST["total"];
+$product_id = $_POST["product_id"];
+
+if (empty($action) || empty($asset) || empty($amount) || empty($total) || empty($product_id)) {
+    exit("Fill the required fields!");
+}
+
+include_once "connect_db.php";
+include_once "user_actions.php";
 
 $action = mysqli_escape_string($conn, $_POST["act"]);
 $asset = mysqli_escape_string($conn, $_POST["asset"]);
 $amount = mysqli_escape_string($conn, $_POST["amount"]);
-$price = mysqli_escape_string($conn, $_POST["price"]);
+$total = mysqli_escape_string($conn, $_POST["total"]);
+$product_id = mysqli_escape_string($conn, $_POST["product_id"]);
 $action = testInput($action);
 $asset = testInput($asset);
 $amount = testInput($amount);
-$price = testInput($price);
-
-if (empty($action) || empty($asset) || empty($amount) || empty($price)) {
-    exit("Fill the required fields!");
-}
+$total = testInput($total);
+$product_id = testInput($product_id);
 
 $dir = "trx_proof/";
 
-function getId(&$conn)
-{
-    $tx_id = md5(time(), false);
-    $sql = "SELECT COUNT(*) FROM tx_history WHERE tx_id='$tx_id'";
-    while (($res = $conn->query($sql)) > 0) {
-        $uniq = uniqid("trx", true);
-        $tx_id = md5(time() . $uniq, false);
-    }
-    return $tx_id;
-}
-
-function buyCrypto(&$conn, $amount, $price, $product_name)
+function buyCrypto(&$conn, $amount, $total, $product_name, $product_id)
 {
     if (!isset($_POST["address"]) || !isset($_POST["network"]) || !isset($_POST["memo"])) {
         exit("Incomplete parameters");
     }
-    if (empty($_POST["address"]) || empty($_POST["network"]) || empty($_POST["memo"])) {
+    if (empty($_POST["address"]) || empty($_POST["network"])) {
         exit("Parameters cannot be empty");
     }
     $network = mysqli_escape_string($conn, $_POST["network"]);
@@ -56,20 +53,20 @@ function buyCrypto(&$conn, $amount, $price, $product_name)
     $desc = "Bought " . $product_name;
     // insert into transactions
     $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, type, status, network, wallet_address,which, memo) 
-    VALUES ('$uid','$tx_id','$desc', '$amount', '$price','$product_name', 0,0, '$network','$address','crypto', '$memo')";
+    VALUES ('$uid','$tx_id','$desc', '$total', '$amount','$product_name', 0,0, '$network','$address','crypto', '$memo')";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;
         $_SESSION["which"] = "crypto";
         $_SESSION["act"] = "buy";
-        $_SESSION["amount"] = $amount;
+        $_SESSION["amount"] = $total;
         echo "Success: transaction was inserted " . $conn->insert_id;
     } else {
         echo "Something went wrong " . $conn->error;
     }
 }
 
-function sellCrypto(&$conn, $amount, $price, $product_name)
+function sellCrypto(&$conn, $amount, $total, $product_name, $product_id)
 {
     $uid = $_SESSION["id"];
     $tx_id = getId($conn);
@@ -89,13 +86,14 @@ function sellCrypto(&$conn, $amount, $price, $product_name)
     }
     // insert into transactions
     $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, type, status, bank_name, account_number, account_name, which) 
-    VALUES ('$uid','$tx_id','$desc', '$amount', '$price', '$product_name', 1,0, '$bank_name','$account_number','$account_name','crypto')";
+    VALUES ('$uid','$tx_id','$desc', '$total', '$amount', '$product_name', 1,0, '$bank_name','$account_number','$account_name','crypto')";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;
         $_SESSION["which"] = "crypto";
         $_SESSION["act"] = "sell";
         $_SESSION["amount"] = $amount;
+        $_SESSION["product_id"] = $product_id;
         echo "Success: transaction was inserted " . $conn->insert_id;
     } else {
         echo "Something went wrong " . $conn->error;
@@ -105,10 +103,10 @@ function sellCrypto(&$conn, $amount, $price, $product_name)
 //TODO: do something about the products id and name
 switch ($action) {
     case "buy":
-        buyCrypto($conn, $amount, $price, $asset);
+        buyCrypto($conn, $amount, $total, $asset, $product_id);
         break;
     case "sell":
-        sellCrypto($conn, $amount, $price, $asset);
+        sellCrypto($conn, $amount, $total, $asset, $product_id);
         break;
     default:
         echo "This action is not supported.";

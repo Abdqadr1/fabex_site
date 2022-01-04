@@ -49,8 +49,26 @@ const tradeGiftcardForm = document.querySelector("form#tradeGiftcardForm") as HT
 const submitBtn = tradeGiftcardForm.querySelector("button") as HTMLButtonElement;
 const hiddenInput = tradeGiftcardForm.querySelector("input#hidden") as HTMLInputElement;
 const priceInput = tradeGiftcardForm.querySelector("input#priceInput") as HTMLInputElement;
+const totalInput = tradeGiftcardForm.querySelector("input#totalInput") as HTMLInputElement;
+const amountInput = tradeGiftcardForm.querySelector("input#amount") as HTMLInputElement;
 const errorDiv = tradeGiftcardForm.querySelector("#errorDiv") as HTMLDivElement;
-
+const categories = tradeGiftcardForm.querySelector("select#category") as HTMLSelectElement;
+const subCategories = tradeGiftcardForm.querySelector("select#subCategory") as HTMLSelectElement;
+const amountParagraph = tradeGiftcardForm.querySelector("p#amount") as HTMLParagraphElement;
+amountInput.onkeyup = event => changeAmount();
+const changeAmount = () => {
+    const price:number = Number(priceInput.value);
+    const amount = amountInput.valueAsNumber;
+    console.log(price, amount);
+    if (price && amount && amount > 0 && price > 0) {
+        totalInput.value = "" + (price * amount);
+        amountParagraph.innerText = "Total: N" + (price * amount);
+    } else {
+        totalInput.value = "" + (price * amount);
+        amountParagraph.innerText = "Total: N0";
+    }
+}
+console.log(amountInput)
 const timeoutFun = () => {
     errorDiv.innerText = "Request taking too long, Check your internet connection";
     errorDiv.classList.remove("d-none");
@@ -64,6 +82,7 @@ const timeoutFun = () => {
 tradeGiftcardForm.onsubmit = event => {
     event.preventDefault();
     hiddenInput.value = action;
+    const act:string = action;
     console.log("submitting...")
     const aj = new Ajax(tradeGiftcardForm as HTMLFormElement);
     aj.setTimer(timeoutFun, 120000);
@@ -75,7 +94,7 @@ tradeGiftcardForm.onsubmit = event => {
     aj.setAfter((responseText: string) => {
         console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
-            if (action === "buy") {
+            if (act === "buy") {
                 location.href = "payment";
             } else {
                 location.href = "sell_giftcard";
@@ -83,9 +102,9 @@ tradeGiftcardForm.onsubmit = event => {
         } else {
             errorDiv.innerText = responseText;
             errorDiv.classList.remove("d-none");
-            errorDiv.classList.add("d-block");
             errorDiv.focus();
         }
+        changeDisability(actionButtons, false)
         submitBtn.innerText = action + " giftcard"
         submitBtn.disabled = false;
     });
@@ -174,3 +193,54 @@ const banks = tradeGiftcardForm.querySelector("select#bankName") as HTMLSelectEl
     });
 }
 )();
+
+let cats: any[] = [];
+let subCats: any[] = [];
+const changeSub = (id:number) => {
+    const sub: any[] = subCats.filter(each => each.parent == id);
+    console.log(id, sub);
+    if (sub.length > 0) {
+        subCategories.innerHTML = `<option value="" selected hidden>Select sub...</option>`;
+        sub.forEach(giftcard => {
+            const option = document.createElement("option");
+            option.innerText = giftcard.name;
+            option.value = giftcard.name;
+            option.onclick = event => {
+                priceInput.value = giftcard.price;
+                changeAmount();
+            }
+            subCategories.appendChild(option);
+        })
+    } else {
+            subCategories.innerHTML = `<option value="" selected hidden>No sub category found</option>`;
+    }
+
+}
+
+// get giftcards
+(function () {
+    Ajax.fetchPage("php/data.php?which=giftcards", ((data: string) => {
+        const result: (string|any[])[] = JSON.parse(data);
+        const el = result[0];
+        if (typeof el === "string") {
+            const option = document.createElement("option")
+            option.innerText = el; option.value = ""; option.disabled = true;
+            categories.appendChild(option);
+        } 
+        if (typeof el === "object") {
+            cats = result.filter((each:any) => each.type === "category");
+            subCats = result.filter((each:any) => each.type === "sub_category" && each.price > 0);
+            cats.forEach(category => {
+                const option = document.createElement("option");
+                option.id = category.id;
+                option.value = category.name;
+                option.innerText = category.name
+                option.onclick = event => {
+                    categories.setAttribute("aria-id", option.id);
+                    changeSub(category.id);
+                }
+                categories.appendChild(option);
+            })
+        }
+    }))
+})()

@@ -23,25 +23,24 @@ include_once "header.php"; ?>
                 <!-- category -->
                 <div class="mt-3">
                     <label for="category" class="form-label">Category</label>
-                    <select name="category" class="form-select rad8" id="category" required>
+                    <select name="category" class="form-select rad8" id="category" aria-id="0" required>
                         <option value="" selected hidden>Select category...</option>
-                        <option value="gift">Giftcard</option>
                     </select>
                 </div>
                 <!-- sub category -->
                 <div class="mt-3">
                     <label for="subCategory" class="form-label">Sub Category</label>
-                    <select name="sub_category" class="form-select rad8" id="subCategory" required>
+                    <select name="sub_category" class="form-select rad8" id="subCategory" aria-id="0" required>
                         <option value="" selected hidden>Select sub...</option>
-                        <option value="1333">Giftcard</option>
                     </select>
                 </div>
 
                 <!-- amount -->
                 <label for="amount" class="form-label mb-1 mt-3">Amount ($)</label>
-                <input name="amount" type="text" class="form-control form-control-lg" id="amount" required>
-                <p class="mt-2 mb-0 fw-bold" id="amount">Total: N33,000</p>
-                <input type="hidden" name="price" value="30000" id="priceInput">
+                <input name="amount" type="number" class="form-control form-control-lg" id="amount" required>
+                <p class="mt-2 mb-0 fw-bold" id="amount">Total: N0</p>
+                <input type="hidden" name="price" value="" id="priceInput" required>
+                <input type="hidden" name="total" value="0" id="totalInput" required>
 
                 <div class="no-margin d-none" id="bankDiv">
                     <!-- toggle div -->
