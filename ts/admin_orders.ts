@@ -88,11 +88,27 @@ const copyFunc = (input: HTMLInputElement | string) => {
     alert("Text copied!")
 }
 const cellNames:any = { 
-    "00": [8,[ "id","name","product", ["price","amount"], ["wallet_address", "network"], "memo", "time"]],
-    "10":[7,["id", "name", "product",["price","amount"], ["account_number", "bank_name"], "time"]],
-    "01":[7,["id", "name",  "product", ["price","amount"],"email","time"]],
-    "11":[7,["id", "name", "product", ["price","amount"],["account_number", "bank_name"],"time"]]
+    "00": [8,[ "tx_id","name","product", ["price","amount"], ["wallet_address", "network"], "memo", "time"]],
+    "10":[7,["tx_id", "name", "product",["price","amount"], ["account_number", "bank_name"], "time"]],
+    "01":[7,["tx_id", "name",  "product", ["price","amount"],"email","time"]],
+    "11":[7,["tx_id", "name", "product", ["price","amount"],["account_number", "bank_name"],"time"]]
 }
+// price and amount formatter
+const dollarFormatter = new Intl.NumberFormat("en-US", {style:'currency',currency:'USD', maximumFractionDigits:2, minimumFractionDigits:1})
+const nairaFormatter = new Intl.NumberFormat("en-NG", {style:'currency',currency:'NGN', maximumFractionDigits:2, minimumFractionDigits:1})
+const dateFormatter = new Intl.DateTimeFormat("en-NG", {
+    month: "numeric",
+    day:"2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12:true,
+    year: "2-digit"
+})
+const todayFormatter = new Intl.DateTimeFormat("en-NG", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12:true,
+})
 // change table 
 const changeTable = (list: any[], filters: filterType) => {
     showHeader(filters);
@@ -108,23 +124,19 @@ const changeTable = (list: any[], filters: filterType) => {
                 const name = cellNames[i];
                 const td = document.createElement("td") as HTMLTableCellElement;
                 if (typeof name === "string") {
-                    const val:string = order[name];
-                    td.innerText = val.length > 20 ? val.substring(0, 17)+"..." : val;
+                    let val:string = (name == "tx_id") ? order[name].toUpperCase() : order[name];
+                    td.innerText = val.length > 19 ? val.substring(0, 17)+"..." : val;
                     if (name === "memo" || name === "email") {
                         td.innerHTML += "<span class='copy material-icons' title='copy full text'>content_copy</span>";
                         const copy = td.querySelector("span.copy") as HTMLSpanElement;
                         if(copy) copy.onclick = () => copyFunc(order[name]);
                     }
                     if (name === "time") {
-                        // const date = new Date(order[name]);
-                        // const today = new Date();
-                        // const isToday = date.toDateString() === today.toDateString();
-                        // const day = isToday ? 'Today' : date.toDateString();
-                        // const amPm = date.getHours() > 12 ? "pm" : "am";
-                        // if (isToday) {
-
-                        // }
-                        // console.log(date.toDateString() + day);
+                        const date = new Date(order[name]);
+                        const today = new Date();
+                        const isToday = date.toDateString() === today.toDateString();
+                        const time:string = isToday ? "Today " + todayFormatter.format(date) : dateFormatter.format(date)
+                        td.innerText = time;
                     }
                 } else if (name instanceof Array) {
                     let content:string = order[name[0]];
@@ -136,8 +148,8 @@ const changeTable = (list: any[], filters: filterType) => {
                     }
                     //for price and amount
                     if (name[0] == 'price') {
-                        extra = "N" + order[name[1]];
-                        content = "$" + order[name[0]];
+                        extra = nairaFormatter.format(order[name[1]]);
+                        content = dollarFormatter.format(order[name[0]]) ;
                     }
                     // Don't show copy icon for amount cell
                     const addCopy = name[0] == "price"?"":"<span class='copy material-icons' title='copy full text'>content_copy</span>";

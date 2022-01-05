@@ -3,6 +3,8 @@ const historyDiv = document.querySelector("div#historyDiv") as HTMLDivElement;
 const loadingContainer = document.querySelector("div#loadingContainer") as HTMLDivElement;
 const noHistory = document.querySelector("div#no-history") as HTMLDivElement;
 
+const formatter = new Intl.NumberFormat("en-NG", { style: 'currency', currency: 'NGN', minimumFractionDigits:1, maximumFractionDigits: 2});
+
 const addHistory = (list: [][]) => {
     const history = document.createElement("div") as HTMLDivElement;
     history.className = "history";
@@ -14,8 +16,8 @@ const addHistory = (list: [][]) => {
                         <span class="trans-status">
                             <span class="ellipse" style="--type: var(--${each[4]});"></span>${each[5]}</span>
                     </div>
-                    <div class="col-3 text-to-right">
-                        <span class="trans-amount">N${each[2]}</span><br>
+                    <div class="col-4 text-to-right">
+                        <span class="trans-amount">${formatter.format(each[2])}</span><br>
                         <span class="trans-time">${each[3]}</span>
                     </div>`;
         history.appendChild(div);

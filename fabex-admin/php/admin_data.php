@@ -110,11 +110,11 @@ function getAllOrders(mysqli &$conn, string $which)
     $status = testInput($status);
     $need = "";
     if ($type == "crypto") {
-        $need = "CONCAT (users.fname,' ', users.lname) AS name, users.bank_name AS user_bank, users.account_number AS user_account_number, trx_history.id, trx_history.product, 
+        $need = "CONCAT (users.fname,' ', users.lname) AS name, users.bank_name AS user_bank, users.account_number AS user_account_number, trx_history.id, trx_history.tx_id, trx_history.product, 
         trx_history.amount, trx_history.price, trx_history.wallet_address, trx_history.time, trx_history.status, 
         trx_history.type, trx_history.bank_name, trx_history.account_number, trx_history.memo, trx_history.which, trx_history.network";
     } else {
-        $need = "CONCAT (users.fname,' ', users.lname) AS name, users.bank_name AS user_bank, users.account_number AS user_account_number,users.email, trx_history.id, trx_history.product, 
+        $need = "CONCAT (users.fname,' ', users.lname) AS name, users.bank_name AS user_bank, users.account_number AS user_account_number,users.email, trx_history.id, trx_history.tx_id, trx_history.product, 
         trx_history.amount, trx_history.price, trx_history.time, trx_history.status, trx_history.type, 
         trx_history.bank_name, trx_history.account_number, trx_history.which";
     }

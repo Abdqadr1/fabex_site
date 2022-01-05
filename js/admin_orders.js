@@ -86,11 +86,27 @@ var copyFunc = function (input) {
     alert("Text copied!");
 };
 var cellNames = {
-    "00": [8, ["id", "name", "product", ["price", "amount"], ["wallet_address", "network"], "memo", "time"]],
-    "10": [7, ["id", "name", "product", ["price", "amount"], ["account_number", "bank_name"], "time"]],
-    "01": [7, ["id", "name", "product", ["price", "amount"], "email", "time"]],
-    "11": [7, ["id", "name", "product", ["price", "amount"], ["account_number", "bank_name"], "time"]]
+    "00": [8, ["tx_id", "name", "product", ["price", "amount"], ["wallet_address", "network"], "memo", "time"]],
+    "10": [7, ["tx_id", "name", "product", ["price", "amount"], ["account_number", "bank_name"], "time"]],
+    "01": [7, ["tx_id", "name", "product", ["price", "amount"], "email", "time"]],
+    "11": [7, ["tx_id", "name", "product", ["price", "amount"], ["account_number", "bank_name"], "time"]]
 };
+// price and amount formatter
+var dollarFormatter = new Intl.NumberFormat("en-US", { style: 'currency', currency: 'USD', maximumFractionDigits: 2, minimumFractionDigits: 1 });
+var nairaFormatter = new Intl.NumberFormat("en-NG", { style: 'currency', currency: 'NGN', maximumFractionDigits: 2, minimumFractionDigits: 1 });
+var dateFormatter = new Intl.DateTimeFormat("en-NG", {
+    month: "numeric",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+    year: "2-digit"
+});
+var todayFormatter = new Intl.DateTimeFormat("en-NG", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+});
 // change table 
 var changeTable = function (list, filters) {
     showHeader(filters);
@@ -106,8 +122,8 @@ var changeTable = function (list, filters) {
                 var name_1 = cellNames[i];
                 var td = document.createElement("td");
                 if (typeof name_1 === "string") {
-                    var val = order[name_1];
-                    td.innerText = val.length > 20 ? val.substring(0, 17) + "..." : val;
+                    var val = (name_1 == "tx_id") ? order[name_1].toUpperCase() : order[name_1];
+                    td.innerText = val.length > 19 ? val.substring(0, 17) + "..." : val;
                     if (name_1 === "memo" || name_1 === "email") {
                         td.innerHTML += "<span class='copy material-icons' title='copy full text'>content_copy</span>";
                         var copy = td.querySelector("span.copy");
@@ -115,14 +131,11 @@ var changeTable = function (list, filters) {
                             copy.onclick = function () { return copyFunc(order[name_1]); };
                     }
                     if (name_1 === "time") {
-                        // const date = new Date(order[name]);
-                        // const today = new Date();
-                        // const isToday = date.toDateString() === today.toDateString();
-                        // const day = isToday ? 'Today' : date.toDateString();
-                        // const amPm = date.getHours() > 12 ? "pm" : "am";
-                        // if (isToday) {
-                        // }
-                        // console.log(date.toDateString() + day);
+                        var date = new Date(order[name_1]);
+                        var today = new Date();
+                        var isToday = date.toDateString() === today.toDateString();
+                        var time = isToday ? "Today " + todayFormatter.format(date) : dateFormatter.format(date);
+                        td.innerText = time;
                     }
                 }
                 else if (name_1 instanceof Array) {
@@ -135,8 +148,8 @@ var changeTable = function (list, filters) {
                     }
                     //for price and amount
                     if (name_1[0] == 'price') {
-                        extra = "N" + order[name_1[1]];
-                        content = "$" + order[name_1[0]];
+                        extra = nairaFormatter.format(order[name_1[1]]);
+                        content = dollarFormatter.format(order[name_1[0]]);
                     }
                     // Don't show copy icon for amount cell
                     var addCopy = name_1[0] == "price" ? "" : "<span class='copy material-icons' title='copy full text'>content_copy</span>";

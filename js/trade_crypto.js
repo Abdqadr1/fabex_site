@@ -9,6 +9,13 @@ backBtn.onclick = function (event) {
     event.stopPropagation();
     history.go(-1);
 };
+// number formatter
+var numberFormatter = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 2
+});
 var bankList = [];
 var isChanged = false;
 var action = "buy";
@@ -33,8 +40,9 @@ var changeAmount = function () {
     var amount = amountInput.valueAsNumber;
     console.log(price, amount);
     if (price && amount && amount > 0 && price > 0) {
-        totalInput.value = "" + (price * amount);
-        amountParagraph.innerText = "Total: N" + (price * amount);
+        var tot = Number(price * amount);
+        totalInput.value = "" + tot.toFixed(2);
+        amountParagraph.innerText = "Total: " + numberFormatter.format(tot);
     }
     else {
         totalInput.value = "" + (price * amount);

@@ -43,6 +43,13 @@ const changeDisability = (nodes:NodeListOf<HTMLElement>,show:boolean) => {
     })
 }
 
+// number formatter
+const numberFormatter = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 2
+})
 
 let action:string = "buy";
 const tradeGiftcardForm = document.querySelector("form#tradeGiftcardForm") as HTMLFormElement;
@@ -58,13 +65,14 @@ const amountParagraph = tradeGiftcardForm.querySelector("p#amount") as HTMLParag
 amountInput.onkeyup = event => changeAmount();
 const changeAmount = () => {
     const price:number = Number(priceInput.value);
-    const amount = amountInput.valueAsNumber;
+    const amount:number = amountInput.valueAsNumber;
     console.log(price, amount);
     if (price && amount && amount > 0 && price > 0) {
-        totalInput.value = "" + (price * amount);
-        amountParagraph.innerText = "Total: N" + (price * amount);
+        const tot = Number(price * amount);
+        totalInput.value = "" + tot.toFixed(2);
+        amountParagraph.innerText = "Total: " + numberFormatter.format(tot);
     } else {
-        totalInput.value = "" + (price * amount);
+        totalInput.value = "";
         amountParagraph.innerText = "Total: N0";
     }
 }

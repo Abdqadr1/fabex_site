@@ -23,12 +23,13 @@ if ($res->num_rows == 1) {
     if ($row["type"] != 1 || $act != "sell") {
         header("location: giftcard");
     } else {
-        $query = "SELECT network, address,memo  FROM cryptos WHERE id='$product_id'";
+        $query = "SELECT network, acronym, address,memo  FROM cryptos WHERE id='$product_id'";
         $result = $conn->query($query);
         if ($result == true && $result->num_rows == 1) {
             $r = $result->fetch_assoc();
             $network = $r["network"];
             $address = $r["address"];
+            $acronym = $r["acronym"];
             $memo = $r["memo"];
         } else {
             exit("Error getting crypto details...");
@@ -46,7 +47,7 @@ include_once "header.php"; ?>
     <div class="body row justify-content-center payment-row">
         <div class="col-md-5 col-lg-4 col-10">
             <form action="php/sell.php" method="POST" enctype="multipart/form-data" id="uploadForm">
-                <p class="kindly-pay my-2 text-center mb-3">Kindly withdraw <span class="amount">$<?php echo $amount; ?></span> worth of ETH to the address below</p>
+                <p class="kindly-pay my-2 text-center mb-3">Kindly withdraw <span class="amount">$<?php echo $amount; ?></span> worth of <?php echo $acronym; ?> to the address below</p>
                 <div tabindex="-1" class="alert alert-danger d-none text-center mt-2" id="errorDiv" role="alert"></div>
                 <div class="details my-3  row p-2 rounded border paybg">
                     <div class="col-8 p-0">
@@ -88,7 +89,7 @@ include_once "header.php"; ?>
                     <span class="col-7 text-left file-placeholder">png, jpg or jpeg</span>
                     <label for="upload" class="col-5 choose">Choose image</label>
                 </div>
-                <input type="file" accept="image/*" name="upload[]" class="file-input" id="upload" multiple>
+                <input type="file" accept="image/*" name="upload[]" class="file-input" id="upload" multiple required>
                 <button type="submit" name="submit" class="payment text-center">Proceed</button>
             </form>
         </div>

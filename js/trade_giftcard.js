@@ -43,6 +43,13 @@ var changeDisability = function (nodes, show) {
         element.disabled = show;
     });
 };
+// number formatter
+var numberFormatter = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 2
+});
 var action = "buy";
 var tradeGiftcardForm = document.querySelector("form#tradeGiftcardForm");
 var submitBtn = tradeGiftcardForm.querySelector("button");
@@ -60,11 +67,12 @@ var changeAmount = function () {
     var amount = amountInput.valueAsNumber;
     console.log(price, amount);
     if (price && amount && amount > 0 && price > 0) {
-        totalInput.value = "" + (price * amount);
-        amountParagraph.innerText = "Total: N" + (price * amount);
+        var tot = Number(price * amount);
+        totalInput.value = "" + tot.toFixed(2);
+        amountParagraph.innerText = "Total: " + numberFormatter.format(tot);
     }
     else {
-        totalInput.value = "" + (price * amount);
+        totalInput.value = "";
         amountParagraph.innerText = "Total: N0";
     }
 };

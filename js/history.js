@@ -2,13 +2,14 @@ import { Ajax } from "./ajax.js";
 var historyDiv = document.querySelector("div#historyDiv");
 var loadingContainer = document.querySelector("div#loadingContainer");
 var noHistory = document.querySelector("div#no-history");
+var formatter = new Intl.NumberFormat("en-NG", { style: 'currency', currency: 'NGN', minimumFractionDigits: 1, maximumFractionDigits: 2 });
 var addHistory = function (list) {
     var history = document.createElement("div");
     history.className = "history";
     list.forEach(function (each) {
         var div = document.createElement("div");
         div.className = "row justify-content-between transaction";
-        div.innerHTML = "<div class=\"col-8 ml-2\">\n                        <span class=\"trans-title\">" + each[1] + "</span><br>\n                        <span class=\"trans-status\">\n                            <span class=\"ellipse\" style=\"--type: var(--" + each[4] + ");\"></span>" + each[5] + "</span>\n                    </div>\n                    <div class=\"col-3 text-to-right\">\n                        <span class=\"trans-amount\">N" + each[2] + "</span><br>\n                        <span class=\"trans-time\">" + each[3] + "</span>\n                    </div>";
+        div.innerHTML = "<div class=\"col-8 ml-2\">\n                        <span class=\"trans-title\">" + each[1] + "</span><br>\n                        <span class=\"trans-status\">\n                            <span class=\"ellipse\" style=\"--type: var(--" + each[4] + ");\"></span>" + each[5] + "</span>\n                    </div>\n                    <div class=\"col-4 text-to-right\">\n                        <span class=\"trans-amount\">" + formatter.format(each[2]) + "</span><br>\n                        <span class=\"trans-time\">" + each[3] + "</span>\n                    </div>";
         history.appendChild(div);
     });
     historyDiv.appendChild(history);

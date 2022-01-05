@@ -37,7 +37,7 @@ include_once "header.php"; ?>
 
                 <!-- amount -->
                 <label for="amount" class="form-label mb-1 mt-3">Amount ($)</label>
-                <input name="amount" type="number" class="form-control form-control-lg" id="amount" required>
+                <input name="amount" step="0.01" type="number" class="form-control form-control-lg" id="amount" required>
                 <p class="mt-2 mb-0 fw-bold" id="amount">Total: N0</p>
                 <input type="hidden" name="price" value="" id="priceInput" required>
                 <input type="hidden" name="total" value="0" id="totalInput" required>
