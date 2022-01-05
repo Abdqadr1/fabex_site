@@ -17,6 +17,7 @@ include "header.php"; ?>
         let dash_version = 1.0;
         let version = 0.6;
         let activePage = "Dashboard";
+        document.title = activePage;
     </script>
     <div id="container">
         <?php include_once "dashboard.php"; ?>

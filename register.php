@@ -6,7 +6,7 @@
             <div class="col-10 col-md-9 col-lg-7" id="settings_pass_div">
                 <img src="assets/images/FabEx.png" class="mx-auto d-block logo" alt="Logo">
                 <p class="text-center mt-2 fw-bold fs-4">Create your account</p>
-                <p class="text-center mt-2 fw-bold changepass">Already a user? <a href="login.php">Log in</a></p>
+                <p class="text-center mt-2 fw-bold changepass">Already a user? <a href="login">Log in</a></p>
                 <form method="post" action="php/register.php" id="registerForm">
                     <div class="row justify-content-center justify-content-md-between gap no-margin mt-1 my-3">
                         <div tabindex="-1" class="alert alert-danger d-none text-center mx-3" id="errorDiv" role="alert"></div>

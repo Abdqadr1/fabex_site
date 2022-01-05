@@ -7,7 +7,7 @@ var addRates = function (content) {
     var sec = crypto[1] ? crypto[1] + "/$" : "";
     var d = document.createElement("div");
     d.className = "rates";
-    d.innerHTML = "\n                <div class=\"row justify-content-between rate\">\n                    <div class=\"col-9 ml-2\">\n                        <span class=\"rate-title\">" + crypto[0] + "</span><br>\n                    </div>\n                    <div class=\"col-3 text-to-right\">\n                        <span class=\"rate-price\">" + sec + "</span>\n                    </div>\n                </div>";
+    d.innerHTML = "\n                <div class=\"row justify-content-between rate\">\n                    <div class=\"col-9 ml-2\">\n                        <span class=\"rate-title text-caps\">" + crypto[0] + "</span><br>\n                    </div>\n                    <div class=\"col-3 text-to-right\">\n                        <span class=\"rate-price\">" + sec + "</span>\n                    </div>\n                </div>";
     rates_container.appendChild(d);
     var dg = document.createElement("div");
     dg.className = "rates";
@@ -21,11 +21,9 @@ var addRates = function (content) {
     rates_container.appendChild(dg);
 };
 (function () {
-    //TODO: get current rates
     console.info("fetching rates from server...");
     Ajax.fetchPage("php/get_rates.php", function (data) {
         var result = JSON.parse(data);
-        //TODO: do something with the data.
         if (result.length > 1) {
             addRates(result);
         }
@@ -33,7 +31,7 @@ var addRates = function (content) {
             var t = result[0][0];
             var div = document.createElement("div");
             div.className = "rates";
-            div.innerHTML = "\n                <div class=\"row justify-content-center rate\">\n                    <div class=\"col-10 ml-2\">\n                        <span class=\"rate-title\">" + t + "</span><br>\n                    </div>\n                </div>";
+            div.innerHTML = "\n                <div class=\"row justify-content-center rate\">\n                    <div class=\"col-10 ml-2\">\n                        <span class=\"rate-title text-caps\">" + t + "</span><br>\n                    </div>\n                </div>";
             rates_container.appendChild(div);
         }
         loadingContainer.classList.remove("d-block");

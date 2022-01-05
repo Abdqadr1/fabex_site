@@ -1,6 +1,6 @@
 <div class="body row justify-content-center">
     <div class="col-md-5 col-lg-5 col-10" id="">
-        <div class="mx-auto" id="rates_container">
+        <div class="mx-auto mb-3" id="rates_container">
             <p class="trans-history">Exchange rates</p>
             <!-- <div class="rates">
                 <div class="row justify-content-between rate">

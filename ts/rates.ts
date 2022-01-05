@@ -11,7 +11,7 @@ const addRates = (content: [][]) => {
     d.innerHTML = `
                 <div class="row justify-content-between rate">
                     <div class="col-9 ml-2">
-                        <span class="rate-title">${crypto[0]}</span><br>
+                        <span class="rate-title text-caps">${crypto[0]}</span><br>
                     </div>
                     <div class="col-3 text-to-right">
                         <span class="rate-price">${sec}</span>
@@ -39,21 +39,19 @@ const addRates = (content: [][]) => {
 
 (
     function () { 
-    //TODO: get current rates
         console.info("fetching rates from server...");
         Ajax.fetchPage("php/get_rates.php", (data: string) => {
             const result: any[] = JSON.parse(data);
-            //TODO: do something with the data.
             if (result.length > 1) {
                 addRates(result);
             } else { 
-                const t = result[0][0];
+                const t:string = result[0][0];
                 const div = document.createElement("div");
                 div.className = "rates"
                 div.innerHTML = `
                 <div class="row justify-content-center rate">
                     <div class="col-10 ml-2">
-                        <span class="rate-title">${t}</span><br>
+                        <span class="rate-title text-caps">${t}</span><br>
                     </div>
                 </div>`;
                 rates_container.appendChild(div);

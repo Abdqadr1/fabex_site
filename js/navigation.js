@@ -10,15 +10,12 @@ navLinks.forEach(function (element) {
         event.preventDefault();
         navToggleButton.parentElement.classList.add("collapsed");
         navToggleButton.parentElement.setAttribute("aria-expanded", "false");
-        // console.log(navToggleButton.parentElement);
         navLinkDiv.classList.remove("show");
         var text = element.innerText;
         if (activePage !== text) {
             container.innerHTML = "";
             container.innerHTML = loaderHTML;
-            //load page asynchronously
             load(text);
-            console.log("loading page...");
             activePage = text;
             navToggleButton.innerText = text;
             var active_1 = "active";
@@ -53,6 +50,7 @@ var load = function (pageName) {
     Ajax.fetchPage(url, function (data) {
         container.innerHTML = "";
         container.innerHTML = data;
+        document.title = activePage;
         var scriptB4 = container.querySelector("script#pageScript");
         if (scriptB4 !== null) {
             container.removeChild(scriptB4);

@@ -10,7 +10,7 @@ include_once "header.php"; ?>
             <div class="col-11 col-md-5 col-lg-4 mt-5" id="settings_pass_div">
                 <img src="assets/images/FabEx.png" class="mx-auto d-block" alt="Logo">
                 <p class="text-center mt-2 fw-bold fs-4">Login to your account</p>
-                <p class="text-center mt-2 fw-bold changepass">New to Fabex? <a href="register.php">Register</a></p>
+                <p class="text-center mt-2 fw-bold changepass">New to Fabex? <a href="register">Register</a></p>
                 <form action="php/login.php" method="POST" id="loginForm">
                     <div class="row justify-content-center">
                         <div tabindex="-1" class="alert alert-danger col-10 d-none text-center" id="errorDiv" role="alert"></div>

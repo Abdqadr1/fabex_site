@@ -39,6 +39,7 @@ var load = function (pageName) {
     Ajax.fetchPage(url, function (data) {
         container.innerHTML = "";
         container.innerHTML = data;
+        document.title = activePage;
         var scriptB4 = container.querySelector("script#pageScript");
         if (scriptB4 !== null) {
             container.removeChild(scriptB4);

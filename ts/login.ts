@@ -38,7 +38,6 @@ loginForm.onsubmit = (e) => {
         console.log(xhttp.status);
     })
     aj.setAfter((responseText: string) => {
-        console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) location.href = "dashboard";
         else {
             errorDiv.innerText = responseText;

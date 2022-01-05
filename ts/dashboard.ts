@@ -46,6 +46,7 @@ const load = (pageName: string) => {
     Ajax.fetchPage(url, (data:string) => {
         container.innerHTML = "";
         container.innerHTML = data;
+        document.title = activePage
         const scriptB4 = container.querySelector("script#pageScript") as HTMLScriptElement;
         if (scriptB4 !== null) {
             container.removeChild(scriptB4);
