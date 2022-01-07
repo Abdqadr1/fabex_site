@@ -27,11 +27,8 @@ paidForm.onsubmit = function (event) {
         paidBtn.disabled = true;
         paidBtn.innerHTML = spinner;
     });
-    aj.setError(function (xhttp) {
-        console.log(xhttp.status);
-    });
     aj.setAfter(function (responseText) {
-        console.log(responseText);
+        // console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
             location.href = "dashboard";
         }
@@ -52,7 +49,6 @@ backBtn.onclick = function (event) {
 };
 copy_icon.onclick = function (e) {
     e.stopPropagation();
-    console.log(e.target);
     var acct = document.querySelector("span.account-number");
     navigator.clipboard.writeText(acct.innerText);
     alert("Text copied!");

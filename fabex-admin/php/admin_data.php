@@ -2,7 +2,7 @@
 if (!isset($_GET["which"]) || empty($_GET["which"])) {
     echo ("Invalid parameters..");
 }
-include_once "../../php/connect_db.php";
+include_once "../../account/php/connect_db.php";
 $which = mysqli_escape_string($conn, $_GET["which"]);
 $which = testInput($which);
 

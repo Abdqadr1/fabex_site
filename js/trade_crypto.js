@@ -38,7 +38,7 @@ amountInput.onkeyup = function (event) { return changeAmount(); };
 var changeAmount = function () {
     var price = Number(priceInput.value);
     var amount = amountInput.valueAsNumber;
-    console.log(price, amount);
+    // console.log(price, amount);
     if (price && amount && amount > 0 && price > 0) {
         var tot = Number(price * amount);
         totalInput.value = "" + tot.toFixed(2);
@@ -79,7 +79,7 @@ var timeoutFun = function () {
 };
 tradeCryptoForm.onsubmit = function (event) {
     event.preventDefault();
-    console.log("submitting...");
+    // console.log("submitting...")
     var aj = new Ajax(tradeCryptoForm);
     aj.setTimer(timeoutFun, 120000);
     aj.setBefore(function () {
@@ -88,7 +88,7 @@ tradeCryptoForm.onsubmit = function (event) {
         changeDisability(buttons, true);
     });
     aj.setAfter(function (responseText) {
-        console.log(responseText);
+        // console.log(responseText)
         if (responseText.toLowerCase().indexOf("success") != -1) {
             if (action === "buy") {
                 location.href = "payment";
@@ -192,7 +192,6 @@ buttons.forEach(function (element) {
                 option.innerText = crypto.name;
                 option.value = crypto.acronym;
                 option.onclick = function (event) {
-                    console.log(crypto);
                     priceInput.value = crypto.price;
                     productIdInput.value = crypto.id;
                     changeAmount();

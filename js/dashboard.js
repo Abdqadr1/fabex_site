@@ -1,4 +1,5 @@
 dash_version += 0.001;
+version += 0.001;
 import { Ajax } from "./ajax.js";
 var container = document.querySelector("div#container");
 var view_all = document.querySelector("p#view_all");
@@ -45,7 +46,7 @@ var load = function (pageName) {
             container.removeChild(scriptB4);
         }
         var script = document.createElement("script");
-        script.src = "js/" + pageName.toLowerCase() + ".js?version=" + version;
+        script.src = "../js/" + pageName.toLowerCase() + ".js?version=" + version;
         script.setAttribute("type", "module");
         script.id = "pageScript";
         container.appendChild(script);
@@ -53,5 +54,5 @@ var load = function (pageName) {
 };
 var script = document.createElement("script");
 script.type = "module";
-script.src = "js/history.js?version=" + dash_version;
+script.src = "../js/history.js?version=" + dash_version;
 container.appendChild(script);

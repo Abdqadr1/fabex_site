@@ -1,6 +1,6 @@
 <?php
 $headers = getallheaders();
-include_once "../../php/connect_db.php";
+include_once "../../account/php/connect_db.php";
 $headers = getallheaders();
 if (
     !isset($headers["which"]) || empty($headers["which"]) || !isset($headers["id"]) || empty($headers["id"])

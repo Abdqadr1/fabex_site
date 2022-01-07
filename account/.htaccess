@@ -1,0 +1,18 @@
+RewriteEngine On    # Turn on the rewriting engine  
+
+RewriteRule    ^logout/?$    logout.php    [NC,L]  
+
+RewriteRule    ^dashboard/?$    index.php    [NC,L]   
+RewriteRule    ^crypto/?$    trade-crypto.php    [NC,L]  
+RewriteRule    ^giftcard/?$    trade-giftcard.php    [NC,L]  
+RewriteRule    ^payment/?$    payment.php  [NC,L]
+RewriteRule    ^sell_giftcard/?$    sell-giftcard.php  [NC,L]
+RewriteRule    ^sell_crypto/?$    sell-crypto.php  [NC,L]
+
+## Redirect non existting pages to profile.php
+Options +SymLinksIfOwnerMatch
+RewriteEngine On 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+## change this on the actual server
+RewriteRule . /fabex/account/index.php [L]

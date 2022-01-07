@@ -10,7 +10,7 @@ allCopyBtn.forEach(element => {
         const greatGrandParent = element.parentElement?.parentElement?.parentElement as HTMLDivElement;
         const val = greatGrandParent.querySelector('span.value') as HTMLSpanElement;
         navigator.clipboard.writeText(val.innerText);
-        console.log(val.innerText);
+        // console.log(val.innerText);
     }
 });
 const uploadForm = document.querySelector("form#uploadForm") as HTMLFormElement;
@@ -44,7 +44,7 @@ uploadForm.onsubmit = event => {
         errorDiv.classList.remove("d-block");
         errorDiv.classList.add("d-none");
         const aj = new Ajax(uploadForm as HTMLFormElement);
-        console.log("submitting...")
+        // console.log("submitting...")
         aj.setBefore(() => {
             submitBtn.disabled = true;
             submitBtn.innerHTML = spinner;

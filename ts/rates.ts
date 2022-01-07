@@ -39,7 +39,7 @@ const addRates = (content: [][]) => {
 
 (
     function () { 
-        console.info("fetching rates from server...");
+        // console.info("fetching rates from server...");
         Ajax.fetchPage("php/get_rates.php", (data: string) => {
             const result: any[] = JSON.parse(data);
             if (result.length > 1) {

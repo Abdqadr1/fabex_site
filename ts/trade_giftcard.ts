@@ -66,7 +66,7 @@ amountInput.onkeyup = event => changeAmount();
 const changeAmount = () => {
     const price:number = Number(priceInput.value);
     const amount:number = amountInput.valueAsNumber;
-    console.log(price, amount);
+    // console.log(price, amount);
     if (price && amount && amount > 0 && price > 0) {
         const tot = Number(price * amount);
         totalInput.value = "" + tot.toFixed(2);
@@ -76,7 +76,6 @@ const changeAmount = () => {
         amountParagraph.innerText = "Total: N0";
     }
 }
-console.log(amountInput)
 const timeoutFun = () => {
     errorDiv.innerText = "Request taking too long, Check your internet connection";
     errorDiv.classList.remove("d-none");
@@ -91,7 +90,7 @@ tradeGiftcardForm.onsubmit = event => {
     event.preventDefault();
     hiddenInput.value = action;
     const act:string = action;
-    console.log("submitting...")
+    // console.log("submitting...")
     const aj = new Ajax(tradeGiftcardForm as HTMLFormElement);
     aj.setTimer(timeoutFun, 120000);
     aj.setBefore(() => {
@@ -100,7 +99,7 @@ tradeGiftcardForm.onsubmit = event => {
         changeDisability(actionButtons, true)
     });
     aj.setAfter((responseText: string) => {
-        console.log(responseText);
+        // console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
             if (act === "buy") {
                 location.href = "payment";
@@ -206,7 +205,7 @@ let cats: any[] = [];
 let subCats: any[] = [];
 const changeSub = (id:number) => {
     const sub: any[] = subCats.filter(each => each.parent == id);
-    console.log(id, sub);
+    // console.log(id, sub);
     if (sub.length > 0) {
         subCategories.innerHTML = `<option value="" selected hidden>Select sub...</option>`;
         sub.forEach(giftcard => {

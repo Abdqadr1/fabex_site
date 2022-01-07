@@ -2,9 +2,6 @@
 session_start();
 
 
-//TODO: set timeout error;
-
-
 // set_time_limit(150);
 
 if (!isset($_POST["email"]) || !isset($_POST["password"])) {
@@ -14,8 +11,8 @@ if (!isset($_POST["email"]) || !isset($_POST["password"])) {
 $email = $_POST["email"];
 $pword = $_POST['password'];
 
-include_once "connect_db.php";
-include_once "user_actions.php";
+include_once "../account/php/connect_db.php";
+include_once "../account/php/user_actions.php";
 
 
 if (!empty($email) && !empty($pword)) {

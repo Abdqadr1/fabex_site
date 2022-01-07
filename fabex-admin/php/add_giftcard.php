@@ -1,5 +1,5 @@
 <?php
-include_once "../../php/connect_db.php";
+include_once "../../account/php/connect_db.php";
 if (!isset($_POST["giftcard_name"]) || empty($_POST["giftcard_name"])) {
     echo ("Invalid parameters");
 }

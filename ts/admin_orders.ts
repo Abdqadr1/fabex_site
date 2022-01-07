@@ -208,6 +208,7 @@ const fetchOrders = (filters:filterType) => {
     loadingContainer.classList.remove("d-none");
     table.classList.add("d-none");
     Ajax.fetchPage(`php/admin_data.php?which=orders`, (data: string) => {
+        // console.log(data);
         const arr: any[] = JSON.parse(data);
         const message: string = arr[0];
         if (message.toLowerCase().indexOf("success") != -1) {

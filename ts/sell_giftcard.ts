@@ -38,7 +38,7 @@ uploadForm.onsubmit = event => {
         errorDiv.classList.remove("d-block");
         errorDiv.classList.add("d-none");
         const aj = new Ajax(uploadForm as HTMLFormElement);
-        console.log("submitting...")
+        // console.log("submitting...")
         aj.setBefore(() => {
             submitBtn.disabled = true;
             submitBtn.innerHTML = spinner;

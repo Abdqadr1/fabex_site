@@ -2,6 +2,7 @@ declare let dash_version: number;
 declare let version: number;
 declare let activePage:string;
 dash_version += 0.001;
+version += 0.001;
 
 import { Ajax } from "./ajax.js";
 
@@ -52,14 +53,15 @@ const load = (pageName: string) => {
             container.removeChild(scriptB4);
         }
         const script = document.createElement("script");
-        script.src = "js/" + pageName.toLowerCase() + ".js?version="+version;
+        script.src = "../js/" + pageName.toLowerCase() + ".js?version="+version;
         script.setAttribute("type", "module");
         script.id = "pageScript";
         container.appendChild(script);
     })
 }
+
 const script = document.createElement("script");
 script.type = "module";
-script.src = "js/history.js?version=" + dash_version;
+script.src = "../js/history.js?version=" + dash_version;
 container.appendChild(script);
 

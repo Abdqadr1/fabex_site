@@ -38,7 +38,7 @@ loginForm.onsubmit = (e) => {
         console.log(xhttp.status);
     })
     aj.setAfter((responseText: string) => {
-        if (responseText.toLowerCase().indexOf("success") != -1) location.href = "dashboard";
+        if (responseText.toLowerCase().indexOf("success") != -1) location.href = "account/dashboard";
         else {
             errorDiv.innerText = responseText;
             errorDiv.classList.remove("d-none");

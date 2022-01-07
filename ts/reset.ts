@@ -13,7 +13,7 @@ resetForm.onsubmit = (e) => {
         btn.innerHTML = spinner;
     });
     aj.setAfter((responseText: string) => {
-        console.log(responseText);
+        // console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
             infoTag.classList.remove("d-none");
             infoTag.classList.add("d-block");

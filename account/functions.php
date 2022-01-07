@@ -2,14 +2,14 @@
 function isTimeout()
 {
     if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
-        header("location: login");
+        header("location: ../login");
     }
 }
 
 function isLoggedIn()
 {
     if (!isset($_SESSION["id"]) || !isset($_SESSION["fname"]) || empty($_SESSION["id"]) || empty($_SESSION["fname"])) {
-        header("location: login");
+        header("location: ../login");
         exit();
     }
 }

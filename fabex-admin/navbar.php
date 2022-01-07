@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light py-0">
     <div class="container-lg px-3 px-md-5">
-        <a class="navbar-brand my-2 my-md-0" href="#"><img src="../assets/images/FabEx.png" alt="Logo" height="30px"></a>
+        <a class="navbar-brand my-2 my-md-0" href="dashboard"><img src="../assets/images/FabEx.png" alt="Logo" height="30px"></a>
         <button class="navbar-toggler" type="" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-            <a class="dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="dropdown-toggle" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Orders
             </a>
         </button>

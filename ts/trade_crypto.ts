@@ -42,7 +42,7 @@ amountInput.onkeyup = event => changeAmount();
 const changeAmount = () => {
     const price:number = Number(priceInput.value);
     const amount = amountInput.valueAsNumber;
-    console.log(price, amount);
+    // console.log(price, amount);
     if (price && amount && amount > 0 && price > 0) {
         const tot = Number(price * amount);
         totalInput.value = "" + tot.toFixed(2);
@@ -84,7 +84,7 @@ const timeoutFun = () => {
 
 tradeCryptoForm.onsubmit = event => {
     event.preventDefault();
-    console.log("submitting...")
+    // console.log("submitting...")
     const aj = new Ajax(tradeCryptoForm as HTMLFormElement);
     aj.setTimer(timeoutFun, 120000)
     aj.setBefore(() => {
@@ -93,7 +93,7 @@ tradeCryptoForm.onsubmit = event => {
         changeDisability(buttons, true);
     })
     aj.setAfter((responseText: string) => {
-        console.log(responseText)
+        // console.log(responseText)
         if (responseText.toLowerCase().indexOf("success") != -1) {
             if (action === "buy") {
                 location.href = "payment";
@@ -198,7 +198,6 @@ buttons.forEach(element => {
                 option.innerText = crypto.name;
                 option.value = crypto.acronym;
                 option.onclick = event => {
-                    console.log(crypto);
                     priceInput.value = crypto.price;
                     productIdInput.value = crypto.id;
                     changeAmount();

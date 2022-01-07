@@ -17,8 +17,8 @@ if (
 }
 
 
-include_once "connect_db.php";
-include_once "user_actions.php";
+include_once "../account/php/connect_db.php";
+include_once "../account/php/user_actions.php";
 
 $bankName = mysqli_escape_string($conn, $_POST["bank_name"]);
 $accountNumber = mysqli_escape_string($conn, $_POST['account_number']);

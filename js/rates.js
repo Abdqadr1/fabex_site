@@ -21,7 +21,7 @@ var addRates = function (content) {
     rates_container.appendChild(dg);
 };
 (function () {
-    console.info("fetching rates from server...");
+    // console.info("fetching rates from server...");
     Ajax.fetchPage("php/get_rates.php", function (data) {
         var result = JSON.parse(data);
         if (result.length > 1) {

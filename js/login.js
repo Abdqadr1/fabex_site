@@ -37,7 +37,7 @@ loginForm.onsubmit = function (e) {
     });
     aj.setAfter(function (responseText) {
         if (responseText.toLowerCase().indexOf("success") != -1)
-            location.href = "dashboard";
+            location.href = "account/dashboard";
         else {
             errorDiv.innerText = responseText;
             errorDiv.classList.remove("d-none");

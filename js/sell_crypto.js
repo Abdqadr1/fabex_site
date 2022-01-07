@@ -11,7 +11,7 @@ allCopyBtn.forEach(function (element) {
         var greatGrandParent = (_b = (_a = element.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.parentElement;
         var val = greatGrandParent.querySelector('span.value');
         navigator.clipboard.writeText(val.innerText);
-        console.log(val.innerText);
+        // console.log(val.innerText);
     };
 });
 var uploadForm = document.querySelector("form#uploadForm");
@@ -45,7 +45,7 @@ uploadForm.onsubmit = function (event) {
         errorDiv.classList.remove("d-block");
         errorDiv.classList.add("d-none");
         var aj = new Ajax(uploadForm);
-        console.log("submitting...");
+        // console.log("submitting...")
         aj.setBefore(function () {
             submitBtn.disabled = true;
             submitBtn.innerHTML = spinner;

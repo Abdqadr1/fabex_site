@@ -365,7 +365,7 @@ var deleteProduct = function (which, el) {
 };
 // get all banks
 (function () {
-    Ajax.fetchPage("/fabex/php/data.php?which=banks", function (data) {
+    Ajax.fetchPage("../account/php/data.php?which=banks", function (data) {
         var bankList = JSON.parse(data);
         bankList.forEach(function (bank) {
             var option = document.createElement("option");

@@ -1,9 +1,6 @@
 <?php
 session_start();
 
-include_once "connect_db.php";
-include_once "user_actions.php";
-
 if (
     !isset($_POST["fname"]) || !isset($_POST["lname"])
     || !isset($_POST["email"]) || !isset($_POST["password"])
@@ -30,6 +27,10 @@ if (
             echo "Password must be at least 8 characters!";
             exit();
         }
+
+        include_once "../account/php/connect_db.php";
+        include_once "../account/php/user_actions.php";
+
         $fname = mysqli_escape_string($conn, $_POST["fname"]);
         $lname = mysqli_escape_string($conn, $_POST["lname"]);
         $email = mysqli_escape_string($conn, $_POST["email"]);
@@ -57,3 +58,4 @@ if (
 } else {
     echo "All fields are required!";
 }
+$conn->close();

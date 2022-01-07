@@ -6,7 +6,7 @@ if (empty($_POST["coin_name"]) || empty($_POST["short_name"]) || empty($_POST["n
     echo ("Parameters cannot be empty");
 }
 
-include_once "../../php/connect_db.php";
+include_once "../../account/php/connect_db.php";
 
 $name = mysqli_escape_string($conn, $_POST["coin_name"]);
 $acronym = mysqli_escape_string($conn, $_POST["short_name"]);

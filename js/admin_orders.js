@@ -210,6 +210,7 @@ var fetchOrders = function (filters) {
     loadingContainer.classList.remove("d-none");
     table.classList.add("d-none");
     Ajax.fetchPage("php/admin_data.php?which=orders", function (data) {
+        // console.log(data);
         var arr = JSON.parse(data);
         var message = arr[0];
         if (message.toLowerCase().indexOf("success") != -1) {

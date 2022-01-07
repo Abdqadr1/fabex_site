@@ -3,7 +3,7 @@ $headers = getallheaders();
 if (!isset($headers["code"]) || empty($headers["code"]) || !isset($headers["action"]) || empty($headers["action"])) {
     echo ("Invalid parameters..");
 }
-include_once "../../php/connect_db.php";
+include_once "../../account/php/connect_db.php";
 
 $id = mysqli_escape_string($conn, $headers["code"]);
 $action = mysqli_escape_string($conn, $headers["action"]);

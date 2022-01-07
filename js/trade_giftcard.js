@@ -65,7 +65,7 @@ amountInput.onkeyup = function (event) { return changeAmount(); };
 var changeAmount = function () {
     var price = Number(priceInput.value);
     var amount = amountInput.valueAsNumber;
-    console.log(price, amount);
+    // console.log(price, amount);
     if (price && amount && amount > 0 && price > 0) {
         var tot = Number(price * amount);
         totalInput.value = "" + tot.toFixed(2);
@@ -76,7 +76,6 @@ var changeAmount = function () {
         amountParagraph.innerText = "Total: N0";
     }
 };
-console.log(amountInput);
 var timeoutFun = function () {
     errorDiv.innerText = "Request taking too long, Check your internet connection";
     errorDiv.classList.remove("d-none");
@@ -90,7 +89,7 @@ tradeGiftcardForm.onsubmit = function (event) {
     event.preventDefault();
     hiddenInput.value = action;
     var act = action;
-    console.log("submitting...");
+    // console.log("submitting...")
     var aj = new Ajax(tradeGiftcardForm);
     aj.setTimer(timeoutFun, 120000);
     aj.setBefore(function () {
@@ -99,7 +98,7 @@ tradeGiftcardForm.onsubmit = function (event) {
         changeDisability(actionButtons, true);
     });
     aj.setAfter(function (responseText) {
-        console.log(responseText);
+        // console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
             if (act === "buy") {
                 location.href = "payment";
@@ -204,7 +203,7 @@ var cats = [];
 var subCats = [];
 var changeSub = function (id) {
     var sub = subCats.filter(function (each) { return each.parent == id; });
-    console.log(id, sub);
+    // console.log(id, sub);
     if (sub.length > 0) {
         subCategories.innerHTML = "<option value=\"\" selected hidden>Select sub...</option>";
         sub.forEach(function (giftcard) {

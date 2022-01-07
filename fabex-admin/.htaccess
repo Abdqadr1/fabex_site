@@ -1,6 +1,6 @@
 RewriteEngine On    # Turn on the rewriting engine
 
-RewriteRule    ^dashboard/?$    dashboard.php    [NC,L]   
+RewriteRule    ^dashboard/?$    index.php    [NC,L]   
 RewriteRule    ^orders/?$    orders.php    [NC,L] 
 RewriteRule    ^rates/?$    rates.php    [NC,L]   
 RewriteRule    ^settings/?$    settings.php    [NC,L] 
@@ -11,3 +11,11 @@ AuthName "Admin file"
 AuthType Basic
 AuthUserFile C:\xampp\htdocs\fabex\fabex-admin\.htpasswd
 Require valid-user
+
+## Redirect non existting pages to profile.php
+Options +SymLinksIfOwnerMatch
+RewriteEngine On 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+## change this on the actual server
+RewriteRule . /fabex/fabex-admin/index.php [L]

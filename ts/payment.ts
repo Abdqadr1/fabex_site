@@ -31,11 +31,8 @@ paidForm.onsubmit = event => {
         paidBtn.disabled = true;
         paidBtn.innerHTML = spinner;
     });
-    aj.setError((xhttp: XMLHttpRequest) => {
-        console.log(xhttp.status);
-    });
     aj.setAfter((responseText: string) => {
-        console.log(responseText);
+        // console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
             location.href = "dashboard";
         } else {
@@ -57,7 +54,6 @@ backBtn.onclick = event => {
 }
 copy_icon.onclick = (e) => {
     e.stopPropagation();
-    console.log(e.target);
     const acct = document.querySelector("span.account-number") as HTMLParagraphElement;
     navigator.clipboard.writeText(acct.innerText);
     alert("Text copied!")
