@@ -182,6 +182,21 @@ buttons.forEach(function (element) {
         bankList = JSON.parse(data);
     });
 })();
+// onchange assets
+assets.onchange = function (event) {
+    var select = event.target;
+    var children = select.children;
+    var crypto_name = select.value;
+    for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+        if (child.value === crypto_name) {
+            assets.setAttribute("aria-id", child.id);
+            priceInput.value = child.getAttribute("price");
+            productIdInput.value = child.id;
+            changeAmount();
+        }
+    }
+};
 //get all cryptos
 (function () {
     Ajax.fetchPage("php/data.php?which=cryptos", function (data) {
@@ -191,11 +206,8 @@ buttons.forEach(function (element) {
                 var option = document.createElement("option");
                 option.innerText = crypto.name;
                 option.value = crypto.acronym;
-                option.onclick = function (event) {
-                    priceInput.value = crypto.price;
-                    productIdInput.value = crypto.id;
-                    changeAmount();
-                };
+                option.id = crypto.id;
+                option.setAttribute("price", crypto.price);
                 assets.appendChild(option);
             });
         }

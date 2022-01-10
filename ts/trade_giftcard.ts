@@ -76,6 +76,7 @@ const changeAmount = () => {
         amountParagraph.innerText = "Total: N0";
     }
 }
+
 const timeoutFun = () => {
     errorDiv.innerText = "Request taking too long, Check your internet connection";
     errorDiv.classList.remove("d-none");
@@ -201,6 +202,33 @@ const banks = tradeGiftcardForm.querySelector("select#bankName") as HTMLSelectEl
 }
 )();
 
+// onchange categories
+categories.onchange = event => {
+    const select = event.target as HTMLSelectElement;
+    const children = select.children;
+    const giftcard_name = select.value;
+    for (let i = 0; i < children.length; i++){
+        const child = children[i] as HTMLOptionElement;
+        if (child.value === giftcard_name) {
+            categories.setAttribute("aria-id", child.id);
+            changeSub(Number(child.id));
+        }
+    }
+}
+// onchange categories
+subCategories.onchange = event => {
+    const select = event.target as HTMLSelectElement;
+    const children = select.children;
+    const sub_cat_name = select.value;
+    for (let i = 0; i < children.length; i++){
+        const child = children[i] as HTMLOptionElement;
+        if (child.value === sub_cat_name) {
+            priceInput.value = child.getAttribute("price") as string;
+            changeAmount();
+        }
+    }
+}
+
 let cats: any[] = [];
 let subCats: any[] = [];
 const changeSub = (id:number) => {
@@ -212,10 +240,7 @@ const changeSub = (id:number) => {
             const option = document.createElement("option");
             option.innerText = giftcard.name;
             option.value = giftcard.name;
-            option.onclick = event => {
-                priceInput.value = giftcard.price;
-                changeAmount();
-            }
+            option.setAttribute("price", giftcard.price)
             subCategories.appendChild(option);
         })
     } else {
@@ -241,11 +266,7 @@ const changeSub = (id:number) => {
                 const option = document.createElement("option");
                 option.id = category.id;
                 option.value = category.name;
-                option.innerText = category.name
-                option.onclick = event => {
-                    categories.setAttribute("aria-id", option.id);
-                    changeSub(category.id);
-                }
+                option.innerText = category.name;
                 categories.appendChild(option);
             })
         }

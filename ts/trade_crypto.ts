@@ -187,6 +187,21 @@ buttons.forEach(element => {
     })
 })();
 
+// onchange assets
+assets.onchange = event => {
+    const select = event.target as HTMLSelectElement;
+    const children = select.children;
+    const crypto_name = select.value;
+    for (let i = 0; i < children.length; i++){
+        const child = children[i] as HTMLOptionElement;
+        if (child.value === crypto_name) {
+            assets.setAttribute("aria-id", child.id);
+            priceInput.value = child.getAttribute("price") as string;
+            productIdInput.value = child.id;
+            changeAmount();
+        }
+    }
+}
 
 //get all cryptos
 (function () {
@@ -197,11 +212,8 @@ buttons.forEach(element => {
                 const option = document.createElement("option");
                 option.innerText = crypto.name;
                 option.value = crypto.acronym;
-                option.onclick = event => {
-                    priceInput.value = crypto.price;
-                    productIdInput.value = crypto.id;
-                    changeAmount();
-                }
+                option.id = crypto.id;
+                option.setAttribute("price", crypto.price);
                 assets.appendChild(option);
             })
         } else {

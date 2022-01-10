@@ -199,6 +199,32 @@ var banks = tradeGiftcardForm.querySelector("select#bankName");
         bankList = JSON.parse(data);
     });
 })();
+// onchange categories
+categories.onchange = function (event) {
+    var select = event.target;
+    var children = select.children;
+    var giftcard_name = select.value;
+    for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+        if (child.value === giftcard_name) {
+            categories.setAttribute("aria-id", child.id);
+            changeSub(Number(child.id));
+        }
+    }
+};
+// onchange categories
+subCategories.onchange = function (event) {
+    var select = event.target;
+    var children = select.children;
+    var sub_cat_name = select.value;
+    for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+        if (child.value === sub_cat_name) {
+            priceInput.value = child.getAttribute("price");
+            changeAmount();
+        }
+    }
+};
 var cats = [];
 var subCats = [];
 var changeSub = function (id) {
@@ -210,10 +236,7 @@ var changeSub = function (id) {
             var option = document.createElement("option");
             option.innerText = giftcard.name;
             option.value = giftcard.name;
-            option.onclick = function (event) {
-                priceInput.value = giftcard.price;
-                changeAmount();
-            };
+            option.setAttribute("price", giftcard.price);
             subCategories.appendChild(option);
         });
     }
@@ -241,10 +264,6 @@ var changeSub = function (id) {
                 option.id = category.id;
                 option.value = category.name;
                 option.innerText = category.name;
-                option.onclick = function (event) {
-                    categories.setAttribute("aria-id", option.id);
-                    changeSub(category.id);
-                };
                 categories.appendChild(option);
             });
         }
