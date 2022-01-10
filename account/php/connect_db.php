@@ -14,6 +14,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// escape inputs
 function testInput($data)
 {
     $data = trim($data);
@@ -21,7 +22,6 @@ function testInput($data)
     $data = htmlspecialchars($data);
     return $data;
 }
-
 // get id for transaction
 function getId(&$conn)
 {
@@ -36,3 +36,5 @@ function getId(&$conn)
     }
     return $tx_id;
 }
+
+// create table if not exist

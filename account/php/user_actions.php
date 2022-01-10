@@ -91,7 +91,8 @@ class User
                 $_SESSION["fname"] = $this->fname;
                 $_SESSION["id"] = $last_id;
                 // TODO: write send email code
-                echo "Success: Account created and email sent! " . $last_id;
+                include_once "../../php/send_email.php";
+                sendEmail("register", $verify_url, $this->email, $this->fname);
             } else {
                 echo "Something went wrong!" . $conn->error;
             }
@@ -128,8 +129,8 @@ class User
             $result = $conn->query($sql);
             if ($result === true) {
                 // TODO: write send email code
-                echo $verify_url;
-                echo "Success: email sent";
+                include_once "../../php/send_email.php";
+                sendEmail("reset", $verify_url, $this->email);
             }
         } else {
             echo "Account does not exist!";
