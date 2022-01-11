@@ -24,7 +24,6 @@ registerForm.onsubmit = (event) => {
     submitBtn.disabled = true;
     event.preventDefault();
     const aj = new Ajax(event.target as HTMLFormElement);
-    console.log(event.target);
     aj.setBefore(() => {
         submitBtn.innerHTML = spinner;
     });

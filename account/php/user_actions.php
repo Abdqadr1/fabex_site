@@ -91,6 +91,7 @@ class User
                 $_SESSION["fname"] = $this->fname;
                 $_SESSION["id"] = $last_id;
                 // TODO: write send email code
+                echo "Success: " . $verify_url;
                 include_once "../../php/send_email.php";
                 sendEmail("register", $verify_url, $this->email, $this->fname);
             } else {
@@ -128,6 +129,7 @@ class User
             $sql = "UPDATE users SET v_code='$code' WHERE id='{$row['id']}'";
             $result = $conn->query($sql);
             if ($result === true) {
+                echo "Success: " . $verify_url;
                 // TODO: write send email code
                 include_once "../../php/send_email.php";
                 sendEmail("reset", $verify_url, $this->email);
