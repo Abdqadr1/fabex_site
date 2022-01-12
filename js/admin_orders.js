@@ -10,6 +10,8 @@ var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' 
 var tabs = document.querySelectorAll(".nav-tab");
 var modal = document.querySelector("div#modal");
 var modalBody = modal.querySelector("div.modal-body");
+var detailsModal = document.querySelector("div#details_modal");
+var detailsModalBody = detailsModal.querySelector("div#details_modal_body");
 var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 var filterObj = {
     which: "crypto",
@@ -128,7 +130,10 @@ var changeTable = function (list, filters) {
                         td.innerHTML += "<span class='copy material-icons' title='copy full text'>content_copy</span>";
                         var copy = td.querySelector("span.copy");
                         if (copy)
-                            copy.onclick = function () { return copyFunc(order[name_1]); };
+                            copy.onclick = function (event) {
+                                event.stopPropagation();
+                                copyFunc(order[name_1]);
+                            };
                     }
                     if (name_1 === "time") {
                         var date = new Date(order[name_1]);
@@ -157,7 +162,10 @@ var changeTable = function (list, filters) {
                     td.innerHTML = "<span class=\"val\">" + val + addCopy + "\n                        </span><br><span class=\"extra-detail\">" + extra + "</span>\n                        <input type=\"hidden\" id=\"hidden\" value=\"" + content + "\"/>";
                     var copy = td.querySelector("span.copy");
                     if (copy)
-                        copy.onclick = function () { return copyFunc(td.querySelector("input#hidden")); };
+                        copy.onclick = function (event) {
+                            event.stopPropagation();
+                            copyFunc(td.querySelector("input#hidden"));
+                        };
                 }
                 else {
                     var id = order['id'];
@@ -167,7 +175,8 @@ var changeTable = function (list, filters) {
                     td.innerHTML = "<button aria-id='" + id + "' class=\"action-button text-capitalize " + first + "\">" + first + "</button>\n                    <button aria-id='" + id + "' class=\"action-button text-capitalize " + second + "\">" + second + "</button>";
                     //registering click events for buttons
                     td.querySelectorAll("button").forEach(function (btn) {
-                        btn.onclick = function () {
+                        btn.onclick = function (event) {
+                            event.stopPropagation();
                             changeStatus(btn);
                         };
                     });
@@ -177,6 +186,7 @@ var changeTable = function (list, filters) {
             for (var i = 0; i < numberOfCells; i++) {
                 _loop_1(i);
             }
+            tr.onclick = function () { return showTransactionDetails(order); };
             tableBody.appendChild(tr);
         });
     }
@@ -187,9 +197,9 @@ var changeTable = function (list, filters) {
     table.classList.remove("d-none");
 };
 //show and hide modal
-var myModal;
 var showModal = function (message, style, duration) {
     if (duration === void 0) { duration = 0; }
+    var myModal;
     modalBody.innerText = message;
     modalBody.className = "modal-body py-1 " + style;
     myModal = new bootstrap.Modal(modal, {
@@ -201,6 +211,51 @@ var showModal = function (message, style, duration) {
             myModal.hide();
         }, duration);
     }
+};
+var showTransactionDetails = function (order) {
+    // show transaction details
+    var children = detailsModalBody.children;
+    var _loop_2 = function (i) {
+        var child = children[i];
+        var For = child.getAttribute("for");
+        var el = child.querySelector("div#" + For);
+        var val = order[For || ""];
+        console.log(val);
+        if (val === undefined || val === null || val === "") {
+            child.classList.add("d-none");
+        }
+        else {
+            child.classList.remove("d-none");
+            if (For === "proof") {
+                el.innerHTML = "";
+                var str = order[For];
+                console.log(str);
+                if (str !== "") {
+                    var url_1 = "../account/php/";
+                    var images = str.split(",");
+                    if (images.length > 0) {
+                        images.forEach(function (src) {
+                            src = url_1 + src;
+                            el.innerHTML += "<img src=\"" + src + "\" width=\"80%\" height=\"200px\" class=\"border mt-1\" />";
+                        });
+                    }
+                    else {
+                        el.innerHTML = "<img src=\"" + (url_1 + str) + "\" width=\"80%\" height=\"200px\" class=\"border mt-1\" />";
+                    }
+                }
+            }
+            else {
+                el.innerText = order[For || "name"];
+            }
+        }
+    };
+    for (var i = 0; i < children.length; i++) {
+        _loop_2(i);
+    }
+    // show modal
+    new bootstrap.Modal(detailsModal, {
+        keyboard: false
+    }).show();
 };
 // fetch orders
 var fetchOrders = function (filters) {

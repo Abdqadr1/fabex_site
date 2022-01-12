@@ -107,3 +107,39 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="details_modal" tabindex="-1" aria-labelledby="Details" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 600px;">
+        <div class="modal-content p-3">
+            <div class="modal-header p-2">
+                <h5 class="modal-title">Transaction Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-1" id="details_modal_body" style="max-height: 500px;overflow-y:auto">
+                <div class="row justify-content-between mx-0 d-none" for="tx_id">
+                    <div class="col-4 fw-bold">Transaction ID:</div>
+                    <div class="col-7 text-success" id="tx_id">910756156D</div>
+                </div>
+                <div class="row justify-content-between mx-0 mt-2 d-none" for="name">
+                    <div class="col-4 fw-bold">Name of User:</div>
+                    <div class="col-7 text-success" id="name">User name</div>
+                </div>
+                <div class="row justify-content-between mx-0 mt-2 d-none" for="time">
+                    <div class="col-4 fw-bold">Time:</div>
+                    <div class="col-7 text-success" id="time"></div>
+                </div>
+                <div class="row justify-content-between mx-0 mt-2 d-none" for="wallet_address">
+                    <div class="col-4 fw-bold">Wallet Address:</div>
+                    <div class="col-7 text-success" id="wallet_address"></div>
+                </div>
+                <div class="row justify-content-between mx-0 mt-2 d-none" for="email">
+                    <div class="col-4 fw-bold">Email:</div>
+                    <div class="col-7 text-success" id="email"></div>
+                </div>
+                <div class="row justify-content-between mx-0 mt-2 d-none" for="proof">
+                    <div class="col-4 fw-bold">Proof:</div>
+                    <div class="col-7 text-success" id="proof" style="word-break: break-all;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

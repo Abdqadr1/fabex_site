@@ -11,6 +11,8 @@ const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true
 const tabs = document.querySelectorAll(".nav-tab") as NodeListOf<HTMLAnchorElement>;
 const modal = document.querySelector("div#modal") as HTMLDivElement;
 const modalBody = modal.querySelector("div.modal-body") as HTMLDivElement;
+const detailsModal = document.querySelector("div#details_modal") as HTMLDivElement;
+const detailsModalBody = detailsModal.querySelector("div#details_modal_body") as HTMLDivElement;
 type filterType = { which: string, type: number, status: number };
 const days: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const filterObj:filterType  = {
@@ -129,7 +131,10 @@ const changeTable = (list: any[], filters: filterType) => {
                     if (name === "memo" || name === "email") {
                         td.innerHTML += "<span class='copy material-icons' title='copy full text'>content_copy</span>";
                         const copy = td.querySelector("span.copy") as HTMLSpanElement;
-                        if(copy) copy.onclick = () => copyFunc(order[name]);
+                        if (copy) copy.onclick = event => {
+                            event.stopPropagation();
+                            copyFunc(order[name]);
+                        }
                     }
                     if (name === "time") {
                         const date = new Date(order[name]);
@@ -158,7 +163,10 @@ const changeTable = (list: any[], filters: filterType) => {
                         </span><br><span class="extra-detail">${extra}</span>
                         <input type="hidden" id="hidden" value="${content}"/>`;
                     const copy = td.querySelector("span.copy") as HTMLSpanElement;
-                    if(copy) copy.onclick = () => copyFunc(td.querySelector("input#hidden") as HTMLInputElement);
+                    if (copy) copy.onclick = event => {
+                        event.stopPropagation();
+                        copyFunc(td.querySelector("input#hidden") as HTMLInputElement);
+                    } 
                 } else {
                     const id = order['id'];
                     const first = filters.status === 2 ? "reject" : "approve";
@@ -168,13 +176,15 @@ const changeTable = (list: any[], filters: filterType) => {
                     <button aria-id='${id}' class="action-button text-capitalize ${second}">${second}</button>`;
                     //registering click events for buttons
                     td.querySelectorAll("button").forEach(btn => {
-                        btn.onclick = () => {
+                        btn.onclick = event => {
+                            event.stopPropagation();
                             changeStatus(btn as HTMLButtonElement);
                         }
                     })
                 }
                 tr.appendChild(td);
             }
+            tr.onclick = () => showTransactionDetails(order);
             tableBody.appendChild(tr);
         })
     } else {
@@ -186,8 +196,8 @@ const changeTable = (list: any[], filters: filterType) => {
 }
 
 //show and hide modal
-let myModal: any;
 const showModal = (message: string, style: string, duration:number = 0) => {
+    let myModal: any;
     modalBody.innerText = message;
     modalBody.className = "modal-body py-1 " + style;
     myModal = new bootstrap.Modal(modal, {
@@ -199,6 +209,47 @@ const showModal = (message: string, style: string, duration:number = 0) => {
             myModal.hide();
         }, duration);
     }
+}
+const showTransactionDetails = (order: any) => {
+    // show transaction details
+    const children = detailsModalBody.children;
+    for (let i = 0; i < children.length; i++){
+        const child = children[i];
+        const For = child.getAttribute("for")
+        const el = child.querySelector(`div#${For}`) as HTMLDivElement
+        const val: string = order[For || ""];
+        console.log(val);
+        if (val === undefined || val === null || val === "") {
+            child.classList.add("d-none");
+        } else {
+            child.classList.remove("d-none");
+            if (For === "proof") {
+                el.innerHTML = "";
+                const str: string = order[For];
+                console.log(str);
+                if (str !== "") {
+                    const url = "../account/php/";
+                    const images: string[] = str.split(",");
+                    if (images.length > 0) {
+                        images.forEach((src: string) => {
+                            src = url + src;
+                            el.innerHTML += `<img src="${src}" width="80%" height="200px" class="border mt-1" />`;
+                        })
+                    } else {
+                        el.innerHTML = `<img src="${url + str}" width="80%" height="200px" class="border mt-1" />`
+                    }
+                } 
+            } else {
+                el.innerText = order[For||"name"];
+            }
+        }
+        
+    }
+    // show modal
+    new bootstrap.Modal(detailsModal, {
+        keyboard: false
+    }).show();
+        
 }
 // fetch orders
 const fetchOrders = (filters:filterType) => {
