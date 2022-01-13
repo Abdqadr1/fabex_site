@@ -89,7 +89,6 @@ function sellGiftcard(&$conn, $amount, $price, $product_name)
 
 echo json_encode($_POST);
 
-//TODO: do something about the products id and name
 switch ($action) {
     case "buy":
         buyGiftcard($conn, $total, $amount, $category);

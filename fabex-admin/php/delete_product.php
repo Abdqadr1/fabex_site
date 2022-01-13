@@ -1,5 +1,4 @@
 <?php
-$headers = getallheaders();
 include_once "../../account/php/connect_db.php";
 $headers = getallheaders();
 if (
@@ -13,9 +12,9 @@ $which = testInput($which);
 $id = testInput($id);
 
 if ($which === "crypto") {
-    $sql = "DELETE FROM cryptos WHERE id='$id';";
+    $sql = "DELETE FROM cryptos WHERE id='$id' LIMIT 1";
 } else {
-    $sql = "DELETE FROM giftcards WHERE id='$id';";
+    $sql = "DELETE FROM giftcards WHERE id='$id' LIMIT 1";
 }
 
 $result = $conn->query($sql);

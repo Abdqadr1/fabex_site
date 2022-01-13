@@ -17,7 +17,6 @@ $id = $_SESSION['id'];
 
 include_once "connect_db.php";
 
-// TODO: get rates from database
 $rates = array();
 $query = "SELECT fname, lname FROM users WHERE id='$id'";
 $result = $conn->query($query);

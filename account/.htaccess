@@ -9,6 +9,8 @@ RewriteRule    ^payment/?$    payment.php  [NC,L]
 RewriteRule    ^sell_giftcard/?$    sell-giftcard.php  [NC,L]
 RewriteRule    ^sell_crypto/?$    sell-crypto.php  [NC,L]
 
+
+
 ## Redirect non existting pages to profile.php
 Options +SymLinksIfOwnerMatch
 RewriteEngine On 

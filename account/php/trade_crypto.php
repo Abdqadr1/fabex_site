@@ -100,7 +100,6 @@ function sellCrypto(&$conn, $amount, $total, $product_name, $product_id)
     }
 }
 
-//TODO: do something about the products id and name
 switch ($action) {
     case "buy":
         buyCrypto($conn, $amount, $total, $asset, $product_id);

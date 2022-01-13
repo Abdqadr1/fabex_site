@@ -119,7 +119,6 @@ changePassForm.onsubmit = event => {
 }
 
 (function () {
-    // TODO: dont forget to change the url before uploading to the server
     console.info("fetching data from the server...");
     Ajax.fetchPage("php/get_user_data.php", (data: string) => {
         type user_data = {
@@ -151,7 +150,6 @@ changePassForm.onsubmit = event => {
 
 // get all banks
 (function () {
-    //TODO: replace url before server
     Ajax.fetchPage("php/data.php?which=banks", (data: string) => {
         const bankList:[] = JSON.parse(data);
         bankList.forEach((bank:string) => {
