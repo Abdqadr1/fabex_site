@@ -35,6 +35,8 @@ view_all.onclick = function () {
     });
 };
 var load = function (pageName) {
+    //TODO: change url before server
+    history.pushState("", "", "http://localhost/fabex/account/" + pageName.toLowerCase());
     version = version + 0.001;
     var url = pageName.toLowerCase() + ".php";
     Ajax.fetchPage(url, function (data) {

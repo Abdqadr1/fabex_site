@@ -2,9 +2,8 @@
 session_start();
 
 
-if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
-    exit("Session timeout: Login again");
-}
+include_once "../functions.php";
+isTime();
 
 if (
     !isset($_POST["fname"]) || !isset($_POST["lname"]) || !isset($_POST["phone"]) ||

@@ -5,6 +5,12 @@ function isTimeout()
         header("location: ../login");
     }
 }
+function isTime()
+{
+    if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
+        exit("Session timeout: Login again");
+    }
+}
 
 function isLoggedIn()
 {

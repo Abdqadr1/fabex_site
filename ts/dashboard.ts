@@ -42,6 +42,8 @@ navLinks.forEach(el => {
 });
 }
 const load = (pageName: string) => {
+    //TODO: change url before server
+    history.pushState("", "", "http://localhost/fabex/account/" + pageName.toLowerCase());
     version = version + 0.001;
     const url: string = pageName.toLowerCase() + ".php";
     Ajax.fetchPage(url, (data:string) => {
