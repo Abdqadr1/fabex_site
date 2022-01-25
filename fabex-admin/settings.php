@@ -155,6 +155,43 @@
             <button type="submit" class="payment text-center mx-auto">Add account details</button>
         </form>
     </div>
+    <!-- list of banks account -->
+    <div class="col-6 col-lg-5 mt-5 bank-list-div">
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <td></td>
+                    <td scope="col">Bank Name</td>
+                    <td scope="col">Account Number</td>
+                    <td scope="col">Account Name</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td class="d-flex justify-content-center align-top">
+                        <span class="material-icons text-danger bank-icon" title="Delete">delete</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Larry the Bird</td>
+                    <td>Larry the Bird</td>
+                    <td>@twitter</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

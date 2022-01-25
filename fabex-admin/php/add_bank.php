@@ -1,5 +1,6 @@
 <?php
-include_once "../../php/connect_db.php";
+include_once "../../account/php/connect_db.php";
+
 if (!isset($_POST["bank_name"]) || !isset($_POST["account_number"]) || !isset($_POST["account_name"])) {
     echo ("Incomplete parameters!");
 }
