@@ -1,4 +1,4 @@
-<div class="row justify-content-start justify-content-lg-around mx-0 p-4" id="">
+<div class="row justify-content-around mx-0 p-4" id="">
     <!-- crypto column -->
     <div class="col-6 col-lg-5">
         <div class="no-margin pad">
@@ -133,7 +133,7 @@
         </div>
     </div>
     <!-- bank column -->
-    <div class="col-6 col-lg-5 bank-div mt-5">
+    <div class="col-5 col-lg-5 bank-div mt-5">
         <p class="text-center mt-2 fw-bold fs-4 mb-1">Account Details</p>
         <form action="php/add_bank.php" method="POST" id="addBankForm">
             <div tabindex="-1" class="alert alert-danger d-none text-center" id="errorDiv" role="alert"></div>
@@ -146,18 +146,18 @@
             </div>
             <div class="mt-1 my-3">
                 <label for="accountnumber" class="form-label settings">Account number</label>
-                <input name="account_number" type="text" class="form-control rad8" id="accountnumber" placeholder="Enter account number" maxlength="10" required>
+                <input name="account_number" type="text" class="form-control rad8" id="accountnumber" placeholder="Enter account number" minlength="10" maxlength="10" required>
             </div>
             <div class="mt-1 my-3">
                 <label for="accountname" class="form-label settings">Account name</label>
-                <input name="account_name" type="text" class="form-control rad8" id="accountname" placeholder="Enter account name" required>
+                <input name="account_name" type="text" class="form-control rad8" id="accountname" placeholder="Enter account name" minlength="10" required>
             </div>
             <button type="submit" class="payment text-center mx-auto">Add account details</button>
         </form>
     </div>
     <!-- list of banks account -->
-    <div class="col-6 col-lg-5 mt-5 bank-list-div">
-        <table class="table table-striped mt-3">
+    <div class="col-7 col-lg-6 mt-5 bank-list-div">
+        <table class="table table-striped table-hover mt-3" id="banks-table">
             <thead>
                 <tr>
                     <td></td>

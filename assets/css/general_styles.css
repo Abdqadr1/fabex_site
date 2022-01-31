@@ -579,7 +579,6 @@ div.each-crypto {
   padding: 8px 15px !important;
   border-radius: 5px;
   margin-top: 10px;
-  width: 70%;
 }
 span.crypto-name {
   display: inline-block;

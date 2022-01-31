@@ -24,6 +24,7 @@ const addGiftcardForm = document.querySelector("form#add_new_giftcard_form") as 
 const addGiftcardSubmitBtn = addGiftcardForm.querySelector("button") as HTMLButtonElement;
 const addGiftcardErrorDiv = addGiftcardForm.querySelector("div#errorDiv") as HTMLDivElement;
 
+let adminBanks: [][] = [];
 
 // show crypto form
 add_crypto.onclick = event => {
@@ -97,17 +98,18 @@ addBankForm.onsubmit = event => {
     aj.setAfter((data: string) => {
         const message = data.toLowerCase();
         if (message.indexOf("success") != -1) {
-            bankErrorDiv.classList.remove("d-block");
+            const arr: any[] = JSON.parse(data);
+            console.log(arr);
+            const bank = arr[1];
+            adminBanks.push(bank)
+            showBanks();
             bankErrorDiv.classList.add("d-none");
             bankSuccessDiv.classList.remove("d-none");
-            bankSuccessDiv.classList.add("d-block");
-            bankSuccessDiv.textContent = data;
+            bankSuccessDiv.textContent = arr[0];
             bankSuccessDiv.focus();
         } else {
-            bankSuccessDiv.classList.remove("d-block");
             bankSuccessDiv.classList.add("d-none");
             bankErrorDiv.classList.remove("d-none");
-            bankErrorDiv.classList.add("d-block");
             bankErrorDiv.textContent = data;
             bankErrorDiv.focus();
         }
@@ -491,21 +493,59 @@ const getAllGiftcards = () => {
     getAllGiftcards();
 })();
 //get admin bank details 
+const banksTableBody = document.querySelector("table#banks-table tbody") as HTMLTableSectionElement;
 (function () {
     Ajax.fetchPage("php/admin_data.php?which=bank", (data: string) => {
-        const arr = JSON.parse(data);
-        const message:string = arr[0];
-        if (message.toLowerCase().indexOf('success') != -1) {
-            const details: string[] = arr[1];
-            const option = document.createElement("option");
-            option.value = details[0];
-            option.innerText = details[0];
-            option.selected = true;
-            option.hidden = true;
-            option.disabled = true;
-            bankSelect.appendChild(option);
-            accountNumber.value = details[1];
-            accountName.value = details[2];
+        if (data.substring(0, 15).toLowerCase().indexOf('success') != -1) {
+            const arr = JSON.parse(data);
+            adminBanks = arr[1]
+            showBanks();
+        } else {
+            banksTableBody.innerHTML = `<td class='text-center text-danger' colspan='5'>No bank account found!</td>`;
         }
     })
 })();
+
+// delete Admin Bank
+const deleteAdminBank = (span: HTMLSpanElement, tr:HTMLTableRowElement) => {
+    const ref = span.getAttribute("ref")
+    span.textContent = "deleting..."
+    Ajax.fetchPage("php/admin_data.php?which=deleteBank", (data: string) => {
+        if (data.toLowerCase().indexOf("success") != -1) {
+            for (let i = 0; i < adminBanks.length; i++){
+                const bank:string[] = adminBanks[i];
+                if (bank[0] == ref) {
+                    adminBanks.splice(i, 1);
+                    break;
+                }
+            }
+            showBanks();
+        } else {
+            span.textContent = "delete";
+            alert(data); 
+        }
+    }, {ref})
+}
+
+// function to show admin bnaks
+const showBanks = () => {
+    banksTableBody.innerHTML = "";
+    if (adminBanks.length > 0) {
+        adminBanks.forEach((bank:string[], index) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<th scope="row">${index + 1}</th>
+                <td>${bank[1]}</td>
+                <td>${bank[2]}</td>
+                <td>${bank[3]}</td>
+                <td class="">
+                    <span class="material-icons text-danger bank-icon" ref='${bank[0]}' title="Delete Account">delete</span>
+                </td>`;
+            const icon = tr.querySelector("span") as HTMLSpanElement;
+            icon.onclick = event => deleteAdminBank(event.target as HTMLSpanElement, tr)
+            banksTableBody.appendChild(tr);
+        })
+    } else {
+        banksTableBody.innerHTML = `<td class='text-center text-danger' colspan='5'>No bank account found!</td>`; 
+    }
+    
+}

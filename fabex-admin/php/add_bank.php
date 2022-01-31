@@ -16,23 +16,13 @@ $bank_name = testInput($bank_name);
 $account_number = testInput($account_number);
 $account_name = ucwords(testInput($account_name));
 
-$sql = "SELECT * FROM admin_banks WHERE id=1";
-$res = $conn->query($sql);
-if ($res->num_rows > 0) {
-    $query = "UPDATE admin_banks SET bank_name='$bank_name', account_number='$account_number', account_name='$account_name' WHERE id=1";
-    $result = $conn->query($query);
-    if ($result === true) {
-        echo "Success: Bank Inserted..";
-    } else {
-        echo ("Something went wrong " . $conn->error);
-    }
+$query = "INSERT INTO admin_banks (bank_name, account_number, account_name) VALUES 
+    ('$bank_name','$account_number','$account_name')";
+$result = $conn->query($query);
+if ($result === true) {
+    $id = $conn->insert_id;
+    echo json_encode(array("Success: Bank Inserted..", array($id, $bank_name, $account_name, $account_number)));
 } else {
-    $query = "INSERT INTO admin_banks (bank_name, account_number, account_name) VALUES ('$bank_name','$account_number','$account_name')";
-    $result = $conn->query($query);
-    if ($result === true) {
-        echo "Success: Bank Inserted..";
-    } else {
-        echo ("Something went wrong " . $conn->error);
-    }
+    echo ("Something went wrong " . $conn->error);
 }
 $conn->close();

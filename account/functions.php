@@ -1,13 +1,13 @@
 <?php
 function isTimeout()
 {
-    if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
+    if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 86400) {
         header("location: ../login");
     }
 }
 function isTime()
 {
-    if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
+    if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 86400) {
         exit("Session timeout: Login again");
     }
 }

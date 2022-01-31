@@ -6,14 +6,13 @@ include_once "../../account/php/connect_db.php";
 $which = mysqli_escape_string($conn, $_GET["which"]);
 $which = testInput($which);
 
-function getBank(mysqli &$conn)
+function getBanks(mysqli &$conn)
 {
-    $sql = "SELECT * FROM admin_banks LIMIT 1";
+    $sql = "SELECT id, bank_name, account_name, account_number FROM admin_banks";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $arr = array($row["bank_name"], $row["account_number"], $row["account_name"]);
-        echo json_encode(array("Success", $arr));
+        $row = $result->fetch_all();
+        echo json_encode(array("Success", $row));
     } else {
         exit("Something went wrong");
     }
@@ -133,9 +132,28 @@ function getAllOrders(mysqli &$conn, string $which)
     }
 }
 
+function deleteBank(mysqli &$conn)
+{
+    $header = getallheaders();
+    if (isset($header['ref']) && !empty($header['ref'])) {
+        $id = mysqli_escape_string($conn, $header["ref"]);
+        $id = testInput($id);
+        $sql = "DELETE FROM admin_banks WHERE id='$id'";
+        $result = $conn->query($sql);
+        if ($result == true) {
+            echo "Deleted Successfully!";
+        } else {
+            echo "Something went wrong, Try again!";
+        }
+    } else {
+        echo "Invalid parameters";
+    }
+}
 switch ($which) {
     case "bank":
-        return getBank($conn);
+        return getBanks($conn);
+    case "deleteBank":
+        return deleteBank($conn);
     case "crypto":
         return getCryptos($conn);
     case "giftcard":

@@ -20,6 +20,7 @@ var giftcardFormDiv = document.querySelector("div#giftcardFormDiv");
 var addGiftcardForm = document.querySelector("form#add_new_giftcard_form");
 var addGiftcardSubmitBtn = addGiftcardForm.querySelector("button");
 var addGiftcardErrorDiv = addGiftcardForm.querySelector("div#errorDiv");
+var adminBanks = [];
 // show crypto form
 add_crypto.onclick = function (event) {
     addCryptoForm.classList.remove("d-none");
@@ -83,18 +84,19 @@ addBankForm.onsubmit = function (event) {
     aj.setAfter(function (data) {
         var message = data.toLowerCase();
         if (message.indexOf("success") != -1) {
-            bankErrorDiv.classList.remove("d-block");
+            var arr = JSON.parse(data);
+            console.log(arr);
+            var bank = arr[1];
+            adminBanks.push(bank);
+            showBanks();
             bankErrorDiv.classList.add("d-none");
             bankSuccessDiv.classList.remove("d-none");
-            bankSuccessDiv.classList.add("d-block");
-            bankSuccessDiv.textContent = data;
+            bankSuccessDiv.textContent = arr[0];
             bankSuccessDiv.focus();
         }
         else {
-            bankSuccessDiv.classList.remove("d-block");
             bankSuccessDiv.classList.add("d-none");
             bankErrorDiv.classList.remove("d-none");
-            bankErrorDiv.classList.add("d-block");
             bankErrorDiv.textContent = data;
             bankErrorDiv.focus();
         }
@@ -434,21 +436,53 @@ var getAllGiftcards = function () {
     getAllGiftcards();
 })();
 //get admin bank details 
+var banksTableBody = document.querySelector("table#banks-table tbody");
 (function () {
     Ajax.fetchPage("php/admin_data.php?which=bank", function (data) {
-        var arr = JSON.parse(data);
-        var message = arr[0];
-        if (message.toLowerCase().indexOf('success') != -1) {
-            var details = arr[1];
-            var option = document.createElement("option");
-            option.value = details[0];
-            option.innerText = details[0];
-            option.selected = true;
-            option.hidden = true;
-            option.disabled = true;
-            bankSelect.appendChild(option);
-            accountNumber.value = details[1];
-            accountName.value = details[2];
+        if (data.substring(0, 15).toLowerCase().indexOf('success') != -1) {
+            var arr = JSON.parse(data);
+            adminBanks = arr[1];
+            showBanks();
+        }
+        else {
+            banksTableBody.innerHTML = "<td class='text-center text-danger' colspan='5'>No bank account found!</td>";
         }
     });
 })();
+// delete Admin Bank
+var deleteAdminBank = function (span, tr) {
+    var ref = span.getAttribute("ref");
+    span.textContent = "deleting...";
+    Ajax.fetchPage("php/admin_data.php?which=deleteBank", function (data) {
+        if (data.toLowerCase().indexOf("success") != -1) {
+            for (var i = 0; i < adminBanks.length; i++) {
+                var bank = adminBanks[i];
+                if (bank[0] == ref) {
+                    adminBanks.splice(i, 1);
+                    break;
+                }
+            }
+            showBanks();
+        }
+        else {
+            span.textContent = "delete";
+            alert(data);
+        }
+    }, { ref: ref });
+};
+// function to show admin bnaks
+var showBanks = function () {
+    banksTableBody.innerHTML = "";
+    if (adminBanks.length > 0) {
+        adminBanks.forEach(function (bank, index) {
+            var tr = document.createElement("tr");
+            tr.innerHTML = "<th scope=\"row\">" + (index + 1) + "</th>\n                <td>" + bank[1] + "</td>\n                <td>" + bank[2] + "</td>\n                <td>" + bank[3] + "</td>\n                <td class=\"\">\n                    <span class=\"material-icons text-danger bank-icon\" ref='" + bank[0] + "' title=\"Delete Account\">delete</span>\n                </td>";
+            var icon = tr.querySelector("span");
+            icon.onclick = function (event) { return deleteAdminBank(event.target, tr); };
+            banksTableBody.appendChild(tr);
+        });
+    }
+    else {
+        banksTableBody.innerHTML = "<td class='text-center text-danger' colspan='5'>No bank account found!</td>";
+    }
+};
