@@ -29,13 +29,15 @@ if ($res->num_rows == 1) {
     header("location: dashboard");
 }
 // get admin bank
-$query = "SELECT bank_name, account_number, account_name FROM admin_banks WHERE id=1";
+$query = "SELECT bank_name, account_number, account_name FROM admin_banks";
 $result = $conn->query($query);
-if ($result == true && $result->num_rows == 1) {
-    $row = $result->fetch_assoc();
-    $bank = $row["bank_name"];
-    $accountNumber = $row["account_number"];
-    $accountName = $row["account_name"];
+if ($result == true && $result->num_rows > 0) {
+    $banks = $result->fetch_all();
+    shuffle($banks);
+    $bank = $banks[0];
+    $bankname = $bank[0];
+    $accountNumber = $bank[1];
+    $accountName = $bank[2];
 }
 
 include_once "header.php";
@@ -56,7 +58,7 @@ include_once "header.php";
             <div class="details my-3  row p-2 rounded border paybg">
                 <div class="col-8 p-0">
                     <span class="d-block title">Bank Name</span>
-                    <span class="value"><?php echo $bank; ?></span>
+                    <span class="value"><?php echo $bankname; ?></span>
                 </div>
             </div>
             <div class="details my-3 row p-2 rounded border justify-content-between paybg">

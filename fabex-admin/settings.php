@@ -156,7 +156,7 @@
         </form>
     </div>
     <!-- list of banks account -->
-    <div class="col-7 col-lg-6 mt-5 bank-list-div">
+    <div class="col-6 col-lg-6 mt-5 bank-list-div">
         <table class="table table-striped table-hover mt-3" id="banks-table">
             <thead>
                 <tr>

@@ -5,6 +5,8 @@ $password = "";
 $database = "crypto_table";
 
 date_default_timezone_set("Africa/Lagos");
+// turn off error reporting
+// error_reporting(0);
 
 // Create connection
 $conn = new mysqli($server_name, $username, $password, $database);

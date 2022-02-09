@@ -72,7 +72,7 @@ class User
     public function register(mysqli &$conn)
     {
         // TODO: change url 
-        $verify_url = "localhost/fabex/php/verify_email.php?email=" . $this->email . "&verify=";
+        $verify_url = "http://localhost/fabex/php/verify_email.php?email=" . $this->email . "&verify=";
         $code = md5($this->email . $this->phone . $this->email);
         $verify_url = $verify_url . $code;
         $email_query = "SELECT email FROM users WHERE email = '{$this->email}'";
@@ -92,7 +92,6 @@ class User
                 $_SESSION["id"] = $last_id;
                 // TODO: write send email code
                 echo "Success: " . $verify_url;
-                include_once "../../php/send_email.php";
                 sendEmail("register", $verify_url, $this->email, $this->fname);
             } else {
                 echo "Something went wrong!" . $conn->error;
@@ -119,7 +118,7 @@ class User
     public function resetPassword(mysqli &$conn)
     {
         // TODO: change url
-        $verify_url = "localhost/fabex/php/reset_password.php?email=" . $this->email . "&verify=";
+        $verify_url = "http://localhost/fabex/php/reset_password.php?email=" . $this->email . "&verify=";
         $code = md5($this->email . time());
         $verify_url = $verify_url . $code;
         $query = "SELECT id FROM users WHERE email='{$this->email}'";

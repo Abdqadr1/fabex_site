@@ -29,7 +29,7 @@ addBankForm.onsubmit = (event) => {
 
 // get all banks
 (function () {
-    Ajax.fetchPage("php/data.php?which=banks", (data: string) => {
+    Ajax.fetchPage("account/php/data.php?which=banks", (data: string) => {
         const bankList:[] = JSON.parse(data);
         bankList.forEach((bank:string) => {
             const option = document.createElement("option");

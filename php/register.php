@@ -30,6 +30,7 @@ if (
 
         include_once "../account/php/connect_db.php";
         include_once "../account/php/user_actions.php";
+        include_once "../php/send_email.php";
 
         $fname = mysqli_escape_string($conn, $_POST["fname"]);
         $lname = mysqli_escape_string($conn, $_POST["lname"]);
@@ -58,4 +59,3 @@ if (
 } else {
     echo "All fields are required!";
 }
-$conn->close();
