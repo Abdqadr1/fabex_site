@@ -1,7 +1,7 @@
 <?php
 
 // send email function
-function sendEmail(string $type, string $link, string $to, string $fname = "")
+function sendEmail(string $type, string $link, string $to, mysqli $conn, string $fname = "", int $userId = 0)
 {
     $headers = "From: Fabex <notification@fabex.com>\r\n";
     $headers .= "MIME-Version: 1.0\r\n";
@@ -18,6 +18,9 @@ function sendEmail(string $type, string $link, string $to, string $fname = "")
     if (mail($to, $subject, $message, $headers)) {
         echo "Success: email sent";
     } else {
-        echo "email not sent, something went wrong";
+        if ($type == "register") {
+            echo "Email not sent, Try again";
+            $conn->query("DELETE FROM users WHERE id='$userId'");
+        } else echo "Email not sent, something went wrong";
     }
 }

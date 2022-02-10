@@ -16,22 +16,17 @@ resetForm.onsubmit = (e) => {
         console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
             infoTag.classList.remove("d-none");
-            infoTag.classList.add("d-block");
-            btn.disabled = false;
-            btn.innerHTML = "Proceed";
-            errorDiv.classList.remove("d-block");
             errorDiv.classList.add("d-none");
             const input = resetForm.querySelector("input") as HTMLInputElement;
             input.value = "";
-        } 
-        else {
+        }else {
             errorDiv.innerText = responseText;
             errorDiv.classList.remove("d-none");
-            errorDiv.classList.add("d-block");
-            btn.disabled = false;
-            btn.innerHTML = "Proceed";
+            infoTag.classList.add("d-none");
             errorDiv.focus();
         }
+            btn.disabled = false;
+            btn.innerHTML = "Proceed";
     });
     aj.start();
 }

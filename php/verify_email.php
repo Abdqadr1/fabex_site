@@ -15,19 +15,24 @@ $code = mysqli_escape_string($conn, $_GET["verify"]);
 if (
     !empty($email) && !empty($code)
 ) {
-    $query = "SELECT id FROM users WHERE email='$email' AND v_code='$code'";
+    $query = "SELECT id, verified FROM users WHERE email='$email' AND v_code='$code'";
     $result = $conn->query($query);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $id = $row["id"];
-        $update_query = "UPDATE users SET verified=true WHERE id='$id'";
-        $res = $conn->query($update_query);
-        if ($res == true) {
-            $_SESSION["id"] = $id;
-            $_SESSION["email"] = $email;
-            header("location: ../add-bank.php");
+        $verified = $row["verified"];
+        if ($verified == 1) {
+            echo "Email already verified!";
         } else {
-            echo "Error occur while updating record: " . $conn->error;
+            $update_query = "UPDATE users SET verified=true WHERE id='$id'";
+            $res = $conn->query($update_query);
+            if ($res == true) {
+                $_SESSION["id"] = $id;
+                $_SESSION["email"] = $email;
+                header("location: ../add-bank.php");
+            } else {
+                echo "Error occur while updating record: " . $conn->error;
+            }
         }
     } else {
         echo `Email: $email does not exist`;

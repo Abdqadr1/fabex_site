@@ -90,9 +90,7 @@ class User
                 $_SESSION["email"] = $this->email;
                 $_SESSION["fname"] = $this->fname;
                 $_SESSION["id"] = $last_id;
-                // TODO: write send email code
-                echo "Success: " . $verify_url;
-                sendEmail("register", $verify_url, $this->email, $this->fname);
+                sendEmail("register", $verify_url, $this->email, $conn, $this->fname, $last_id);
             } else {
                 echo "Something went wrong!" . $conn->error;
             }
@@ -121,17 +119,15 @@ class User
         $verify_url = "http://localhost/fabex/php/reset_password.php?email=" . $this->email . "&verify=";
         $code = md5($this->email . time());
         $verify_url = $verify_url . $code;
-        $query = "SELECT id FROM users WHERE email='{$this->email}'";
+        $query = "SELECT id, fname FROM users WHERE email='{$this->email}'";
         $res = $conn->query($query);
         if ($res->num_rows > 0) {
             $row = $res->fetch_assoc();
             $sql = "UPDATE users SET v_code='$code' WHERE id='{$row['id']}'";
+            $fname = $row["fname"];
             $result = $conn->query($sql);
             if ($result === true) {
-                echo "Success: " . $verify_url;
-                // TODO: write send email code
-                include_once "../../php/send_email.php";
-                sendEmail("reset", $verify_url, $this->email);
+                sendEmail("reset", $verify_url, $this->email, $conn, $fname);
             }
         } else {
             echo "Account does not exist!";

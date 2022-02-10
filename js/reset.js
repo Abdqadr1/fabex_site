@@ -15,10 +15,6 @@ resetForm.onsubmit = function (e) {
         console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
             infoTag.classList.remove("d-none");
-            infoTag.classList.add("d-block");
-            btn.disabled = false;
-            btn.innerHTML = "Proceed";
-            errorDiv.classList.remove("d-block");
             errorDiv.classList.add("d-none");
             var input = resetForm.querySelector("input");
             input.value = "";
@@ -26,11 +22,11 @@ resetForm.onsubmit = function (e) {
         else {
             errorDiv.innerText = responseText;
             errorDiv.classList.remove("d-none");
-            errorDiv.classList.add("d-block");
-            btn.disabled = false;
-            btn.innerHTML = "Proceed";
+            infoTag.classList.add("d-none");
             errorDiv.focus();
         }
+        btn.disabled = false;
+        btn.innerHTML = "Proceed";
     });
     aj.start();
 };

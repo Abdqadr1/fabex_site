@@ -14,6 +14,7 @@ if (!empty($email)) {
     }
     include_once "../account/php/connect_db.php";
     include_once "../account/php/user_actions.php";
+    include_once "../php/send_email.php";
 
     $email = mysqli_escape_string($conn, $_POST["email"]);
     $email = testInput($email);
