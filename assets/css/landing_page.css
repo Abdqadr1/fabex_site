@@ -1,0 +1,198 @@
+:root {
+  --primary-color: #166d71;
+  --gray: #e0e0e0;
+  --todo-bg: #f7f7f7;
+  --todo-bg-hover: #e6e1e1;
+  --warning: #f4aa0b;
+  --red: #ec4646;
+  --success: #166d71;
+  --header: #8c8c8c;
+  --deep-primary: #0e3b44;
+}
+a#web-app-btn {
+  background-color: var(--primary-color);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  text-align: center;
+  color: white;
+  display: block;
+  margin: auto;
+}
+a#web-app-btn:hover {
+  background-color: var(--deep-primary);
+}
+a#web-app-btn::after {
+  content: "\203A";
+  color: white;
+  margin: 0 10px;
+  font-size: 16px;
+  display: inline-block;
+}
+p.exchange {
+  text-align: center;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 60px;
+  line-height: 115%;
+  margin-top: 20px;
+}
+p.semi {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 135%;
+  text-align: center;
+  color: #000000;
+}
+p.what-is span {
+  display: inline-block;
+  color: var(--primary-color);
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+}
+a.get-started-btn {
+  padding: 18px;
+  width: 230px;
+  display: block;
+  margin: 25px auto;
+  margin-bottom: 40px;
+  background: #166d71;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+}
+p.feature-head {
+  font-family: "Overpass";
+  font-style: normal;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 130%;
+  color: #000000;
+}
+img.feature-image {
+  display: inline-block;
+  height: 60px;
+  width: 60px;
+  margin-right: 10px;
+}
+section#ready {
+  background-color: var(--deep-primary);
+  color: white;
+  padding: 50px 20px;
+  text-align: center;
+}
+a.sign-up-btn {
+  padding: 18px;
+  width: 210px;
+  display: block;
+  margin: 25px auto;
+  margin-bottom: 0;
+  background: #166d71;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+}
+p.section-head {
+  font-family: "Overpass";
+  font-style: normal;
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 130%;
+  color: white;
+}
+p.ditch {
+  font-family: "Overpass";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 135%;
+  text-align: center;
+  color: #ffffff;
+}
+footer {
+  padding: 40px 3rem;
+  background-color: white;
+  color: var(--primary-color);
+}
+img.fabex {
+  display: inline-block;
+  width: 130px;
+  height: 25px;
+}
+img.socials {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-right: 20px;
+}
+p.address {
+  font-family: "Overpass";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 30px;
+  color: #131313;
+}
+p.help {
+  font-family: "Overpass";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  color: #131313;
+}
+p.help a {
+  color: var(--primary-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 500px) {
+  p.exchange {
+    font-size: 32px;
+  }
+  p.semi {
+    font-size: 14px;
+  }
+  a.get-started-btn {
+    padding: 14px;
+    width: 180px;
+  }
+  p.what-is + p {
+    font-size: 14px;
+  }
+  p.feature-head {
+    font-size: 24px;
+  }
+  p.features-explain {
+    font-size: 14px;
+  }
+  p.section-head {
+    font-size: 36px;
+  }
+  p.ditch {
+    font-size: 14px;
+  }
+  a.sign-up-btn {
+    padding: 14px;
+    width: 160px;
+    margin: 20px auto;
+  }
+  img.fabex {
+    width: 120px;
+    height: 20px;
+  }
+  img.socials {
+    width: 24px;
+    height: 24px;
+  }
+  p.address {
+    font-size: 14px;
+  }
+  p.help {
+    font-size: 12px;
+    line-height: 17px;
+  }
+}

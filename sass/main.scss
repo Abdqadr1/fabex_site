@@ -10,6 +10,7 @@ $spinner-height: $spinner-width;
 $custom-theme-colors: (
   "altgray": #c97777,
   "header": #8c8c8c,
+  "deepprimary": #0e3b44,
 );
 
 $theme-colors: map-merge($custom-theme-colors, $theme-colors);

@@ -20,6 +20,7 @@ function sendEmail(string $type, string $link, string $to, mysqli $conn, string 
     } else {
         if ($type == "register") {
             echo "Email not sent, Try again";
+            // if email cannot be sent - remove the user from the database
             $conn->query("DELETE FROM users WHERE id='$userId'");
         } else echo "Email not sent, something went wrong";
     }

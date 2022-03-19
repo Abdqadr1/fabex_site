@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Overpass&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/general_styles.css" />
+    <link rel="stylesheet" href="assets/css/landing_page.css" />
     <link rel="icon" href="assets/images/FabEx.png">
 
 </head>

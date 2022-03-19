@@ -14,7 +14,7 @@ RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteRule ^([^.]+)$ $1.php [NC,L]
 
 
-## Redirect non existting pages to profile.php
+## Redirect non existing pages to profile.php
 Options +SymLinksIfOwnerMatch
 RewriteEngine On 
 RewriteCond %{REQUEST_FILENAME} !-f
