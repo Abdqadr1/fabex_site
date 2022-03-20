@@ -6,17 +6,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto d-flex align-items-center">
-                <li class="nav-item">
+                <li class="nav-item mt-2">
                     <a class="nav-link text-black" href="#">Home</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mt-2">
                     <a class="nav-link text-black" href="#about">About</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mt-2">
                     <a class="nav-link text-black" href="#features">Features</a>
                 </li>
             </ul>
-            <p class="py-sm-1 d-flex align-items-center my-0">
+            <p class="py-sm-1 d-flex align-items-center mt-2">
                 <a href="" id="web-app-btn" class="btn">Go to Web App</a>
             </p>
         </div>

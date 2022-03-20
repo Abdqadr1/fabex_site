@@ -9,6 +9,9 @@
   --header: #8c8c8c;
   --deep-primary: #0e3b44;
 }
+body {
+  position: relative;
+}
 a#web-app-btn {
   background-color: var(--primary-color);
   border-radius: 6px;
@@ -38,12 +41,30 @@ p.exchange {
   margin-top: 20px;
 }
 p.semi {
+  max-width: 60%;
+  margin: auto;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
   line-height: 135%;
   text-align: center;
   color: #000000;
+}
+div#img-div {
+  width: 95%;
+  position: absolute;
+  top: 13rem;
+  margin: 0;
+}
+img.bitcoin-img {
+  width: 140px;
+  height: 140px;
+  z-index: 2;
+}
+img.giftcard-img {
+  width: 160px;
+  height: 140px;
+  z-index: 1;
 }
 p.what-is span {
   display: inline-block;
@@ -80,7 +101,6 @@ img.feature-image {
 section#ready {
   background-color: var(--deep-primary);
   color: white;
-  padding: 50px 20px;
   text-align: center;
 }
 a.sign-up-btn {
@@ -112,7 +132,6 @@ p.ditch {
   color: #ffffff;
 }
 footer {
-  padding: 40px 3rem;
   background-color: white;
   color: var(--primary-color);
 }
@@ -149,11 +168,12 @@ p.help a {
   cursor: pointer;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 600px) {
   p.exchange {
     font-size: 32px;
   }
   p.semi {
+    max-width: 100%;
     font-size: 14px;
   }
   a.get-started-btn {
@@ -194,5 +214,18 @@ p.help a {
   p.help {
     font-size: 12px;
     line-height: 17px;
+  }
+  div#img-div {
+    margin: 3em 0;
+    top: 0rem;
+    position: relative;
+  }
+  img.bitcoin-img {
+    width: 105px;
+    height: 95px;
+  }
+  img.giftcard-img {
+    width: 95px;
+    height: 95px;
   }
 }
