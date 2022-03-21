@@ -1,12 +1,12 @@
 import { Ajax } from "./ajax.js";
 declare const bootstrap: any;
-const cryptoLoading = document.querySelector("div#crypto_loading") as HTMLDivElement;
+const buyCryptoLoading = document.querySelector("div#crypto_loading") as HTMLDivElement;
 const giftcardLoading = document.querySelector("div#giftcard_loading") as HTMLDivElement;
-const cryptoDiv = document.querySelector("div#crypto_div") as HTMLDivElement;
-const add_crypto = document.querySelector("div#add_crypto") as HTMLDivElement;
-const addCryptoForm = document.querySelector("form#add_crypto_form") as HTMLFormElement;
-const addCryptoSubmitBtn = addCryptoForm.querySelector("button") as HTMLButtonElement;
-const cryptoErrorDiv = addCryptoForm.querySelector("div#errorDiv") as HTMLDivElement;
+const buyCryptoDiv = document.querySelector("div#crypto_div") as HTMLDivElement;
+const addBuyCrypto = document.querySelector("div#add_crypto") as HTMLDivElement;
+const addBuyCryptoForm = document.querySelector("form#add_crypto_form") as HTMLFormElement;
+const addBuyCryptoSubmitBtn = addBuyCryptoForm.querySelector("button") as HTMLButtonElement;
+const buyCryptoErrorDiv = addBuyCryptoForm.querySelector("div#errorDiv") as HTMLDivElement;
 const addBankForm = document.querySelector("form#addBankForm") as HTMLFormElement;
 const addBankSubmitBtn = addBankForm.querySelector("button") as HTMLButtonElement;
 const bankSelect = addBankForm.querySelector("select#bankname") as HTMLSelectElement;
@@ -23,21 +23,51 @@ const giftcardFormDiv = document.querySelector("div#giftcardFormDiv") as HTMLDiv
 const addGiftcardForm = document.querySelector("form#add_new_giftcard_form") as HTMLFormElement;
 const addGiftcardSubmitBtn = addGiftcardForm.querySelector("button") as HTMLButtonElement;
 const addGiftcardErrorDiv = addGiftcardForm.querySelector("div#errorDiv") as HTMLDivElement;
+const addNetworkBuy = addBuyCryptoForm.querySelector("div#add_network_buy") as HTMLDivElement;
+const allBuyNetworksInput = addBuyCryptoForm.querySelector("input#all_networks") as HTMLInputElement;
+const buyNetworks: string[] = []; const sellNetworks: string[] = [];
 
+const writeNetwork = (type: string, value:string, index:number) => {
+    if (type === "buy") {
+        buyNetworks[index] = value;
+    } else {
+        sellNetworks[index] = value;
+    }
+}
+const buyNetwork1Input = addBuyCryptoForm.querySelector("input#network1") as HTMLInputElement;
+buyNetwork1Input.onkeyup = () => {
+    writeNetwork("buy", buyNetwork1Input.value, 0)
+    allBuyNetworksInput.value = buyNetworks.join(",");
+}
+addNetworkBuy.onclick = () => {
+    const no:number = Number(addBuyCryptoForm.getAttribute("aria-network"));
+    const newNode = document.createElement("div") as HTMLDivElement
+    newNode.className ="mt-3"
+    newNode.innerHTML =
+        ` <label for="network1" class="form-label">Network ${no + 1}</label>
+    <input id="network${no + 1}" name="network${no + 1}" type="text" class="form-control form-control-lg rad8" placeholder="network ${no + 1}">`;
+    const input = newNode.querySelector("input") as HTMLInputElement;
+    input.onkeyup = () => {
+        writeNetwork("buy", input.value, no)
+        allBuyNetworksInput.value = buyNetworks.join(",");
+    }
+    addBuyCryptoForm.insertBefore(newNode, addNetworkBuy)
+    addBuyCryptoForm.setAttribute("aria-network", (Number(no + 1)).toString());
+}
 let adminBanks: [][] = [];
 
 // show crypto form
-add_crypto.onclick = event => {
-    addCryptoForm.classList.remove("d-none");
-    addCryptoForm.classList.add("d-block");
-    add_crypto.classList.add("d-none");
+addBuyCrypto.onclick = event => {
+    addBuyCryptoForm.classList.remove("d-none");
+    addBuyCryptoForm.classList.add("d-block");
+    addBuyCrypto.classList.add("d-none");
 }
 // add crypto function
 const addCrypto = (content: any[]) => {
     const div = document.createElement("div") as HTMLDivElement;
     div.className = "each-crypto";
     const name = `${content[1]} (${content[2].toUpperCase()})`;
-    div.innerHTML = `<span id='${content[0]}' class="d-inline-block crypto-name" tabindex="-1">${name}</span>
+    div.innerHTML = `<div><span id='${content[0]}' class="d-inline-block crypto-name" tabindex="-1">${name}</span>
                     <span class="form-switch mx-3">
                         <input id='${content[0]}' class="form-check-input" type="checkbox" role="switch">
                     </span>
@@ -47,43 +77,49 @@ const addCrypto = (content: any[]) => {
                             <li><span id='edit' class="dropdown-item text-primary">Edit</span></li>
                             <li><span id='delete' class="dropdown-item text-danger">Delete</span></li>
                         </ul>
-                    </div>`;
+                    </div>
+                    <span class="crypto_network">${content[3]}</span></div>`;
     const switchInput = div.querySelector("input") as HTMLInputElement;
     const deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
     const editAction = div.querySelector("span#edit") as HTMLSpanElement;
-    editAction.onclick = () => showEdit("crypto", content);
-    deleteAction.onclick = () => deleteProduct("crypto", div);
+    editAction.onclick = () => showEdit("crypto", content, "buy");
+    deleteAction.onclick = () => deleteProduct("crypto", div, content[0], "buy");
     switchInput.checked = content[content.length - 1];
-    switchInput.onchange = event => toggleProduct(event, "crypto");
-    cryptoDiv.insertBefore(div, cryptoDiv.lastElementChild);
+    switchInput.onchange = event => toggleProduct(event, "crypto", "buy");
+    buyCryptoDiv.insertBefore(div, buyCryptoDiv.lastElementChild);
 }
 // crypto submit
-addCryptoForm.onsubmit = event => {
+addBuyCryptoForm.onsubmit = event => {
     event.preventDefault();
-    const aj = new Ajax(addCryptoForm as HTMLFormElement);
+    const aj = new Ajax(addBuyCryptoForm as HTMLFormElement);
     aj.setBefore(() => {
-        addCryptoSubmitBtn.disabled = true;
-        addCryptoSubmitBtn.innerHTML = spinner;
+        addBuyCryptoSubmitBtn.disabled = true;
+        addBuyCryptoSubmitBtn.innerHTML = spinner;
     })
     aj.setAfter((responseText:string) => {
-        const arr = JSON.parse(responseText);
+        // console.log(responseText)
+        const arr:any[] = JSON.parse(responseText);
         const message = arr[0];
         if (message.toLowerCase().indexOf("success") != -1) {
-            addCrypto(arr[1]);
-            cryptoErrorDiv.classList.remove("d-block");
-            cryptoErrorDiv.classList.add("d-none");
-            addCryptoForm.classList.remove("d-block");
-            addCryptoForm.classList.add("d-none");
-            add_crypto.classList.remove("d-none");
-            add_crypto.classList.add("d-block"); 
+            arr.shift();
+            arr.forEach(e => {
+                addCrypto(e);
+            })
+            buyCryptoErrorDiv.classList.remove("d-block");
+            buyCryptoErrorDiv.classList.add("d-none");
+            addBuyCryptoForm.classList.remove("d-block");
+            addBuyCryptoForm.classList.add("d-none");
+            addBuyCrypto.classList.remove("d-none");
+            addBuyCrypto.classList.add("d-block"); 
+            addBuyCryptoForm.reset();
         } else {
-            cryptoErrorDiv.classList.remove("d-none");
-            cryptoErrorDiv.classList.add("d-block");
-            cryptoErrorDiv.textContent = message;
-            cryptoErrorDiv.focus()
+            buyCryptoErrorDiv.classList.remove("d-none");
+            buyCryptoErrorDiv.classList.add("d-block");
+            buyCryptoErrorDiv.textContent = message;
+            buyCryptoErrorDiv.focus()
         }
-        addCryptoSubmitBtn.disabled = false;
-        addCryptoSubmitBtn.innerHTML = "Add New Crypto";
+        addBuyCryptoSubmitBtn.disabled = false;
+        addBuyCryptoSubmitBtn.innerHTML = "Add New Crypto";
     })
     aj.start()
 }
@@ -165,7 +201,7 @@ const submitSubGiftCard = (form: HTMLFormElement, subCatDiv:HTMLDivElement) => {
             const deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
             const editAction = div.querySelector("span#edit") as HTMLSpanElement;
             editAction.onclick = () => showEdit("giftcard", content);
-            deleteAction.onclick = () => deleteProduct("giftcard", div);
+            deleteAction.onclick = () => deleteProduct("giftcard", div, content[0]);
             input.onchange = event => toggleProduct(event, 'giftcard');
             subCatDiv.appendChild(div);
             form.reset();
@@ -211,7 +247,7 @@ const addGiftCardFun = (content: any[], children: any[]) => {
     let deleteAction = each.querySelector("span#delete") as HTMLSpanElement;
     let editAction = each.querySelector("span#edit") as HTMLSpanElement;
     editAction.onclick = () => showEdit("giftcard", content);
-    deleteAction.onclick = () => deleteProduct("giftcard", div);
+    deleteAction.onclick = () => deleteProduct("giftcard", div, id);
     input.onchange = event => toggleProduct(event, 'giftcard');
     const subCatDiv = document.createElement("div") as HTMLDivElement;
     subCatDiv.id = "sub_cat_div";
@@ -240,7 +276,7 @@ const addGiftCardFun = (content: any[], children: any[]) => {
             let deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
             let editAction = div.querySelector("span#edit") as HTMLSpanElement;
             editAction.onclick = () => showEdit("giftcard", cat);
-            deleteAction.onclick = () => deleteProduct("giftcard", div);
+            deleteAction.onclick = () => deleteProduct("giftcard", div, id);
             input.onchange = event => toggleProduct(event, 'giftcard');
             subCatDiv.appendChild(div);
         })
@@ -308,7 +344,7 @@ addGiftcardForm.onsubmit = event => {
     aj.start();
 }
 // toggle product
-const toggleProduct = (event: Event, which:string) => {
+const toggleProduct = (event: Event, which:string, type:string="null") => {
     event.preventDefault();
     const el = event.target as HTMLInputElement;
     const id = el.id;
@@ -324,7 +360,7 @@ const toggleProduct = (event: Event, which:string) => {
         setTimeout(() => {
             hideModal();
         }, 2000);
-    }, {status, id, which})
+    }, {status, id, which, type})
 }
 //show and hide modal
 let myModal: any;
@@ -342,7 +378,7 @@ const showModal = (message: string, style:string = "text-success", duration:numb
         }, duration);
     }
 }
-const showEdit = (which: string, arr: any[]) => {
+const showEdit = (which: string, arr: any[], type:string = "null") => {
     const editModal = document.querySelector("div#editModal") as HTMLDivElement;
     const body = editModal.querySelector("div#edit_body") as HTMLDivElement;
     body.innerHTML = "";
@@ -353,10 +389,14 @@ const showEdit = (which: string, arr: any[]) => {
         <input value='${arr[1]}' name="coin_name" class="form-control form-control-lg rad8 mt-3" placeholder="Enter coin name" required>
         <input value='${arr[2]}' name="short_name" class="form-control form-control-lg rad8 mt-3" placeholder="Short name" required>
         <input value='${arr[3]}' name="network" class="form-control form-control-lg rad8 mt-3" placeholder="Enter network" required>
-        <input value='${arr[4]}' name="address" class="form-control form-control-lg rad8 mt-3" placeholder="Enter wallet address" required>
-        <input value='${arr[6]}' name="memo" class="form-control form-control-lg rad8 mt-3" placeholder="Memo" required>
         <input id="hidden" type="hidden" value='${which}' name='which'>
+        <input id="type" type="hidden" value='${type}' name='type'>
         <input type="hidden" value='${arr[0]}' name='id'>`;
+        if (type === "sell") {
+            body.innerHTML += `<input value='${arr[4]}' name="address" class="form-control form-control-lg rad8 mt-3" placeholder="Enter wallet address" required>
+            <input value='${arr[6]}' name="memo" class="form-control form-control-lg rad8 mt-3" placeholder="Memo" required>
+            `;
+        }
     } else {
         body.innerHTML = `
         <div tabindex="-1" class="my-2 alert alert-danger mx-0 d-none text-center" id="errorDiv" role="alert"></div>
@@ -386,7 +426,7 @@ const updateProduct = (which: string, modal: HTMLDivElement, data: any[]) => {
         params[input.name] = input.value;
     });
     const id = data[0];
-    let parent: HTMLDivElement = which === "crypto" ? cryptoDiv : giftcardDiv;
+    let parent: HTMLDivElement = which === "crypto" ? buyCryptoDiv : giftcardDiv;
     const nameSpan = parent.querySelector("span#" + CSS.escape(id)) as HTMLSpanElement;
     btn.disabled = true; btn.innerHTML = spinner;
     Ajax.fetchPage("php/edit_product.php", (data: string) => {
@@ -409,10 +449,9 @@ const updateProduct = (which: string, modal: HTMLDivElement, data: any[]) => {
 }
 
 //delete product
-const deleteProduct = (which: string, el: HTMLSpanElement) => {
+const deleteProduct = (which: string, el: HTMLSpanElement, id:number, type:string = "null") => {
     const parent = el.parentElement as HTMLDivElement;
-    const input = parent.querySelector("input") as HTMLInputElement;
-    const id = input.id;
+    console.log(id);
     Ajax.fetchPage("php/delete_product.php", (data: string) => {
         if (data.toLowerCase().indexOf("success") != -1) {
             showModal(data, "text-success", 3000);
@@ -421,7 +460,7 @@ const deleteProduct = (which: string, el: HTMLSpanElement) => {
         } else {
             showModal(data, "text-danger", 3000);
         }
-    },{which, id})
+    },{which, id, type})
 }
 // get all banks
 (function () {
@@ -437,8 +476,9 @@ const deleteProduct = (which: string, el: HTMLSpanElement) => {
 }
 )();
 const getAllCryptos = () => {
-    Ajax.fetchPage("php/admin_data.php?which=crypto", (data: string) => {
+    Ajax.fetchPage("php/admin_data.php?which=buy_crypto", (data: string) => {
         const object: { success: [][] } = JSON.parse(data);
+        console.log(object)
         const keys = Object.keys(object);
         const message: string = keys[0];
         if (message.toLowerCase().indexOf('success') != -1) {
@@ -446,10 +486,11 @@ const getAllCryptos = () => {
             array.forEach(arr => {
                 addCrypto(arr);
             });
-            cryptoLoading.classList.add("d-none");
-            cryptoDiv.classList.remove("d-none");
+            buyCryptoLoading.classList.add("d-none");
+            buyCryptoDiv.classList.remove("d-none");
         } else {
-            cryptoLoading.classList.add("d-none");
+            buyCryptoLoading.classList.add("d-none");
+            buyCryptoDiv.classList.remove("d-none");
             showModal(data, "text-danger");
             setTimeout(() => {
                 hideModal();

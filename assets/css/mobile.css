@@ -1,0 +1,6 @@
+@media screen and (max-width: 600px) {
+  span.trans-title,
+  span.trans-amount {
+    font-size: 12px;
+  }
+}

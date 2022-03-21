@@ -58,3 +58,7 @@ var script = document.createElement("script");
 script.type = "module";
 script.src = "../js/history.js?version=" + dash_version;
 container.appendChild(script);
+var topTenScript = document.createElement("script");
+topTenScript.type = "module";
+topTenScript.src = "../js/top-ten.js?version=" + dash_version;
+container.appendChild(topTenScript);

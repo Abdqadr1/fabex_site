@@ -6,13 +6,26 @@ if (
 ) {
     echo ("Invalid parameters..");
 }
+
 $which = mysqli_escape_string($conn, $headers["which"]);
 $id = mysqli_escape_string($conn, $headers["id"]);
 $which = testInput($which);
 $id = testInput($id);
 
+$sql = "";
+
 if ($which === "crypto") {
-    $sql = "DELETE FROM cryptos WHERE id='$id' LIMIT 1";
+    if (!isset($headers["type"]) || empty($headers["type"]) || $headers["type"] === "null") {
+        echo ("No type specified!");
+    } else {
+        $type = mysqli_escape_string($conn, $headers["type"]);
+        $type = testInput($type);
+        if ($type === "buy") {
+            $sql = "DELETE FROM buy_cryptos WHERE id='$id' LIMIT 1";
+        } else {
+            $sql = "DELETE FROM cryptos WHERE id='$id' LIMIT 1";
+        }
+    }
 } else {
     $sql = "DELETE FROM giftcards WHERE id='$id' LIMIT 1";
 }

@@ -3,7 +3,7 @@
         <p class="kindly-pay mb-3 mx-md-3 mx-3">Hello <span class="text-caps" id="fname"><?php echo $fname; ?></span>,</p>
         <p class="mb-3 fw-bold mx-md-3 mx-3">What would you like to do? </p>
         <div class="row justify-content-center justify-content-md-around mt-3 no-margin">
-            <div class="col-12 col-md-5 py-md-4 py-2 px-md-3 px-5 todo my-3 my-md-0">
+            <div class="col-12 col-md-5 py-md-4 py-2 px-md-3 px-3 todo my-3 my-md-0">
                 <a href="giftcard" class="dash">
                     <span class="material-icons icon giftcard d-inline-block">
                         card_giftcard
@@ -12,7 +12,7 @@
                     <p class="note d-none d-md-block">Amazon, Google play, Xbox, Itunes, ebay, etc.</p>
                 </a>
             </div>
-            <div class="col-12 col-md-5 py-md-4 py-2 px-md-3 px-5 todo">
+            <div class="col-12 col-md-5 py-md-4 py-2 px-md-3 px-3 todo">
                 <a href="crypto" class="dash">
                     <span class="material-icons icon crypto">
                         currency_bitcoin
@@ -21,11 +21,36 @@
                     <p class="note d-none d-md-block">Bitcoin (BTC), Ethereum (ETH), Tether USD (USDT), Binance coin (BNB)</p>
                 </a>
             </div>
+            <div class="col-12 d-md-none mt-3 mb-5">
+                <a href="top-ten" class="btn best-giftcard">Best Giftcards at the moment</a>
+            </div>
+        </div>
+        <div class="top-rates mt-5 px-md-4 d-none d-md-block" id="rates_container">
+            <p class="text-center fw-bold">Top 10 Giftcards</p>
+            <!-- rates -->
+            <!-- <div class="rates">
+                <div class="row justify-content-between rate">
+                    <div class="col-9 ml-2">
+                        <span class="rate-title">Crypto</span><br>
+                    </div>
+                    <div class="col-3 text-to-right">
+                        <span class="rate-price">555/$</span>
+                    </div>
+                </div>
+                <div class="row justify-content-between rate">
+                    <div class="col-9 ml-2">
+                        <span class="rate-title">Crypto</span><br>
+                    </div>
+                    <div class="col-3 text-to-right">
+                        <span class="rate-price">555/$</span>
+                    </div>
+                </div>
+            </div> -->
         </div>
     </div>
     <div class=" col-10 col-md-5 my-md-0 my-4">
         <div class="row justify-content-between align-items-end no-margin">
-            <p class="col-9 fs-4 px-0">Recent transactions</p>
+            <p class="col-9 fs-md-4 px-0">Recent transactions</p>
             <p class="col-3 fs-6 view-all px-0" id="view_all">view all</p>
         </div>
         <div id="historyDiv">

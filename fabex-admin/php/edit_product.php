@@ -24,29 +24,50 @@ if ($which === "giftcard") {
     if ($result === true) echo "Giftcard updated successfully";
     else exit("Error occur updating record " . $conn->close());
 } else {
-    if (
-        !isset($headers["coin_name"]) || !isset($headers["short_name"]) || !isset($headers["network"])
-        || !isset($headers["address"]) || !isset($headers["memo"])
-    ) exit("Incomplete parameters.." . $conn->close());
-    $name = mysqli_escape_string($conn, $headers["coin_name"]);
-    $short_name = mysqli_escape_string($conn, $headers["short_name"]);
-    $network = mysqli_escape_string($conn, $headers["network"]);
-    $address = mysqli_escape_string($conn, $headers["address"]);
-    $memo = mysqli_escape_string($conn, $headers["memo"]);
-    $name = testInput($name);
-    $short_name = testInput($short_name);
-    $network = testInput($network);
-    $address = testInput($address);
-    $memo = testInput($memo);
+    if (!isset($headers["type"]) || !isset($headers["coin_name"]) || !isset($headers["short_name"]) || !isset($headers["network"])) {
+        exit("Incomplete params");
+    } else {
+        $type = mysqli_escape_string($conn, $headers["type"]);
+        $name = mysqli_escape_string($conn, $headers["coin_name"]);
+        $short_name = mysqli_escape_string($conn, $headers["short_name"]);
+        $network = mysqli_escape_string($conn, $headers["network"]);
+        $name = testInput($name);
+        $short_name = testInput($short_name);
+        $network = testInput($network);
+        $type = testInput($type);
+        if ($type == "buy") {
 
-    $q = "SELECT * FROM cryptos WHERE address='$address' AND id !='$id'";
-    $res = $conn->query($q);
-    if ($res == false || $res->num_rows != 0) exit("Wallet address already exists " . $conn->close());
+            $q = "SELECT * FROM buy_cryptos WHERE network='$network' AND name !='$name'";
+            $res = $conn->query($q);
+            if ($res == false || $res->num_rows != 0) exit("Crypto with name and network already exists " . $conn->close());
 
-    $sql = "UPDATE cryptos SET name='$name', acronym='$short_name', network='$network',address='$address',memo='$memo' WHERE id='$id'";
-    $result = $conn->query($sql);
-    if ($result === true) echo "Crypto updated successfully";
-    else exit("Error occur updating record " . $conn->close());
+            $sql = "UPDATE buy_cryptos SET name='$name', acronym='$short_name', network='$network' WHERE id='$id'";
+            $result = $conn->query($sql);
+            if ($result === true) echo "Crypto updated successfully";
+            else exit("Error occur updating record " . $conn->close());
+        } else {
+            if (
+                !isset($headers["address"]) || !isset($headers["memo"])
+            ) {
+                exit("Incomplete parameters.." . $conn->close());
+            }
+            $address = mysqli_escape_string($conn, $headers["address"]);
+            $memo = mysqli_escape_string($conn, $headers["memo"]);
+            $address = testInput($address);
+            $memo = testInput($memo);
+
+            $q = "SELECT * FROM cryptos WHERE address='$address' AND id !='$id'";
+            $res = $conn->query($q);
+            if (
+                $res == false || $res->num_rows != 0
+            ) exit("Wallet address already exists " . $conn->close());
+
+            $sql = "UPDATE cryptos SET name='$name', acronym='$short_name', network='$network',address='$address',memo='$memo' WHERE id='$id'";
+            $result = $conn->query($sql);
+            if ($result === true) echo "Crypto updated successfully";
+            else exit("Error occur updating record " . $conn->close());
+        }
+    }
 }
 
 $conn->close();

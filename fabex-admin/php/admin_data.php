@@ -35,6 +35,23 @@ function getCryptos(mysqli &$conn)
     }
 }
 
+function getBuyCryptos(mysqli &$conn)
+{
+    $sql = "SELECT id, name, acronym, network, status FROM buy_cryptos";
+    $result = $conn->query($sql);
+    if ($result == true && $result->num_rows > 0) {
+        $array = array();
+        while ($row = $result->fetch_assoc()) {
+            $isOn = $row['status'] == 1 ? true : false;
+            $arr = array($row["id"], $row["name"], $row["acronym"], $row["network"], $isOn);
+            array_push($array, $arr);
+        }
+        echo json_encode(array("success" => $array));
+    } else {
+        exit(json_encode("No buy crypto found"));
+    }
+}
+
 function getGiftcards(mysqli &$conn)
 {
     $cat = array();
@@ -156,6 +173,8 @@ switch ($which) {
         return deleteBank($conn);
     case "crypto":
         return getCryptos($conn);
+    case "buy_crypto":
+        return getBuyCryptos($conn);
     case "giftcard":
         return getGiftcards($conn);
     case "rates":

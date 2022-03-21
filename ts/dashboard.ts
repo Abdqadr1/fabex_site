@@ -17,29 +17,29 @@ view_all.onclick = () => {
     // go to history
     load("history");
     activePage = "History";
-navToggleButton.innerText = activePage;
-let active = "active";
-let borderBottom = "border-bottom"
-let border2 = "border-2";
-let borderPrimary = "border-primary";
-let dSMNone = "d-none";
-let dMdBlock = "d-md-block";
-navLinks.forEach(el => {
-    if (el.innerText === activePage) {
-        el.classList.add(active);
-        el.classList.add(borderBottom);
-        el.classList.add(border2);
-        el.classList.add(borderPrimary);
-        el.classList.add(dSMNone);
-        el.classList.add(dMdBlock);
-    } else {
-        el.classList.remove(active);
-        el.classList.remove(borderBottom);
-        el.classList.remove(border2);
-        el.classList.remove(borderPrimary);
-        el.classList.remove(dSMNone);
-    }
-});
+    navToggleButton.innerText = activePage;
+    let active = "active";
+    let borderBottom = "border-bottom"
+    let border2 = "border-2";
+    let borderPrimary = "border-primary";
+    let dSMNone = "d-none";
+    let dMdBlock = "d-md-block";
+    navLinks.forEach(el => {
+        if (el.innerText === activePage) {
+            el.classList.add(active);
+            el.classList.add(borderBottom);
+            el.classList.add(border2);
+            el.classList.add(borderPrimary);
+            el.classList.add(dSMNone);
+            el.classList.add(dMdBlock);
+        } else {
+            el.classList.remove(active);
+            el.classList.remove(borderBottom);
+            el.classList.remove(border2);
+            el.classList.remove(borderPrimary);
+            el.classList.remove(dSMNone);
+        }
+    });
 }
 const load = (pageName: string) => {
     //TODO: change url before server
@@ -67,3 +67,7 @@ script.type = "module";
 script.src = "../js/history.js?version=" + dash_version;
 container.appendChild(script);
 
+const topTenScript = document.createElement("script");
+topTenScript.type = "module";
+topTenScript.src = "../js/top-ten.js?version=" + dash_version;
+container.appendChild(topTenScript);

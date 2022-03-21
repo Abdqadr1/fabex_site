@@ -57,7 +57,7 @@ div#img-div {
   margin: 0;
 }
 img.bitcoin-img {
-  width: 140px;
+  width: 160px;
   height: 140px;
   z-index: 2;
 }
@@ -83,6 +83,8 @@ a.get-started-btn {
   border-radius: 12px;
   color: white;
   cursor: pointer;
+  position: relative;
+  z-index: 1000;
 }
 p.feature-head {
   font-family: "Overpass";
@@ -184,7 +186,11 @@ p.help a {
     font-size: 14px;
   }
   p.feature-head {
-    font-size: 24px;
+    font-size: 20px;
+  }
+  img.feature-image {
+    height: 48px;
+    width: 48px;
   }
   p.features-explain {
     font-size: 14px;
@@ -221,11 +227,15 @@ p.help a {
     position: relative;
   }
   img.bitcoin-img {
-    width: 105px;
+    width: 110px;
     height: 95px;
+    position: relative;
+    left: 10px;
   }
   img.giftcard-img {
-    width: 95px;
+    width: 100px;
     height: 95px;
+    position: relative;
+    right: 10px;
   }
 }

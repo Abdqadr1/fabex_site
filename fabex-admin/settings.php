@@ -1,8 +1,8 @@
 <div class="row justify-content-around mx-0 p-4" id="">
-    <!-- crypto column -->
+    <!-- crypto buy column -->
     <div class="col-6 col-lg-5">
         <div class="no-margin pad">
-            <h3>Crypto</h3>
+            <h3>Available Crypto(Buy)</h3>
             <div class='d-flex col-6 col-lg-4 justify-content-center mt-3' id="crypto_loading">
                 <div class='spinner-border text-primary' role='status' style='height: 30px; width:30px;'>
                     <span class='visually-hidden'>Loading...</span>
@@ -22,13 +22,14 @@
                             <li><span class="dropdown-item text-danger">Delete</span></li>
                         </ul>
                     </div>
+                    
                 </div> -->
                 <div class="add-crypto mt-2" title="add new crypto" id="add_crypto">
                     <span class="material-icons add-crypto">add</span>
                     <span>Add new crypto</span>
                 </div>
             </div>
-            <form class="d-none" action="php/add_crypto.php" method="POST" id="add_crypto_form">
+            <form aria-network="1" class="d-none mt-3" action="php/add_buycrypto.php" method="POST" id="add_crypto_form">
                 <div tabindex="-1" class="my-2 alert alert-danger mx-0 d-none text-center" id="errorDiv" role="alert"></div>
                 <!-- coin name -->
                 <div class="mt-2">
@@ -42,21 +43,13 @@
                 </div>
                 <!-- network -->
                 <div class="mt-3">
-                    <label for="network" class="form-label">Network</label>
-                    <select name="network" class="form-select rad8" id="network" required>
-                        <option value="" selected disabled hidden>Select option</option>
-                        <option value="BSC">BSC</option>
-                    </select>
+                    <label for="network1" class="form-label">Network 1</label>
+                    <input id="network1" name="network1" type="text" class="form-control form-control-lg rad8" placeholder="network 1" required>
                 </div>
-                <!-- coin name -->
-                <div class="mt-3">
-                    <label for="address" class="form-label">Address</label>
-                    <input id="address" name="address" type="text" class="form-control form-control-lg rad8" placeholder="Enter wallet address" required>
-                </div>
-                <!-- coin name -->
-                <div class="mt-3">
-                    <label for="memo" class="form-label">Memo</label>
-                    <input id="memo" name="memo" type="text" class="form-control form-control-lg rad8" placeholder="Memo" required>
+                <input class="d-none" value="" id="all_networks" type="text" name="all_networks" minlength="3" required>
+                <div id="add_network_buy" class="add-giftcard add-network mt-3 mb-1" title="add sub category">
+                    <span class="material-icons add-crypto">add</span>
+                    <span>Add another network</span>
                 </div>
                 <button class="payment" type="submit">Add New Crypto</button>
             </form>

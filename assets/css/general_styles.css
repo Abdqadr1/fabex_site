@@ -7,6 +7,7 @@
   --red: #ec4646;
   --success: #166d71;
   --header: #8c8c8c;
+  --deep-primary: #0e3b44;
 }
 input::-webkit-inner-spin-button,
 input::-webkit-outer-spin-button {
@@ -603,6 +604,10 @@ div.add-giftcard {
   width: 200px;
   color: var(--primary-color);
 }
+div.add-network {
+  width: 100% !important;
+  text-align: right;
+}
 div.add-crypto > span,
 div.add-giftcard > span {
   text-transform: none !important;
@@ -635,10 +640,39 @@ span.sub_cat {
   color: var(--header);
   margin-top: 8px;
 }
+span.crypto_network {
+  display: block;
+  font-size: 14px;
+  color: var(--header);
+  text-transform: uppercase;
+}
 /* admin bank accounts */
 span.bank-icon {
   cursor: pointer;
 }
 span.bank-icon:hover {
   color: red !important;
+}
+a.best-giftcard {
+  padding: 18px 0;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  display: block;
+  background-color: var(--primary-color);
+  color: white;
+  position: relative;
+}
+a.best-giftcard::after {
+  content: "\203A";
+  color: white;
+  margin: 0 10px;
+  font-size: 16px;
+  display: inline-block;
+  position: absolute;
+  right: 6px;
+}
+a.best-giftcard:hover {
+  background-color: var(--deep-primary);
+  color: white;
 }

@@ -91,6 +91,10 @@ var load = function (pageName) {
             activePage = "Dashboard";
             load(activePage);
             break;
+        case "top-ten":
+            activePage = "top-ten";
+            load(activePage);
+            break;
         default:
             location.href = "../errors/404.html";
     }

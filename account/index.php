@@ -20,6 +20,7 @@ include "header.php"; ?>
         document.title = activePage;
         const url = location.href;
         const page = url.split("/").pop();
+        console.log(page)
     </script>
     <div id="container">
 

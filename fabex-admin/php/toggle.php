@@ -9,16 +9,23 @@ if (
 }
 
 $which = mysqli_escape_string($conn, $headers["which"]);
+$type = mysqli_escape_string($conn, $headers["type"]);
 $id = mysqli_escape_string($conn, $headers["id"]);
 $status = mysqli_escape_string($conn, $headers["status"]);
 $which = testInput($which);
+$type = testInput($type);
 $id = testInput($id);
 $status = testInput($status);
 if ($which == "crypto") {
-    $sql = "SELECT id FROM cryptos WHERE id='$id'";
+    if ($type === "buy") {
+        $sql = "SELECT id FROM buy_cryptos WHERE id='$id'";
+        $query = "UPDATE buy_cryptos SET status='$status' WHERE id='$id'";
+    } else {
+        $sql = "SELECT id FROM cryptos WHERE id='$id'";
+        $query = "UPDATE cryptos SET status='$status' WHERE id='$id'";
+    }
     $res = $conn->query($sql);
     if ($res == true && $res->num_rows > 0) {
-        $query = "UPDATE cryptos SET status='$status' WHERE id='$id'";
         $result = $conn->query($query);
         if ($result === true) {
             echo "Crypto status changed successfully";

@@ -6,7 +6,7 @@
         <p class="exchange mx-2 mx-md-5">Exchange Crypto & Giftcards at your own pace</p>
         <p class="semi">A semi-decentralized ecosystem designed to let you buy and sell seamlessly, with FabEx you get total control of your trading space
         </p>
-        <a class="get-started-btn btn">Get Started</a>
+        <a href="login" class="get-started-btn btn">Get Started</a>
         <div id="img-div" class="row justify-content-center justify-content-md-between">
             <div class="col col-md-2 row justify-content-end justify-content-md-start">
                 <img class="bitcoin-img" src="assets/images/bitcoin.png" alt="bitcoin">
@@ -23,24 +23,24 @@
     </section>
     <section id="features" class="py-4 px-3 px-md-5 mt-5">
         <div class="row justify-content-center justify-content-md-start">
-            <p class="col-3 col-md-2 col-lg-1"><img class="feature-image" src="assets/images/fingerprint.png" alt="image"></p>
-            <div class=" col-8 col-lg-6">
+            <p class="col-4 col-md-2 col-lg-1 px-0 px-md-4"><img class="feature-image" src="assets/images/fingerprint.png" alt="image"></p>
+            <div class=" col-7 col-lg-6">
                 <p class="feature-head">Secure Trading Environment</p>
                 <p class="features-explain">FabEx creates a semi-decentralized ecosystem created especially to grant you a safe and secure environment to trade your crypto and gift cards.
                 </p>
             </div>
         </div>
         <div class="row justify-content-center justify-content-md-end mt-5">
-            <p class="col-3 col-md-2 col-lg-1"><img class="feature-image" src="assets/images/tech_support.png" alt="image"></p>
-            <div class=" col-8 col-lg-6">
+            <p class="col-4 col-md-2 col-lg-1 px-0 px-md-4"><img class="feature-image" src="assets/images/tech_support.png" alt="image"></p>
+            <div class=" col-7 col-lg-6">
                 <p class="feature-head">24/7 Customer Service</p>
                 <p class="features-explain">Staying in control of all your trades 24 hours, 7 days a week, and 365 days a year is all that we care about, making sure you get to sell or buy your coins at any time you need is our top priority at FabEx
                 </p>
             </div>
         </div>
         <div class="row justify-content-center justify-content-md-start mt-5">
-            <p class="col-3 col-md-2 col-lg-1"><img class="feature-image" src="assets/images/currency.png" alt="image"></p>
-            <div class=" col-8 col-lg-6">
+            <p class="col-4 col-md-2 col-lg-1 px-0 px-md-4"><img class="feature-image" src="assets/images/currency.png" alt="image"></p>
+            <div class=" col-7 col-lg-6">
                 <p class="feature-head">Unbeatable Rates</p>
                 <p class="features-explain">Unbeatable rates you can't find elsewhere. We pride in providing satisfaction and a smiley face to our clients when trading, what else can do these if not the best rates in the market.
                     Enjoy trading with unbeatable rates without fear of losing money or being ripped!

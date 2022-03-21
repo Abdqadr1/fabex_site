@@ -1,11 +1,11 @@
 import { Ajax } from "./ajax.js";
-var cryptoLoading = document.querySelector("div#crypto_loading");
+var buyCryptoLoading = document.querySelector("div#crypto_loading");
 var giftcardLoading = document.querySelector("div#giftcard_loading");
-var cryptoDiv = document.querySelector("div#crypto_div");
-var add_crypto = document.querySelector("div#add_crypto");
-var addCryptoForm = document.querySelector("form#add_crypto_form");
-var addCryptoSubmitBtn = addCryptoForm.querySelector("button");
-var cryptoErrorDiv = addCryptoForm.querySelector("div#errorDiv");
+var buyCryptoDiv = document.querySelector("div#crypto_div");
+var addBuyCrypto = document.querySelector("div#add_crypto");
+var addBuyCryptoForm = document.querySelector("form#add_crypto_form");
+var addBuyCryptoSubmitBtn = addBuyCryptoForm.querySelector("button");
+var buyCryptoErrorDiv = addBuyCryptoForm.querySelector("div#errorDiv");
 var addBankForm = document.querySelector("form#addBankForm");
 var addBankSubmitBtn = addBankForm.querySelector("button");
 var bankSelect = addBankForm.querySelector("select#bankname");
@@ -20,56 +20,92 @@ var giftcardFormDiv = document.querySelector("div#giftcardFormDiv");
 var addGiftcardForm = document.querySelector("form#add_new_giftcard_form");
 var addGiftcardSubmitBtn = addGiftcardForm.querySelector("button");
 var addGiftcardErrorDiv = addGiftcardForm.querySelector("div#errorDiv");
+var addNetworkBuy = addBuyCryptoForm.querySelector("div#add_network_buy");
+var allBuyNetworksInput = addBuyCryptoForm.querySelector("input#all_networks");
+var buyNetworks = [];
+var sellNetworks = [];
+var writeNetwork = function (type, value, index) {
+    if (type === "buy") {
+        buyNetworks[index] = value;
+    }
+    else {
+        sellNetworks[index] = value;
+    }
+};
+var buyNetwork1Input = addBuyCryptoForm.querySelector("input#network1");
+buyNetwork1Input.onkeyup = function () {
+    writeNetwork("buy", buyNetwork1Input.value, 0);
+    allBuyNetworksInput.value = buyNetworks.join(",");
+};
+addNetworkBuy.onclick = function () {
+    var no = Number(addBuyCryptoForm.getAttribute("aria-network"));
+    var newNode = document.createElement("div");
+    newNode.className = "mt-3";
+    newNode.innerHTML =
+        " <label for=\"network1\" class=\"form-label\">Network " + (no + 1) + "</label>\n    <input id=\"network" + (no + 1) + "\" name=\"network" + (no + 1) + "\" type=\"text\" class=\"form-control form-control-lg rad8\" placeholder=\"network " + (no + 1) + "\">";
+    var input = newNode.querySelector("input");
+    input.onkeyup = function () {
+        writeNetwork("buy", input.value, no);
+        allBuyNetworksInput.value = buyNetworks.join(",");
+    };
+    addBuyCryptoForm.insertBefore(newNode, addNetworkBuy);
+    addBuyCryptoForm.setAttribute("aria-network", (Number(no + 1)).toString());
+};
 var adminBanks = [];
 // show crypto form
-add_crypto.onclick = function (event) {
-    addCryptoForm.classList.remove("d-none");
-    addCryptoForm.classList.add("d-block");
-    add_crypto.classList.add("d-none");
+addBuyCrypto.onclick = function (event) {
+    addBuyCryptoForm.classList.remove("d-none");
+    addBuyCryptoForm.classList.add("d-block");
+    addBuyCrypto.classList.add("d-none");
 };
 // add crypto function
 var addCrypto = function (content) {
     var div = document.createElement("div");
     div.className = "each-crypto";
     var name = content[1] + " (" + content[2].toUpperCase() + ")";
-    div.innerHTML = "<span id='" + content[0] + "' class=\"d-inline-block crypto-name\" tabindex=\"-1\">" + name + "</span>\n                    <span class=\"form-switch mx-3\">\n                        <input id='" + content[0] + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\">\n                    </span>\n                    <div class=\"d-inline-block\">\n                        <span data-bs-toggle=\"dropdown\" id=\"dropdown\" class=\"material-icons text-primary three-dots dropdown-toggle\" aria-expanded='false'>more_vert</span>\n                        <ul class=\"dropdown-menu\" aria-labelledby=\"dropdown\">\n                            <li><span id='edit' class=\"dropdown-item text-primary\">Edit</span></li>\n                            <li><span id='delete' class=\"dropdown-item text-danger\">Delete</span></li>\n                        </ul>\n                    </div>";
+    div.innerHTML = "<div><span id='" + content[0] + "' class=\"d-inline-block crypto-name\" tabindex=\"-1\">" + name + "</span>\n                    <span class=\"form-switch mx-3\">\n                        <input id='" + content[0] + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\">\n                    </span>\n                    <div class=\"d-inline-block\">\n                        <span data-bs-toggle=\"dropdown\" id=\"dropdown\" class=\"material-icons text-primary three-dots dropdown-toggle\" aria-expanded='false'>more_vert</span>\n                        <ul class=\"dropdown-menu\" aria-labelledby=\"dropdown\">\n                            <li><span id='edit' class=\"dropdown-item text-primary\">Edit</span></li>\n                            <li><span id='delete' class=\"dropdown-item text-danger\">Delete</span></li>\n                        </ul>\n                    </div>\n                    <span class=\"crypto_network\">" + content[3] + "</span></div>";
     var switchInput = div.querySelector("input");
     var deleteAction = div.querySelector("span#delete");
     var editAction = div.querySelector("span#edit");
-    editAction.onclick = function () { return showEdit("crypto", content); };
-    deleteAction.onclick = function () { return deleteProduct("crypto", div); };
+    editAction.onclick = function () { return showEdit("crypto", content, "buy"); };
+    deleteAction.onclick = function () { return deleteProduct("crypto", div, content[0], "buy"); };
     switchInput.checked = content[content.length - 1];
-    switchInput.onchange = function (event) { return toggleProduct(event, "crypto"); };
-    cryptoDiv.insertBefore(div, cryptoDiv.lastElementChild);
+    switchInput.onchange = function (event) { return toggleProduct(event, "crypto", "buy"); };
+    buyCryptoDiv.insertBefore(div, buyCryptoDiv.lastElementChild);
 };
 // crypto submit
-addCryptoForm.onsubmit = function (event) {
+addBuyCryptoForm.onsubmit = function (event) {
     event.preventDefault();
-    var aj = new Ajax(addCryptoForm);
+    var aj = new Ajax(addBuyCryptoForm);
     aj.setBefore(function () {
-        addCryptoSubmitBtn.disabled = true;
-        addCryptoSubmitBtn.innerHTML = spinner;
+        addBuyCryptoSubmitBtn.disabled = true;
+        addBuyCryptoSubmitBtn.innerHTML = spinner;
     });
     aj.setAfter(function (responseText) {
+        // console.log(responseText)
         var arr = JSON.parse(responseText);
         var message = arr[0];
         if (message.toLowerCase().indexOf("success") != -1) {
-            addCrypto(arr[1]);
-            cryptoErrorDiv.classList.remove("d-block");
-            cryptoErrorDiv.classList.add("d-none");
-            addCryptoForm.classList.remove("d-block");
-            addCryptoForm.classList.add("d-none");
-            add_crypto.classList.remove("d-none");
-            add_crypto.classList.add("d-block");
+            arr.shift();
+            arr.forEach(function (e) {
+                addCrypto(e);
+            });
+            buyCryptoErrorDiv.classList.remove("d-block");
+            buyCryptoErrorDiv.classList.add("d-none");
+            addBuyCryptoForm.classList.remove("d-block");
+            addBuyCryptoForm.classList.add("d-none");
+            addBuyCrypto.classList.remove("d-none");
+            addBuyCrypto.classList.add("d-block");
+            addBuyCryptoForm.reset();
         }
         else {
-            cryptoErrorDiv.classList.remove("d-none");
-            cryptoErrorDiv.classList.add("d-block");
-            cryptoErrorDiv.textContent = message;
-            cryptoErrorDiv.focus();
+            buyCryptoErrorDiv.classList.remove("d-none");
+            buyCryptoErrorDiv.classList.add("d-block");
+            buyCryptoErrorDiv.textContent = message;
+            buyCryptoErrorDiv.focus();
         }
-        addCryptoSubmitBtn.disabled = false;
-        addCryptoSubmitBtn.innerHTML = "Add New Crypto";
+        addBuyCryptoSubmitBtn.disabled = false;
+        addBuyCryptoSubmitBtn.innerHTML = "Add New Crypto";
     });
     aj.start();
 };
@@ -142,7 +178,7 @@ var submitSubGiftCard = function (form, subCatDiv) {
             var deleteAction = div_1.querySelector("span#delete");
             var editAction = div_1.querySelector("span#edit");
             editAction.onclick = function () { return showEdit("giftcard", content_1); };
-            deleteAction.onclick = function () { return deleteProduct("giftcard", div_1); };
+            deleteAction.onclick = function () { return deleteProduct("giftcard", div_1, content_1[0]); };
             input.onchange = function (event) { return toggleProduct(event, 'giftcard'); };
             subCatDiv.appendChild(div_1);
             form.reset();
@@ -177,7 +213,7 @@ var addGiftCardFun = function (content, children) {
     var deleteAction = each.querySelector("span#delete");
     var editAction = each.querySelector("span#edit");
     editAction.onclick = function () { return showEdit("giftcard", content); };
-    deleteAction.onclick = function () { return deleteProduct("giftcard", div); };
+    deleteAction.onclick = function () { return deleteProduct("giftcard", div, id); };
     input.onchange = function (event) { return toggleProduct(event, 'giftcard'); };
     var subCatDiv = document.createElement("div");
     subCatDiv.id = "sub_cat_div";
@@ -196,7 +232,7 @@ var addGiftCardFun = function (content, children) {
             var deleteAction = div.querySelector("span#delete");
             var editAction = div.querySelector("span#edit");
             editAction.onclick = function () { return showEdit("giftcard", cat); };
-            deleteAction.onclick = function () { return deleteProduct("giftcard", div); };
+            deleteAction.onclick = function () { return deleteProduct("giftcard", div, id); };
             input.onchange = function (event) { return toggleProduct(event, 'giftcard'); };
             subCatDiv.appendChild(div);
         });
@@ -257,7 +293,8 @@ addGiftcardForm.onsubmit = function (event) {
     aj.start();
 };
 // toggle product
-var toggleProduct = function (event, which) {
+var toggleProduct = function (event, which, type) {
+    if (type === void 0) { type = "null"; }
     event.preventDefault();
     var el = event.target;
     var id = el.id;
@@ -274,7 +311,7 @@ var toggleProduct = function (event, which) {
         setTimeout(function () {
             hideModal();
         }, 2000);
-    }, { status: status, id: id, which: which });
+    }, { status: status, id: id, which: which, type: type });
 };
 //show and hide modal
 var myModal;
@@ -294,12 +331,16 @@ var showModal = function (message, style, duration) {
         }, duration);
     }
 };
-var showEdit = function (which, arr) {
+var showEdit = function (which, arr, type) {
+    if (type === void 0) { type = "null"; }
     var editModal = document.querySelector("div#editModal");
     var body = editModal.querySelector("div#edit_body");
     body.innerHTML = "";
     if (which === "crypto") {
-        body.innerHTML = "\n        <div tabindex=\"-1\" class=\"my-2 alert alert-danger mx-0 d-none text-center\" id=\"errorDiv\" role=\"alert\"></div>\n        <div tabindex=\"-1\" class=\"my-2 alert alert-success mx-0 d-none text-center\" id=\"successDiv\" role=\"alert\"></div>\n        <input value='" + arr[1] + "' name=\"coin_name\" class=\"form-control form-control-lg rad8 mt-3\" placeholder=\"Enter coin name\" required>\n        <input value='" + arr[2] + "' name=\"short_name\" class=\"form-control form-control-lg rad8 mt-3\" placeholder=\"Short name\" required>\n        <input value='" + arr[3] + "' name=\"network\" class=\"form-control form-control-lg rad8 mt-3\" placeholder=\"Enter network\" required>\n        <input value='" + arr[4] + "' name=\"address\" class=\"form-control form-control-lg rad8 mt-3\" placeholder=\"Enter wallet address\" required>\n        <input value='" + arr[6] + "' name=\"memo\" class=\"form-control form-control-lg rad8 mt-3\" placeholder=\"Memo\" required>\n        <input id=\"hidden\" type=\"hidden\" value='" + which + "' name='which'>\n        <input type=\"hidden\" value='" + arr[0] + "' name='id'>";
+        body.innerHTML = "\n        <div tabindex=\"-1\" class=\"my-2 alert alert-danger mx-0 d-none text-center\" id=\"errorDiv\" role=\"alert\"></div>\n        <div tabindex=\"-1\" class=\"my-2 alert alert-success mx-0 d-none text-center\" id=\"successDiv\" role=\"alert\"></div>\n        <input value='" + arr[1] + "' name=\"coin_name\" class=\"form-control form-control-lg rad8 mt-3\" placeholder=\"Enter coin name\" required>\n        <input value='" + arr[2] + "' name=\"short_name\" class=\"form-control form-control-lg rad8 mt-3\" placeholder=\"Short name\" required>\n        <input value='" + arr[3] + "' name=\"network\" class=\"form-control form-control-lg rad8 mt-3\" placeholder=\"Enter network\" required>\n        <input id=\"hidden\" type=\"hidden\" value='" + which + "' name='which'>\n        <input id=\"type\" type=\"hidden\" value='" + type + "' name='type'>\n        <input type=\"hidden\" value='" + arr[0] + "' name='id'>";
+        if (type === "sell") {
+            body.innerHTML += "<input value='" + arr[4] + "' name=\"address\" class=\"form-control form-control-lg rad8 mt-3\" placeholder=\"Enter wallet address\" required>\n            <input value='" + arr[6] + "' name=\"memo\" class=\"form-control form-control-lg rad8 mt-3\" placeholder=\"Memo\" required>\n            ";
+        }
     }
     else {
         body.innerHTML = "\n        <div tabindex=\"-1\" class=\"my-2 alert alert-danger mx-0 d-none text-center\" id=\"errorDiv\" role=\"alert\"></div>\n        <div tabindex=\"-1\" class=\"my-2 alert alert-success mx-0 d-none text-center\" id=\"successDiv\" role=\"alert\"></div>\n        <input value='" + arr[1] + "' name=\"name\" class=\"form-control rad8 mt-3\" placeholder=\"Enter giftcard name\" required>\n        <input type=\"hidden\" value='" + which + "' name='which'>\n        <input type=\"hidden\" value='" + arr[0] + "' name='id'>";
@@ -324,7 +365,7 @@ var updateProduct = function (which, modal, data) {
         params[input.name] = input.value;
     });
     var id = data[0];
-    var parent = which === "crypto" ? cryptoDiv : giftcardDiv;
+    var parent = which === "crypto" ? buyCryptoDiv : giftcardDiv;
     var nameSpan = parent.querySelector("span#" + CSS.escape(id));
     btn.disabled = true;
     btn.innerHTML = spinner;
@@ -350,10 +391,10 @@ var updateProduct = function (which, modal, data) {
     }, params);
 };
 //delete product
-var deleteProduct = function (which, el) {
+var deleteProduct = function (which, el, id, type) {
+    if (type === void 0) { type = "null"; }
     var parent = el.parentElement;
-    var input = parent.querySelector("input");
-    var id = input.id;
+    console.log(id);
     Ajax.fetchPage("php/delete_product.php", function (data) {
         if (data.toLowerCase().indexOf("success") != -1) {
             showModal(data, "text-success", 3000);
@@ -363,7 +404,7 @@ var deleteProduct = function (which, el) {
         else {
             showModal(data, "text-danger", 3000);
         }
-    }, { which: which, id: id });
+    }, { which: which, id: id, type: type });
 };
 // get all banks
 (function () {
@@ -378,8 +419,9 @@ var deleteProduct = function (which, el) {
     });
 })();
 var getAllCryptos = function () {
-    Ajax.fetchPage("php/admin_data.php?which=crypto", function (data) {
+    Ajax.fetchPage("php/admin_data.php?which=buy_crypto", function (data) {
         var object = JSON.parse(data);
+        console.log(object);
         var keys = Object.keys(object);
         var message = keys[0];
         if (message.toLowerCase().indexOf('success') != -1) {
@@ -387,11 +429,12 @@ var getAllCryptos = function () {
             array.forEach(function (arr) {
                 addCrypto(arr);
             });
-            cryptoLoading.classList.add("d-none");
-            cryptoDiv.classList.remove("d-none");
+            buyCryptoLoading.classList.add("d-none");
+            buyCryptoDiv.classList.remove("d-none");
         }
         else {
-            cryptoLoading.classList.add("d-none");
+            buyCryptoLoading.classList.add("d-none");
+            buyCryptoDiv.classList.remove("d-none");
             showModal(data, "text-danger");
             setTimeout(function () {
                 hideModal();
