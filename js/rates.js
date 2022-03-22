@@ -2,13 +2,19 @@ import { Ajax } from "./ajax.js";
 var loadingContainer = document.querySelector("div#loadingContainer");
 var rates_container = document.querySelector("div#rates_container");
 var addRates = function (content) {
-    var crypto = content[0];
+    var cryptos = content[0];
     var giftcard = content[1];
-    var sec = crypto[1] ? crypto[1] + "/$" : "";
-    var d = document.createElement("div");
-    d.className = "rates";
-    d.innerHTML = "\n                <div class=\"row justify-content-between rate\">\n                    <div class=\"col-9 ml-2\">\n                        <span class=\"rate-title text-caps\">" + crypto[0] + "</span><br>\n                    </div>\n                    <div class=\"col-3 text-to-right\">\n                        <span class=\"rate-price\">" + sec + "</span>\n                    </div>\n                </div>";
-    rates_container.appendChild(d);
+    var dc = document.createElement("div");
+    dc.className = "rates";
+    cryptos.forEach(function (crypto) {
+        var sec = crypto[1] ? crypto[1] + "/$" : "";
+        var d = document.createElement("div");
+        d.className = "row justify-content-between rate";
+        d.innerHTML = "\n                        <div class=\"col-9 ml-2\">\n                            <span class=\"rate-title text-caps\">" + crypto[0] + " (" + crypto[2] + ")</span><br>\n                        </div>\n                        <div class=\"col-3 text-to-right\">\n                            <span class=\"rate-price\">" + sec + "</span>\n                        </div>";
+        dc.appendChild(d);
+    });
+    rates_container.appendChild(dc);
+    // for giftcards
     var dg = document.createElement("div");
     dg.className = "rates";
     giftcard.forEach(function (cont) {
@@ -23,6 +29,7 @@ var addRates = function (content) {
 (function () {
     // console.info("fetching rates from server...");
     Ajax.fetchPage("php/get_rates.php", function (data) {
+        console.log(data);
         var result = JSON.parse(data);
         if (result.length > 1) {
             addRates(result);

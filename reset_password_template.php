@@ -17,7 +17,7 @@
     <p>You requested to change your password <br> Click the link below to do so</p>
     <a href="{CONFIRMATION_LINK}" style="display: inline-block;">Change password</a>
     <p style="margin:15px 0px;">Best Regards, <br>Fabex</p>
-    <img src="http://localhost/fabex/assets/images/FabEx.png" alt="fabex logo">
+    <img src="http://localhost/fabex/assets/images/FabEx3.png" alt="fabex logo">
 
     <!-- TODO: confirm the site url-->
     <a href="https://www.fabex.com" style="display: block;margin-top:10px;">https://www.fabex.com</a>

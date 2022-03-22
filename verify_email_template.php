@@ -22,7 +22,7 @@
     <p>copy the link below into browser address bar</p>
     <a href="{CONFIRMATION_LINK}" style="margin: 15px 0px;">{CONFIRMATION_LINK}</a>
     <p style="margin:15px 0px;">Best Regards, <br>Fabex</p>
-    <img src="http://localhost/fabex/assets/images/FabEx.png" alt="fabex logo">
+    <img src="http://localhost/fabex/assets/images/FabEx3.png" alt="fabex logo">
 
     <!-- TODO: confirm the site url-->
     <a href="https://www.fabex.com" style="display: block;margin-top:10px;">https://www.fabex.com</a>

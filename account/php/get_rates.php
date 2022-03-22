@@ -16,24 +16,36 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 $id = $_SESSION['id'];
 
 include_once "connect_db.php";
-
 $rates = array();
+
+$crypto_rates = array();
 $query = "SELECT fname, lname FROM users WHERE id='$id'";
 $result = $conn->query($query);
 if ($result == true && $result->num_rows == 1) {
     // get crypto rates
-    $sql = "SELECT price FROM cryptos LIMIT 1";
+    $sql = "SELECT price FROM buy_cryptos LIMIT 1";
     $c_res = $conn->query($sql);
     if ($c_res == true && $c_res->num_rows == 1) {
-        array_push($rates, array("crypto", $c_res->fetch_assoc()["price"]));
+        array_push($crypto_rates, array("crypto", $c_res->fetch_assoc()["price"], "buy"));
+
+        $sell_sql = "SELECT price FROM sell_cryptos LIMIT 1";
+        $sell_res = $conn->query($sell_sql);
+        if ($sell_res == true && $sell_res->num_rows == 1) {
+            array_push($crypto_rates, array("crypto", $sell_res->fetch_assoc()["price"], "sell"));
+        } else {
+            array_push($crypto_rates, array("No sell crypto yet.. Contact Admin"));
+            $conn->close();
+        }
     } else {
-        array_push($rates, array("No crypto yet.. Contact Admin"));
+        array_push($crypto_rates, array("No buy crypto yet.. Contact Admin"));
         $conn->close();
     }
 } else {
-    array_push($rates, array("User does not exist. Try login again"));
+    array_push($crypto_rates, array("User does not exist. Try login again"));
     $conn->close();
 }
+
+array_push($rates, $crypto_rates);
 
 // get giftcards rates
 
