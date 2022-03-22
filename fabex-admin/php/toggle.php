@@ -21,8 +21,8 @@ if ($which == "crypto") {
         $sql = "SELECT id FROM buy_cryptos WHERE id='$id'";
         $query = "UPDATE buy_cryptos SET status='$status' WHERE id='$id'";
     } else {
-        $sql = "SELECT id FROM cryptos WHERE id='$id'";
-        $query = "UPDATE cryptos SET status='$status' WHERE id='$id'";
+        $sql = "SELECT id FROM sell_cryptos WHERE id='$id'";
+        $query = "UPDATE sell_cryptos SET status='$status' WHERE id='$id'";
     }
     $res = $conn->query($sql);
     if ($res == true && $res->num_rows > 0) {

@@ -37,7 +37,7 @@ if ($which === "giftcard") {
         $type = testInput($type);
         if ($type == "buy") {
 
-            $q = "SELECT * FROM buy_cryptos WHERE network='$network' AND name !='$name'";
+            $q = "SELECT * FROM buy_cryptos WHERE network='$network' AND name ='$name'  AND id !='$id'";
             $res = $conn->query($q);
             if ($res == false || $res->num_rows != 0) exit("Crypto with name and network already exists " . $conn->close());
 
@@ -56,16 +56,16 @@ if ($which === "giftcard") {
             $address = testInput($address);
             $memo = testInput($memo);
 
-            $q = "SELECT * FROM cryptos WHERE address='$address' AND id !='$id'";
+            $q = "SELECT * FROM sell_cryptos WHERE address='$address' AND network='$network' AND id !='$id'";
             $res = $conn->query($q);
             if (
                 $res == false || $res->num_rows != 0
-            ) exit("Wallet address already exists " . $conn->close());
+            ) exit("Crypto with address and network already exists " . $conn->close());
 
-            $sql = "UPDATE cryptos SET name='$name', acronym='$short_name', network='$network',address='$address',memo='$memo' WHERE id='$id'";
+            $sql = "UPDATE sell_cryptos SET name='$name', acronym='$short_name', network='$network',address='$address',memo='$memo' WHERE id='$id'";
             $result = $conn->query($sql);
             if ($result === true) echo "Crypto updated successfully";
-            else exit("Error occur updating record " . $conn->close());
+            else exit("Error occur updating record " . $conn->error . $conn->close());
         }
     }
 }

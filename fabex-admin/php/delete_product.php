@@ -23,7 +23,7 @@ if ($which === "crypto") {
         if ($type === "buy") {
             $sql = "DELETE FROM buy_cryptos WHERE id='$id' LIMIT 1";
         } else {
-            $sql = "DELETE FROM cryptos WHERE id='$id' LIMIT 1";
+            $sql = "DELETE FROM sell_cryptos WHERE id='$id' LIMIT 1";
         }
     }
 } else {

@@ -18,15 +18,15 @@ function getBanks(mysqli &$conn)
     }
 };
 
-function getCryptos(mysqli &$conn)
+function getSellCryptos(mysqli &$conn)
 {
-    $sql = "SELECT id, name, acronym, network, address, status, memo FROM cryptos";
+    $sql = "SELECT id, name, acronym, network, address, status, memo FROM sell_cryptos";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $array = array();
         while ($row = $result->fetch_assoc()) {
             $isOn = $row['status'] == 1 ? true : false;
-            $arr = array($row["id"], $row["name"], $row["acronym"], $row["network"], $row["address"], $row['status'], $row['memo'], $isOn);
+            $arr = array($row["id"], $row["name"], $row["acronym"], $row["network"], $row["address"], $row['memo'], $isOn);
             array_push($array, $arr);
         }
         echo json_encode(array("success" => $array));
@@ -87,7 +87,7 @@ function getGiftcards(mysqli &$conn)
 function getRates(mysqli &$conn)
 {
     $arr = array();
-    $sql = "SELECT price FROM cryptos LIMIT 1";
+    $sql = "SELECT price FROM sell_cryptos LIMIT 1";
     $res = $conn->query($sql);
     if ($res == true && $res->num_rows > 0) {
         $all = $res->fetch_array();
@@ -171,8 +171,8 @@ switch ($which) {
         return getBanks($conn);
     case "deleteBank":
         return deleteBank($conn);
-    case "crypto":
-        return getCryptos($conn);
+    case "sell_crypto":
+        return getSellCryptos($conn);
     case "buy_crypto":
         return getBuyCryptos($conn);
     case "giftcard":

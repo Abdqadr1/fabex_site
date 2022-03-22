@@ -629,6 +629,7 @@ form.pad {
   padding-right: 8% !important;
 }
 div.each-giftcard {
+  width: 90%;
   background-color: var(--todo-bg);
   padding: 8px 15px !important;
   border-radius: 5px;
