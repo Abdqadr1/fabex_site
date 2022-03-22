@@ -9,6 +9,9 @@ backBtn.onclick = function (event) {
     event.stopPropagation();
     history.go(-1);
 };
+// buy and sell cryptos
+var buyCryptos = [];
+var sellCryptos = [];
 // number formatter
 var numberFormatter = new Intl.NumberFormat("en-NG", {
     style: "currency",
@@ -34,6 +37,7 @@ var buyInputs = tradeCryptoForm.querySelectorAll(".buyInput");
 var errorDiv = tradeCryptoForm.querySelector("div#errorDiv");
 var act = tradeCryptoForm.querySelector("input#hidden");
 var amountParagraph = tradeCryptoForm.querySelector("p#amount");
+var networkSelect = tradeCryptoForm.querySelector("select#network");
 amountInput.onkeyup = function (event) { return changeAmount(); };
 var changeAmount = function () {
     var price = Number(priceInput.value);
@@ -135,6 +139,7 @@ buttons.forEach(function (element) {
             act.value = action;
             cryptoButton.textContent = "Sell Crypto";
         }
+        changeNetworks((action == "buy" ? buyCryptos : sellCryptos));
         var parent = element.parentElement;
         var children = parent.children;
         for (var i = 0; i < children.length; i++) {
@@ -197,25 +202,49 @@ assets.onchange = function (event) {
         }
     }
 };
+var changeNetworks = function (activeAssets) {
+    networkSelect.innerHTML = "<option value=\"\" selected hidden>Select network...</option>";
+    assets.innerHTML = "<option value=\"\" selected hidden>Select coin...</option>";
+    if (activeAssets.length > 0) {
+        activeAssets.forEach(function (crypto) {
+            var option = document.createElement("option");
+            option.innerText = crypto.name;
+            option.value = crypto.acronym;
+            option.id = crypto.id;
+            option.setAttribute("price", crypto.price);
+            assets.appendChild(option);
+            var networkOption = document.createElement("option");
+            var network = crypto.network;
+            networkOption.innerText = network.toUpperCase();
+            networkOption.value = network.toUpperCase();
+            networkOption.id = crypto.id;
+            networkSelect.appendChild(networkOption);
+        });
+    }
+    else {
+        var option = document.createElement("option");
+        option.innerText = "No crypto available, contact admin";
+        option.disabled = true;
+        assets.appendChild(option);
+        var net = document.createElement("option");
+        net.innerText = "No network available";
+        net.disabled = true;
+        networkSelect.appendChild(net);
+    }
+};
 //get all cryptos
 (function () {
     Ajax.fetchPage("php/data.php?which=cryptos", function (data) {
         var arr = JSON.parse(data);
-        if (arr.length > 0) {
-            arr.forEach(function (crypto) {
-                var option = document.createElement("option");
-                option.innerText = crypto.name;
-                option.value = crypto.acronym;
-                option.id = crypto.id;
-                option.setAttribute("price", crypto.price);
-                assets.appendChild(option);
-            });
+        buyCryptos = arr[0];
+        sellCryptos = arr[1];
+        var activeAssets;
+        if (action === "buy") {
+            activeAssets = buyCryptos;
         }
         else {
-            var option = document.createElement("option");
-            option.innerText = "No crypto available, contact admin";
-            option.disabled = true;
-            assets.appendChild(option);
+            activeAssets = sellCryptos;
         }
+        changeNetworks(activeAssets);
     });
 })();

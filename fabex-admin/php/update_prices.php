@@ -3,22 +3,29 @@ include_once "../../account/php/connect_db.php";
 $headers = getallheaders();
 if (
     !isset($headers["which"]) || empty($headers["which"]) || !isset($headers["id"])
-    || !isset($headers["price"]) || empty($headers["price"])
+    || !isset($headers["price"]) || empty($headers["price"]) || !isset($headers["type"])
 ) {
     echo ("Invalid parameters..");
 }
 $which = mysqli_escape_string($conn, $headers["which"]);
 $id = mysqli_escape_string($conn, $headers["id"]);
 $price = mysqli_escape_string($conn, $headers["price"]);
+$type = mysqli_escape_string($conn, $headers["type"]);
 $which = testInput($which);
 $id = testInput($id);
 $price = testInput($price);
+$type = testInput($type);
 
 if ($which == "crypto") {
-    $sql = "UPDATE cryptos SET price='$price'";
+    if ($type == "buy") {
+        $sql = "UPDATE buy_cryptos SET price='$price'";
+    } else {
+        $sql = "UPDATE sell_cryptos SET price='$price'";
+    }
+
     $result = $conn->query($sql);
     if ($result == true) {
-        echo "Crypto price changed successfully";
+        echo "$type crypto price changed successfully";
     } else {
         echo ("Something went wrong updating crypto prices, Try again.");
     }

@@ -29,17 +29,30 @@ function getGiftcards()
 function getCryptos()
 {
     include_once "connect_db.php";
-    $arr = array();
-    $sql = "SELECT id, name, acronym, price FROM cryptos WHERE status=1";
+    // get buy cryptos
+    $buy_array = array();
+    $sql = "SELECT id, name, acronym, price, network FROM buy_cryptos WHERE status=1";
     $result = $conn->query($sql);
     if ($result == true && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            array_push($arr, $row);
+            array_push($buy_array, $row);
         }
     } else {
         echo "Error: " . $conn->error;
     }
-    echo json_encode($arr);
+
+    // get sell cryptos
+    $sell_array = array();
+    $sql = "SELECT id, name, acronym, price, network FROM sell_cryptos WHERE status=1";
+    $result = $conn->query($sql);
+    if ($result == true && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($sell_array, $row);
+        }
+    } else {
+        echo "Error: " . $conn->error;
+    }
+    echo json_encode(array($buy_array, $sell_array));
     $conn->close();
 }
 

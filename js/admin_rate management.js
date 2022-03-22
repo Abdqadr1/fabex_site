@@ -13,20 +13,21 @@ var addProducts = function (arr) {
         var which = array[0];
         var id = (which == "crypto") ? "" : array[1];
         var price = (which == "crypto") ? array[1] : array[3];
-        var name = (which == "crypto") ? "Crypto" : array[2];
+        var type = (which == "crypto") ? (array[2] === "buy" ? "Buy" : "Sell") : "";
+        var name = (which == "crypto") ? "Crypto (" + type + ")" : array[2];
         var rowDiv = document.createElement("div");
         rowDiv.className = "row justify-content-between mt-3 px-4";
         rowDiv.innerHTML = "<div class=\"col-7 text-muted text-left\">\n            <span class=\"d-inline-block product-name\">" + name + "</span>\n        </div>\n        <div class=\"col-2\">\n            <input which='" + which + "' type=\"number\" class=\"form-control admin-rate text-center\" id='" + id + "' value='" + price + "'>\n        </div>\n        <div class='spinner-border spinner-border-sm mt-2 text-primary d-none' aria-hidden='true' role='status' id=\"loader\"></div>\n        <span class=\"material-icons text-primary mt-2 d-none\" style=\"width: 24px;\" id=\"mark_icon\">done</span>";
         var input = rowDiv.querySelector("input");
         input.onchange = function (event) {
-            updatePrice(input, rowDiv);
+            updatePrice(input, rowDiv, type.toLowerCase());
         };
         parent.appendChild(rowDiv);
         counter++;
     });
 };
 //update price function 
-var updatePrice = function (input, row) {
+var updatePrice = function (input, row, type) {
     var which = input.getAttribute("which");
     var id = input.id;
     var price = input.value;
@@ -41,7 +42,7 @@ var updatePrice = function (input, row) {
             showModal(data, "text-danger");
         }
         loader.classList.add("d-none");
-    }, { which: which, id: id, price: price });
+    }, { which: which, id: id, price: price, type: type });
 };
 //get all rates
 (function () {

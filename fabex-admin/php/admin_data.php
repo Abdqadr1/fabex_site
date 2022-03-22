@@ -87,27 +87,36 @@ function getGiftcards(mysqli &$conn)
 function getRates(mysqli &$conn)
 {
     $arr = array();
-    $sql = "SELECT price FROM sell_cryptos LIMIT 1";
-    $res = $conn->query($sql);
-    if ($res == true && $res->num_rows > 0) {
-        $all = $res->fetch_array();
-        array_push($arr, array("crypto", $all[0]));
-        //get giftcards prices
-        $query = "SELECT id, name, price FROM giftcards where type='sub_category'";
-        $result = $conn->query($query);
-        if ($result == true && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $id = $row['id'];
-                $name = $row['name'];
-                $price = $row['price'];
-                array_push($arr, array("giftcard", $id, $name, $price));
+    $bSql = "SELECT price FROM buy_cryptos LIMIT 1";
+    $bRes = $conn->query($bSql);
+    if ($bRes == true && $bRes->num_rows > 0) {
+        $bAll = $bRes->fetch_array();
+        array_push($arr, array("crypto", $bAll[0], "buy"));
+
+        $sql = "SELECT price FROM sell_cryptos LIMIT 1";
+        $res = $conn->query($sql);
+        if ($res == true && $res->num_rows > 0) {
+            $all = $res->fetch_array();
+            array_push($arr, array("crypto", $all[0], "sell"));
+            //get giftcards prices
+            $query = "SELECT id, name, price FROM giftcards where type='sub_category'";
+            $result = $conn->query($query);
+            if ($result == true && $result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $id = $row['id'];
+                    $name = $row['name'];
+                    $price = $row['price'];
+                    array_push($arr, array("giftcard", $id, $name, $price));
+                }
+                echo json_encode(array("success", $arr));
+            } else {
+                echo json_encode(array("Something went wrong getting giftcards prices."));
             }
-            echo json_encode(array("success", $arr));
         } else {
-            echo json_encode(array("Something went wrong getting giftcards prices."));
+            echo json_encode(array("Something went wrong getting sell crypto price " . $conn->error));
         }
     } else {
-        echo json_encode(array("Something went wrong getting crypto price " . $conn->error));
+        echo json_encode(array("Something went wrong getting buy crypto price " . $conn->error));
     }
 }
 

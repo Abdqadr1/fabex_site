@@ -15,7 +15,9 @@ const addProducts = (arr: [][]) => {
         const which: string = array[0];
         const id = (which == "crypto") ? "" : array[1];
         const price = (which == "crypto") ? array[1] : array[3];
-        const name = (which == "crypto") ? "Crypto" : array[2];
+        const type = (which == "crypto") ? (array[2] === "buy"?"Buy":"Sell") : "";
+        const name = (which == "crypto") ? `Crypto (${type})` : array[2];
+
         const rowDiv = document.createElement("div") as HTMLDivElement;
         rowDiv.className = "row justify-content-between mt-3 px-4";
         rowDiv.innerHTML = `<div class="col-7 text-muted text-left">
@@ -29,7 +31,7 @@ const addProducts = (arr: [][]) => {
 
         const input = rowDiv.querySelector("input") as HTMLInputElement;
         input.onchange = event => {
-            updatePrice(input, rowDiv);
+            updatePrice(input, rowDiv, type.toLowerCase());
         }
         parent.appendChild(rowDiv);
         counter++;
@@ -37,7 +39,7 @@ const addProducts = (arr: [][]) => {
     
 }
 //update price function 
-const updatePrice = (input: HTMLInputElement, row: HTMLDivElement) => {
+const updatePrice = (input: HTMLInputElement, row: HTMLDivElement, type: string) => {
     const which = input.getAttribute("which");
     const id = input.id;
     const price = input.value;
@@ -51,7 +53,7 @@ const updatePrice = (input: HTMLInputElement, row: HTMLDivElement) => {
             showModal(data, "text-danger");
         }
         loader.classList.add("d-none");
-    }, {which, id, price});
+    }, {which, id, price, type});
 }
 //get all rates
 (function () {

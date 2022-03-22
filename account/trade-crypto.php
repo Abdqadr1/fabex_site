@@ -45,10 +45,7 @@ include_once "header.php"; ?>
                     <div class="mt-3 for-buy">
                         <label for="network" class="form-label">Network</label>
                         <select name="network" class="form-select rad8 buyInput" id="network">
-                            <option selected>BEP20 (BSC)</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option value="" selected hidden>Select network...</option>
                         </select>
                     </div>
                     <!-- amount -->
