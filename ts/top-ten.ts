@@ -12,7 +12,7 @@ if (backBtn instanceof HTMLSpanElement) {
 
 const addRates = (giftcard: any[]) => {
     const dg = document.createElement("div");
-    dg.className = "rates";
+    dg.className = "rates top-rates";
     giftcard.forEach((cont: string) => {
         const sec = cont[1] ? cont[1] + "/$" : "";
         const d = document.createElement("div");

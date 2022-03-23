@@ -6,6 +6,7 @@
   --warning: #f4aa0b;
   --red: #ec4646;
   --success: #166d71;
+  --hover: #1e949a;
   --header: #8c8c8c;
   --deep-primary: #0e3b44;
 }
@@ -23,7 +24,8 @@ a#web-app-btn {
   margin: auto;
 }
 a#web-app-btn:hover {
-  background-color: var(--deep-primary);
+  background-color: var(--hover);
+  color: white;
 }
 a#web-app-btn::after {
   content: "\203A";
@@ -36,7 +38,7 @@ p.exchange {
   text-align: center;
   font-style: normal;
   font-weight: 800;
-  font-size: 60px;
+  font-size: 50px;
   line-height: 115%;
   margin-top: 20px;
 }
@@ -72,6 +74,8 @@ p.what-is span {
   text-align: center;
   font-weight: 600;
   font-size: 18px;
+  width: 100%;
+  text-align: right;
 }
 a.get-started-btn {
   padding: 18px;
@@ -85,6 +89,10 @@ a.get-started-btn {
   cursor: pointer;
   position: relative;
   z-index: 1000;
+}
+a.get-started-btn:hover {
+  background-color: var(--hover);
+  color: white;
 }
 p.feature-head {
   font-family: "Overpass";
@@ -115,6 +123,10 @@ a.sign-up-btn {
   border-radius: 12px;
   color: white;
   cursor: pointer;
+}
+a.sign-up-btn:hover {
+  background-color: var(--hover);
+  color: white;
 }
 p.section-head {
   font-family: "Overpass";
@@ -170,9 +182,9 @@ p.help a {
   cursor: pointer;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   p.exchange {
-    font-size: 32px;
+    font-size: 30px;
   }
   p.semi {
     max-width: 100%;
@@ -181,6 +193,9 @@ p.help a {
   a.get-started-btn {
     padding: 14px;
     width: 180px;
+  }
+  p.what-is span {
+    text-align: center;
   }
   p.what-is + p {
     font-size: 14px;

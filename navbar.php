@@ -17,7 +17,7 @@
                 </li>
             </ul>
             <p class="py-sm-1 d-flex align-items-center mt-2">
-                <a href="" id="web-app-btn" class="btn">Go to Web App</a>
+                <a href="account/dashboard" id="web-app-btn" class="btn">Go to Web App</a>
             </p>
         </div>
     </div>

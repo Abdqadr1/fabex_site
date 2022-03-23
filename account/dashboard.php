@@ -25,7 +25,7 @@
                 <a href="top-ten" class="btn best-giftcard">Best Giftcards at the moment</a>
             </div>
         </div>
-        <div class="top-rates mt-5 px-md-4 d-none d-md-block" id="rates_container">
+        <div class="mt-5 px-md-4 d-none d-md-block" id="rates_container">
             <p class="text-center fw-bold">Top 10 Giftcards</p>
             <!-- rates -->
             <!-- <div class="rates">

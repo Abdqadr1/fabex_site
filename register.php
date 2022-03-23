@@ -4,7 +4,7 @@
     <div class="body no-margin">
         <div class="row justify-content-center mt-4">
             <div class="col-10 col-md-9 col-lg-7" id="settings_pass_div">
-                <img src="assets/images/FabEx.png" class="mx-auto d-block logo" alt="Logo">
+                <a href="/"><img src="assets/images/FabEx.png" class="mx-auto d-block logo" alt="Logo"></a>
                 <p class="text-center mt-2 fw-bold fs-4">Create your account</p>
                 <p class="text-center mt-2 fw-bold changepass">Already a user? <a href="login">Log in</a></p>
                 <form method="post" action="php/register.php" id="registerForm">

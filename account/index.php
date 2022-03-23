@@ -18,8 +18,8 @@ include "header.php"; ?>
         let version = 0.6;
         let activePage = "Dashboard";
         document.title = activePage;
-        const url = location.href;
-        const page = url.split("/").pop();
+        const url = decodeURI(location.href);
+        const page = url.split("/").pop() || "Dashboard";
         console.log(page)
     </script>
     <div id="container">

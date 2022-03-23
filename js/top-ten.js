@@ -10,7 +10,7 @@ if (backBtn instanceof HTMLSpanElement) {
 }
 var addRates = function (giftcard) {
     var dg = document.createElement("div");
-    dg.className = "rates";
+    dg.className = "rates top-rates";
     giftcard.forEach(function (cont) {
         var sec = cont[1] ? cont[1] + "/$" : "";
         var d = document.createElement("div");
