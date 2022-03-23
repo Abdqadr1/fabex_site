@@ -44,6 +44,17 @@ const addGiftcardSubmitBtn = addGiftcardForm.querySelector("button") as HTMLButt
 const addGiftcardErrorDiv = addGiftcardForm.querySelector("div#errorDiv") as HTMLDivElement;
 
 const buyNetworks: string[] = []; const sellNetworks: string[] = [];
+let buyCryptos: any[]; let sellCryptos: any[]; let allGiftcards: any[];
+const findIndex = (arr: [][], id: number) => {
+    let index:number = 0; let i;
+    arr.forEach((ar: any[]) => {
+        if (id == ar[0]) {
+            i = index;
+        }
+        index++;
+    });
+    return i;
+}
 
 const writeNetwork = (type: string, value:string, index:number) => {
     if (type === "buy") {
@@ -119,7 +130,7 @@ const addCrypto = (content: any[], type:string) => {
                             <li><span id='delete' class="dropdown-item text-danger">Delete</span></li>
                         </ul>
                     </div>
-                    <span class="crypto_network">${content[3]}</span></div>`;
+                    <span id='crypto_network${content[0]}' class='crypto_network'>${content[3]}</span></div>`;
     const switchInput = div.querySelector("input") as HTMLInputElement;
     const deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
     const editAction = div.querySelector("span#edit") as HTMLSpanElement;
@@ -508,6 +519,7 @@ const updateProduct = (which: string, modal: HTMLDivElement, data: any[], type:s
     const id = data[0];
     let parent: HTMLDivElement = which === "crypto" ? (type === "buy" ? buyCryptoDiv:sellCryptoDiv) : giftcardDiv;
     const nameSpan = parent.querySelector("span#" + CSS.escape(id)) as HTMLSpanElement;
+    const networkSpan = parent.querySelector("span#crypto_network" + CSS.escape(id)) as HTMLSpanElement;
     btn.disabled = true; btn.innerHTML = spinner;
     Ajax.fetchPage("php/edit_product.php", (data: string) => {
         if (data.indexOf("success") != -1) {
@@ -515,6 +527,26 @@ const updateProduct = (which: string, modal: HTMLDivElement, data: any[], type:s
                 nameSpan.innerText = params.name;
             } else {
                 nameSpan.innerText = `${params.coin_name} (${params.short_name})`;
+                networkSpan.innerText = `${params.network}`;
+                if (type === "buy") {
+                    const index: any = findIndex(buyCryptos, id);
+                    const old: any[] = buyCryptos[index];
+                    old[1] = params.coin_name;
+                    old[2] = params.short_name;
+                    old[3] = params.network;
+                    buyCryptos[index] = old;
+                    // console.log(buyCryptos[index])
+                } else {
+                    const index:any = findIndex(sellCryptos, id);
+                    const old: any[] = sellCryptos[index];
+                    old[1] = params.coin_name;
+                    old[2] = params.short_name;
+                    old[3] = params.network;
+                    old[4] = params.address;
+                    old[5] = params.memo;
+                    sellCryptos[index] = old;
+                    // console.log(sellCryptos[index])
+                }
             }
             errorDiv.classList.add("d-none");
             successDiv.innerText = data;
@@ -561,12 +593,13 @@ const deleteProduct = (which: string, el: HTMLSpanElement, id: number, type: str
 const getAllBuyCryptos = () => {
     Ajax.fetchPage("php/admin_data.php?which=buy_crypto", (data: string) => {
         const object: { success: [][] } = JSON.parse(data);
-        console.log(object)
+        // console.log(object)
         const keys = Object.keys(object);
         const message: string = keys[0];
         if (message.toLowerCase().indexOf('success') != -1) {
             const array: [][] = object.success;
-            array.forEach(arr => {
+            buyCryptos = array;
+            buyCryptos.forEach(arr => {
                 addCrypto(arr, "buy");
             });
             buyCryptoLoading.classList.add("d-none");
@@ -589,7 +622,8 @@ const getAllSellCryptos = () => {
         const message: string = keys[0];
         if (message.toLowerCase().indexOf('success') != -1) {
             const array: [][] = object.success;
-            array.forEach(arr => {
+            sellCryptos = array;
+            sellCryptos.forEach(arr => {
                 addCrypto(arr, "sell");
             });
             sellCryptoLoading.classList.add("d-none");
@@ -607,6 +641,7 @@ const getAllSellCryptos = () => {
 const getAllGiftcards = () => {
     Ajax.fetchPage("php/admin_data.php?which=giftcard", (data: string) => {
         const arr = JSON.parse(data);
+        allGiftcards = arr;
         const cat:[] = arr[0];
         const subCat:[] = arr[1];
         if (data.toLowerCase().indexOf('No giftcard.') != -1) {

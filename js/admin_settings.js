@@ -37,6 +37,20 @@ var addGiftcardSubmitBtn = addGiftcardForm.querySelector("button");
 var addGiftcardErrorDiv = addGiftcardForm.querySelector("div#errorDiv");
 var buyNetworks = [];
 var sellNetworks = [];
+var buyCryptos;
+var sellCryptos;
+var allGiftcards;
+var findIndex = function (arr, id) {
+    var index = 0;
+    var i;
+    arr.forEach(function (ar) {
+        if (id == ar[0]) {
+            i = index;
+        }
+        index++;
+    });
+    return i;
+};
 var writeNetwork = function (type, value, index) {
     if (type === "buy") {
         buyNetworks[index] = value;
@@ -98,7 +112,7 @@ var addCrypto = function (content, type) {
     var div = document.createElement("div");
     div.className = "each-crypto";
     var name = content[1] + " (" + content[2].toUpperCase() + ")";
-    div.innerHTML = "<div><span id='" + content[0] + "' class=\"d-inline-block crypto-name\" tabindex=\"-1\">" + name + "</span>\n                    <span class=\"form-switch mx-3\">\n                        <input id='" + content[0] + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\">\n                    </span>\n                    <div class=\"d-inline-block\">\n                        <span data-bs-toggle=\"dropdown\" id=\"dropdown\" class=\"material-icons text-primary three-dots dropdown-toggle\" aria-expanded='false'>more_vert</span>\n                        <ul class=\"dropdown-menu\" aria-labelledby=\"dropdown\">\n                            <li><span id='edit' class=\"dropdown-item text-primary\">Edit</span></li>\n                            <li><span id='delete' class=\"dropdown-item text-danger\">Delete</span></li>\n                        </ul>\n                    </div>\n                    <span class=\"crypto_network\">" + content[3] + "</span></div>";
+    div.innerHTML = "<div><span id='" + content[0] + "' class=\"d-inline-block crypto-name\" tabindex=\"-1\">" + name + "</span>\n                    <span class=\"form-switch mx-3\">\n                        <input id='" + content[0] + "' class=\"form-check-input\" type=\"checkbox\" role=\"switch\">\n                    </span>\n                    <div class=\"d-inline-block\">\n                        <span data-bs-toggle=\"dropdown\" id=\"dropdown\" class=\"material-icons text-primary three-dots dropdown-toggle\" aria-expanded='false'>more_vert</span>\n                        <ul class=\"dropdown-menu\" aria-labelledby=\"dropdown\">\n                            <li><span id='edit' class=\"dropdown-item text-primary\">Edit</span></li>\n                            <li><span id='delete' class=\"dropdown-item text-danger\">Delete</span></li>\n                        </ul>\n                    </div>\n                    <span id='crypto_network" + content[0] + "' class='crypto_network'>" + content[3] + "</span></div>";
     var switchInput = div.querySelector("input");
     var deleteAction = div.querySelector("span#delete");
     var editAction = div.querySelector("span#edit");
@@ -444,6 +458,7 @@ var updateProduct = function (which, modal, data, type) {
     var id = data[0];
     var parent = which === "crypto" ? (type === "buy" ? buyCryptoDiv : sellCryptoDiv) : giftcardDiv;
     var nameSpan = parent.querySelector("span#" + CSS.escape(id));
+    var networkSpan = parent.querySelector("span#crypto_network" + CSS.escape(id));
     btn.disabled = true;
     btn.innerHTML = spinner;
     Ajax.fetchPage("php/edit_product.php", function (data) {
@@ -453,6 +468,27 @@ var updateProduct = function (which, modal, data, type) {
             }
             else {
                 nameSpan.innerText = params.coin_name + " (" + params.short_name + ")";
+                networkSpan.innerText = "" + params.network;
+                if (type === "buy") {
+                    var index = findIndex(buyCryptos, id);
+                    var old = buyCryptos[index];
+                    old[1] = params.coin_name;
+                    old[2] = params.short_name;
+                    old[3] = params.network;
+                    buyCryptos[index] = old;
+                    // console.log(buyCryptos[index])
+                }
+                else {
+                    var index = findIndex(sellCryptos, id);
+                    var old = sellCryptos[index];
+                    old[1] = params.coin_name;
+                    old[2] = params.short_name;
+                    old[3] = params.network;
+                    old[4] = params.address;
+                    old[5] = params.memo;
+                    sellCryptos[index] = old;
+                    // console.log(sellCryptos[index])
+                }
             }
             errorDiv.classList.add("d-none");
             successDiv.innerText = data;
@@ -500,12 +536,13 @@ var deleteProduct = function (which, el, id, type) {
 var getAllBuyCryptos = function () {
     Ajax.fetchPage("php/admin_data.php?which=buy_crypto", function (data) {
         var object = JSON.parse(data);
-        console.log(object);
+        // console.log(object)
         var keys = Object.keys(object);
         var message = keys[0];
         if (message.toLowerCase().indexOf('success') != -1) {
             var array = object.success;
-            array.forEach(function (arr) {
+            buyCryptos = array;
+            buyCryptos.forEach(function (arr) {
                 addCrypto(arr, "buy");
             });
             buyCryptoLoading.classList.add("d-none");
@@ -529,7 +566,8 @@ var getAllSellCryptos = function () {
         var message = keys[0];
         if (message.toLowerCase().indexOf('success') != -1) {
             var array = object.success;
-            array.forEach(function (arr) {
+            sellCryptos = array;
+            sellCryptos.forEach(function (arr) {
                 addCrypto(arr, "sell");
             });
             sellCryptoLoading.classList.add("d-none");
@@ -548,6 +586,7 @@ var getAllSellCryptos = function () {
 var getAllGiftcards = function () {
     Ajax.fetchPage("php/admin_data.php?which=giftcard", function (data) {
         var arr = JSON.parse(data);
+        allGiftcards = arr;
         var cat = arr[0];
         var subCat = arr[1];
         if (data.toLowerCase().indexOf('No giftcard.') != -1) {
