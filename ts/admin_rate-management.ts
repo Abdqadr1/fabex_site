@@ -7,16 +7,18 @@ const rateColumns = document.querySelectorAll("div.rate-column") as NodeListOf<H
 const modalTag = document.querySelector("div#modal") as HTMLDivElement;
 const modalBody = modalTag.querySelector("div#modal_body") as HTMLDivElement;
 
-const addProducts = (arr: [][]) => {
+const addProducts = (arr: object[]) => {
     let counter = 0, len = rateColumns.length;
-    arr.forEach((array: any[]) => { 
+    arr.forEach((obj:any) => { 
         let index: number = counter % len;
         let parent = rateColumns[index];
-        const which: string = array[0];
-        const id = (which == "crypto") ? "" : array[1];
-        const price = (which == "crypto") ? array[1] : array[3];
-        const type = (which == "crypto") ? (array[2] === "buy"?"Buy":"Sell") : "";
-        const name = (which == "crypto") ? `Crypto (${type})` : array[2];
+        const which: string = obj.which;
+        const id = (which == "crypto") ? "" : obj.id;
+        const price = obj.price;
+        const range = (which == "crypto") ? obj.range : "";
+        const rangeName = (range == "range") ? "(10 - 150)" : "";
+        const type = (which == "crypto") ? (obj.type === "buy"?"Buy":"Sell") : "";
+        const name = (which == "crypto") ? `Crypto (${type}) ${rangeName}` : obj.name;
 
         const rowDiv = document.createElement("div") as HTMLDivElement;
         rowDiv.className = "row justify-content-between mt-3 px-4";
@@ -31,7 +33,7 @@ const addProducts = (arr: [][]) => {
 
         const input = rowDiv.querySelector("input") as HTMLInputElement;
         input.onchange = event => {
-            updatePrice(input, rowDiv, type.toLowerCase());
+            updatePrice(input, rowDiv, type.toLowerCase(), range);
         }
         parent.appendChild(rowDiv);
         counter++;
@@ -39,7 +41,8 @@ const addProducts = (arr: [][]) => {
     
 }
 //update price function 
-const updatePrice = (input: HTMLInputElement, row: HTMLDivElement, type: string) => {
+const updatePrice = (input: HTMLInputElement, row: HTMLDivElement, type: string, range: string) => {
+    console.log(range);
     const which = input.getAttribute("which");
     const id = input.id;
     const price = input.value;
@@ -53,12 +56,13 @@ const updatePrice = (input: HTMLInputElement, row: HTMLDivElement, type: string)
             showModal(data, "text-danger");
         }
         loader.classList.add("d-none");
-    }, {which, id, price, type});
+    }, {which, id, price, type, range});
 }
 //get all rates
 (function () {
     Ajax.fetchPage("php/admin_data.php?which=rates", (data: string) => {
-        const arr:any[] = JSON.parse(data);
+        const arr: any[] = JSON.parse(data);
+        console.log(arr)
         const message:string = arr[0];
         if (message.toLowerCase().indexOf('success') != -1) {
             loadingContainer.classList.add("d-none");

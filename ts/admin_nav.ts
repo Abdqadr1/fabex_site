@@ -107,8 +107,8 @@ const load = (pageName: string) => {
             activePage = "orders"
             load(activePage);
             break;
-        case "rate management":
-            activePage = "rate management"
+        case "rate-management":
+            activePage = "rate-management"
             load(activePage);
             break;
         case "settings":
@@ -117,7 +117,7 @@ const load = (pageName: string) => {
             break;
         default:
             console.log(page);
-            // location.href = "../errors/404.html"
+            location.href = "../errors/404.html"
     }
     activate(activePage)
 })();

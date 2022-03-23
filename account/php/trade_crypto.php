@@ -32,6 +32,10 @@ $amount = testInput($amount);
 $total = testInput($total);
 $product_id = testInput($product_id);
 
+if ($amount < 10) {
+    exit("The minimum amount allowed is $10");
+}
+
 $dir = "trx_proof/";
 
 function buyCrypto(&$conn, $amount, $total, $product_name, $product_id)

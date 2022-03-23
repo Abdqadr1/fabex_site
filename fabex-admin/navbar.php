@@ -12,7 +12,7 @@
                     <a class="nav-link d-none d-md-block active border-bottom border-2 border-primary py-md-3 py-1" href="dashboard">Orders</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link py-md-3 py-1" href="rates">Rate Management</a>
+                    <a class="nav-link py-md-3 py-1" href="rates">Rate-Management</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link py-md-3 py-1" style="cursor: pointer;" href="settings">Settings</a>

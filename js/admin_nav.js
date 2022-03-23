@@ -99,8 +99,8 @@ var load = function (pageName) {
             activePage = "orders";
             load(activePage);
             break;
-        case "rate management":
-            activePage = "rate management";
+        case "rate-management":
+            activePage = "rate-management";
             load(activePage);
             break;
         case "settings":
@@ -109,7 +109,7 @@ var load = function (pageName) {
             break;
         default:
             console.log(page);
-        // location.href = "../errors/404.html"
+            location.href = "../errors/404.html";
     }
     activate(activePage);
 })();

@@ -10,6 +10,7 @@ allCopyBtn.forEach(element => {
         const greatGrandParent = element.parentElement?.parentElement?.parentElement as HTMLDivElement;
         const val = greatGrandParent.querySelector('span.value') as HTMLSpanElement;
         navigator.clipboard.writeText(val.innerText);
+        alert("Text copied!")
         // console.log(val.innerText);
     }
 });

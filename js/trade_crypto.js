@@ -30,6 +30,7 @@ var tradeCryptoForm = document.querySelector("form#tradeCryptoForm");
 var submitBtn = tradeCryptoForm.querySelector("button");
 var productIdInput = tradeCryptoForm.querySelector("input#productId");
 var priceInput = tradeCryptoForm.querySelector("input#priceInput");
+var lowPriceInput = tradeCryptoForm.querySelector("input#lowPriceInput");
 var totalInput = tradeCryptoForm.querySelector("input#totalInput");
 var amountInput = tradeCryptoForm.querySelector("input#amount");
 var bankInputs = tradeCryptoForm.querySelectorAll(".bankInput");
@@ -41,12 +42,15 @@ var networkSelect = tradeCryptoForm.querySelector("select#network");
 amountInput.onkeyup = function (event) { return changeAmount(); };
 var changeAmount = function () {
     var price = Number(priceInput.value);
+    var lowPrice = Number(lowPriceInput.value);
     var amount = amountInput.valueAsNumber;
     // console.log(price, amount);
     if (price && amount && amount > 0 && price > 0) {
+        if (amount < 150)
+            price = lowPrice;
         var tot = Number(price * amount);
         totalInput.value = "" + tot.toFixed(2);
-        amountParagraph.innerText = "Total: " + numberFormatter.format(tot);
+        amountParagraph.innerText = "Total: " + numberFormatter.format(tot) + " @ " + price + "/$";
     }
     else {
         totalInput.value = "" + (price * amount);
@@ -197,6 +201,7 @@ assets.onchange = function (event) {
         if (child.value === crypto_name) {
             assets.setAttribute("aria-id", child.id);
             priceInput.value = child.getAttribute("price");
+            lowPriceInput.value = child.getAttribute("low_price");
             productIdInput.value = child.id;
             changeAmount();
         }
@@ -212,6 +217,7 @@ var changeNetworks = function (activeAssets) {
             option.value = crypto.acronym;
             option.id = crypto.id;
             option.setAttribute("price", crypto.price);
+            option.setAttribute("low_price", crypto.low_price);
             assets.appendChild(option);
             var networkOption = document.createElement("option");
             var network = crypto.network;
@@ -236,6 +242,7 @@ var changeNetworks = function (activeAssets) {
 (function () {
     Ajax.fetchPage("php/data.php?which=cryptos", function (data) {
         var arr = JSON.parse(data);
+        console.log(arr);
         buyCryptos = arr[0];
         sellCryptos = arr[1];
         var activeAssets;

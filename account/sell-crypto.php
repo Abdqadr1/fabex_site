@@ -23,7 +23,7 @@ if ($res->num_rows == 1) {
     if ($row["type"] != 1 || $act != "sell") {
         header("location: giftcard");
     } else {
-        $query = "SELECT network, acronym, address,memo  FROM cryptos WHERE id='$product_id'";
+        $query = "SELECT network, acronym, address,memo  FROM sell_cryptos WHERE id='$product_id'";
         $result = $conn->query($query);
         if ($result == true && $result->num_rows == 1) {
             $r = $result->fetch_assoc();

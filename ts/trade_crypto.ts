@@ -32,6 +32,7 @@ const tradeCryptoForm = document.querySelector("form#tradeCryptoForm") as HTMLFo
 const submitBtn = tradeCryptoForm.querySelector("button") as HTMLButtonElement;
 const productIdInput = tradeCryptoForm.querySelector("input#productId") as HTMLInputElement;
 const priceInput = tradeCryptoForm.querySelector("input#priceInput") as HTMLInputElement;
+const lowPriceInput = tradeCryptoForm.querySelector("input#lowPriceInput") as HTMLInputElement;
 const totalInput = tradeCryptoForm.querySelector("input#totalInput") as HTMLInputElement;
 const amountInput = tradeCryptoForm.querySelector("input#amount") as HTMLInputElement;
 const bankInputs = tradeCryptoForm.querySelectorAll(".bankInput") as NodeListOf<HTMLElement>;
@@ -43,13 +44,15 @@ const networkSelect = tradeCryptoForm.querySelector("select#network") as HTMLSel
 
 amountInput.onkeyup = event => changeAmount();
 const changeAmount = () => {
-    const price:number = Number(priceInput.value);
+    let price:number = Number(priceInput.value);
+    const lowPrice:number = Number(lowPriceInput.value);
     const amount = amountInput.valueAsNumber;
     // console.log(price, amount);
     if (price && amount && amount > 0 && price > 0) {
+        if (amount < 150) price = lowPrice;
         const tot = Number(price * amount);
         totalInput.value = "" + tot.toFixed(2);
-        amountParagraph.innerText = "Total: " + numberFormatter.format(tot);
+        amountParagraph.innerText = `Total: ${numberFormatter.format(tot)} @ ${price}/$`;
     } else {
         totalInput.value = "" + (price * amount);
         amountParagraph.innerText = "Total: N0";
@@ -201,6 +204,7 @@ assets.onchange = event => {
         if (child.value === crypto_name) {
             assets.setAttribute("aria-id", child.id);
             priceInput.value = child.getAttribute("price") as string;
+            lowPriceInput.value = child.getAttribute("low_price") as string;
             productIdInput.value = child.id;
             changeAmount();
         }
@@ -217,6 +221,7 @@ const changeNetworks = (activeAssets: any[]) => {
                 option.value = crypto.acronym;
                 option.id = crypto.id;
                 option.setAttribute("price", crypto.price);
+                option.setAttribute("low_price", crypto.low_price);
                 assets.appendChild(option);
                 const networkOption = document.createElement("option");
                 const network: string = crypto.network;
@@ -241,6 +246,7 @@ const changeNetworks = (activeAssets: any[]) => {
 (function () {
     Ajax.fetchPage("php/data.php?which=cryptos", (data: string) => {
         const arr: any[] = JSON.parse(data);
+        console.log(arr)
         buyCryptos = arr[0];
         sellCryptos = arr[1];
         let activeAssets:any[];

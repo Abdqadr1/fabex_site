@@ -31,7 +31,7 @@ function getCryptos()
     include_once "connect_db.php";
     // get buy cryptos
     $buy_array = array();
-    $sql = "SELECT id, name, acronym, price, network FROM buy_cryptos WHERE status=1";
+    $sql = "SELECT id, name, acronym, price, low_price, network FROM buy_cryptos WHERE status=1";
     $result = $conn->query($sql);
     if ($result == true && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
@@ -43,7 +43,7 @@ function getCryptos()
 
     // get sell cryptos
     $sell_array = array();
-    $sql = "SELECT id, name, acronym, price, network FROM sell_cryptos WHERE status=1";
+    $sql = "SELECT id, name, acronym, price, low_price, network FROM sell_cryptos WHERE status=1";
     $result = $conn->query($sql);
     if ($result == true && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {

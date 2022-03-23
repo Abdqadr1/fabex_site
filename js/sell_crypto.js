@@ -11,6 +11,7 @@ allCopyBtn.forEach(function (element) {
         var greatGrandParent = (_b = (_a = element.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.parentElement;
         var val = greatGrandParent.querySelector('span.value');
         navigator.clipboard.writeText(val.innerText);
+        alert("Text copied!");
         // console.log(val.innerText);
     };
 });

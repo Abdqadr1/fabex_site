@@ -4,6 +4,7 @@ $headers = getallheaders();
 if (
     !isset($headers["which"]) || empty($headers["which"]) || !isset($headers["id"])
     || !isset($headers["price"]) || empty($headers["price"]) || !isset($headers["type"])
+    || !isset($headers["range"])
 ) {
     echo ("Invalid parameters..");
 }
@@ -11,16 +12,20 @@ $which = mysqli_escape_string($conn, $headers["which"]);
 $id = mysqli_escape_string($conn, $headers["id"]);
 $price = mysqli_escape_string($conn, $headers["price"]);
 $type = mysqli_escape_string($conn, $headers["type"]);
+$range = mysqli_escape_string($conn, $headers["range"]);
 $which = testInput($which);
 $id = testInput($id);
 $price = testInput($price);
 $type = testInput($type);
+$range = testInput($range);
 
 if ($which == "crypto") {
     if ($type == "buy") {
-        $sql = "UPDATE buy_cryptos SET price='$price'";
+        if ($range === "range") $sql = "UPDATE buy_cryptos SET low_price='$price'";
+        else $sql = "UPDATE buy_cryptos SET price='$price'";
     } else {
-        $sql = "UPDATE sell_cryptos SET price='$price'";
+        if ($range === "range") $sql = "UPDATE sell_cryptos SET low_price='$price'";
+        else $sql = "UPDATE sell_cryptos SET price='$price'";
     }
 
     $result = $conn->query($sql);

@@ -87,17 +87,19 @@ function getGiftcards(mysqli &$conn)
 function getRates(mysqli &$conn)
 {
     $arr = array();
-    $bSql = "SELECT price FROM buy_cryptos LIMIT 1";
+    $bSql = "SELECT price, low_price FROM buy_cryptos LIMIT 1";
     $bRes = $conn->query($bSql);
     if ($bRes == true && $bRes->num_rows > 0) {
         $bAll = $bRes->fetch_array();
-        array_push($arr, array("crypto", $bAll[0], "buy"));
+        array_push($arr, array("which" => "crypto", "price" => $bAll[0], "type" => "buy", "range" => "normal"));
+        array_push($arr, array("which" => "crypto", "price" => $bAll[1], "type" => "buy", "range" => "range"));
 
-        $sql = "SELECT price FROM sell_cryptos LIMIT 1";
+        $sql = "SELECT price, low_price FROM sell_cryptos LIMIT 1";
         $res = $conn->query($sql);
         if ($res == true && $res->num_rows > 0) {
             $all = $res->fetch_array();
-            array_push($arr, array("crypto", $all[0], "sell"));
+            array_push($arr, array("which" => "crypto", "price" => $all[0], "type" => "sell", "range" => "normal"));
+            array_push($arr, array("which" => "crypto", "price" => $all[1], "type" => "sell", "range" => "range"));
             //get giftcards prices
             $query = "SELECT id, name, price FROM giftcards where type='sub_category'";
             $result = $conn->query($query);
@@ -106,7 +108,7 @@ function getRates(mysqli &$conn)
                     $id = $row['id'];
                     $name = $row['name'];
                     $price = $row['price'];
-                    array_push($arr, array("giftcard", $id, $name, $price));
+                    array_push($arr, array("which" => "giftcard", "id" => $id, "name" => $name, "price" => $price));
                 }
                 echo json_encode(array("success", $arr));
             } else {
