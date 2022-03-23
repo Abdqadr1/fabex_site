@@ -2,7 +2,6 @@ declare const fname: string;
 declare let version: number;
 declare let activePage: string;
 declare let page: string;
-declare const window:any;
 import { Ajax } from "./ajax.js";
 const jsFolder = "../js/";
 const navLinks = document.querySelectorAll("li>a.nav-link") as NodeListOf<HTMLAnchorElement>;

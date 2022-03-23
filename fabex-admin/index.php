@@ -5,6 +5,12 @@ include "header.php"; ?>
     <?php include_once "navbar.php" ?>
     <script>
         let version = 0.6;
+        let dash_version = 1.0;
+        let activePage = "Orders";
+        document.title = activePage;
+        const url = decodeURI(location.href);
+        const page = url.split("/").pop() || "orders";
+        // console.log(decodeURI(location.href))
     </script>
     <div id="container" class="px-4 mt-4">
         <div class='d-flex align-items-center justify-content-center' style='height: 100%;'>

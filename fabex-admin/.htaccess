@@ -1,9 +1,6 @@
 RewriteEngine On    # Turn on the rewriting engine
 
 RewriteRule    ^dashboard/?$    index.php    [NC,L]   
-RewriteRule    ^orders/?$    orders.php    [NC,L] 
-RewriteRule    ^rates/?$    rates.php    [NC,L]   
-RewriteRule    ^settings/?$    settings.php    [NC,L] 
 RewriteRule    ^logout/?$    logout.php    [NC,L] 
 
 ## Protect directory

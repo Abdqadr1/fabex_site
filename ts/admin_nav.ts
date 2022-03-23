@@ -1,4 +1,6 @@
 declare let version:number;
+declare let activePage: string;
+declare let page: string;
 import { Ajax } from "./ajax.js";
 const jsFolder = "../js/admin_";
 const navLinks = document.querySelectorAll("li>a.nav-link") as NodeListOf<HTMLAnchorElement>;
@@ -10,8 +12,33 @@ const loaderHTML = `<div class='d-flex align-items-center justify-content-center
                 <span class='visually-hidden'>Loading...</span>
             </div>
         </div>`;
-let activePage = "";
-const orderNavLink = document.querySelector("a.nav-link.active") as HTMLAnchorElement;
+
+const activate = (activePage: string) => {
+    navLinks.forEach(el => {
+        const text = el.innerText;
+        let active = "active";
+        let borderBottom = "border-bottom"
+        let border2 = "border-2";
+        let borderPrimary = "border-primary";
+        let dSMNone = "d-none";
+        let dMdBlock = "d-md-block";
+        if (activePage.toLowerCase() === text.toLowerCase()) {
+            navToggleButton.innerText = text;
+            el.classList.add(active);
+            el.classList.add(borderBottom);
+            el.classList.add(border2);
+            el.classList.add(borderPrimary);
+            el.classList.add(dSMNone);
+            el.classList.add(dMdBlock);
+        } else {
+            el.classList.remove(active);
+            el.classList.remove(borderBottom);
+            el.classList.remove(border2);
+            el.classList.remove(borderPrimary);
+            el.classList.remove(dSMNone);
+        }
+    })
+}
 navLinks.forEach(element => {
     element.onclick = (event) => {
         event.preventDefault();
@@ -53,11 +80,14 @@ navLinks.forEach(element => {
 });
 
 const load = (pageName: string) => {
+    //TODO: change url before server
+    history.pushState("", "", "http://localhost/fabex/fabex-admin/" + pageName.toLowerCase());
     version = version + 0.01;
-    const url: string = "../fabex-admin/" + pageName.toLowerCase() + ".php";
+    const url: string = pageName.toLowerCase() + ".php";
     Ajax.fetchPage(url, (data:string) => {
         container.innerHTML = "";
         container.innerHTML = data;
+        document.title = activePage;
         const scriptB4 = container.querySelector("script#pageScript") as HTMLScriptElement;
         if (scriptB4 !== null) {
             container.removeChild(scriptB4);
@@ -69,4 +99,25 @@ const load = (pageName: string) => {
         container.appendChild(script);
     })
 }
-navLinks[0].click();
+
+// get page
+(function () {
+    switch (page.toLowerCase()) {
+        case "orders":
+            activePage = "orders"
+            load(activePage);
+            break;
+        case "rate management":
+            activePage = "rate management"
+            load(activePage);
+            break;
+        case "settings":
+            activePage = "settings"
+            load(activePage);
+            break;
+        default:
+            console.log(page);
+            // location.href = "../errors/404.html"
+    }
+    activate(activePage)
+})();
