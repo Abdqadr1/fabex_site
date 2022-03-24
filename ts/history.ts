@@ -5,21 +5,23 @@ const noHistory = document.querySelector("div#no-history") as HTMLDivElement;
 
 const formatter = new Intl.NumberFormat("en-NG", { style: 'currency', currency: 'NGN', minimumFractionDigits:1, maximumFractionDigits: 2});
 
-const addHistory = (list: [][]) => {
+const addHistory = (list: any[]) => {
     const history = document.createElement("div") as HTMLDivElement;
     history.className = "history";
-    list.forEach((each:any[]) => {
+    list.forEach((each:any) => {
         const div = document.createElement("div") as HTMLDivElement;
         div.className = "row justify-content-between transaction";
+        div.title = each.desc;
         div.innerHTML = `<div class="col-8 ml-2">
-                        <span class="trans-title">${each[1]}</span><br>
+                        <span class="trans-title">${each.desc}</span><br>
                         <span class="trans-status">
-                            <span class="ellipse" style="--type: var(--${each[4]});"></span>${each[5]}</span>
+                            <span class="ellipse" style="--type: var(--${each.status});"></span>${each.status_text}</span>
                     </div>
                     <div class="col-4 text-to-right">
-                        <span class="trans-amount">${formatter.format(each[2])}</span><br>
-                        <span class="trans-time">${each[3]}</span>
+                        <span class="trans-amount">${formatter.format(each.amount)}</span><br>
+                        <span class="trans-time">${each.time}</span>
                     </div>`;
+        div.onclick = () => console.log("show more details...")
         history.appendChild(div);
     });
     historyDiv.appendChild(history);
@@ -30,8 +32,8 @@ const addHistory = (list: [][]) => {
     function () {
         console.info("fetching history from server...");
         Ajax.fetchPage("php/get_history.php", (data: string) => {
-            // console.log(data);
-            const arr:any[] = JSON.parse(data);
+            const arr: any[] = JSON.parse(data);
+            console.log(arr)
             if (arr.length > 0) {
                 addHistory(arr);
             } else {

@@ -35,7 +35,7 @@ const addRates = (giftcard: any[]) => {
         // console.info("fetching rates from server...");
         Ajax.fetchPage("php/get_top_ten.php", (data: string) => {
             const result: any[] = JSON.parse(data);
-            console.log(result);
+            // console.log(result);
             if (result.length > 1) {
                 addRates(result);
             } else { 

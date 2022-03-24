@@ -62,18 +62,22 @@ function getTimeDiff($date, $current_time)
 
 $output = array();
 
-$sql = "SELECT descrip, time, amount, id, status FROM trx_history WHERE u_id='$id' AND status != 0 ORDER BY time DESC";
+$sql = "SELECT descrip, time, amount, id, tx_id, status FROM trx_history WHERE u_id='$id' AND status != 0 ORDER BY time DESC";
 $result = $conn->query($sql);
 if ($result == true && $result->num_rows > 0) {
     while ($rows = $result->fetch_assoc()) {
-        $desc = $rows["descrip"];
-        $amount = $rows['amount'];
-        $tid = $rows['id'];
         $status = getStatusColor($rows['status']);
         $time = getTimeDiff($rows['time'], $current_time);
         $statText = getStatusText($rows['status']);
-
-        array_push($output, array($tid, $desc, $amount, $time, $status, $statText));
+        array_push($output, array(
+            "order_id" => $rows["tx_id"],
+            "id" => $rows['id'],
+            "desc" => $rows["descrip"],
+            "amount" => $rows['amount'],
+            "time" => $time,
+            "status" => $status,
+            "status_text" => $statText
+        ));
     }
 }
 

@@ -28,4 +28,29 @@
             </div> -->
         </div>
     </div>
+    <div class="col-md-5 col-lg-3 trans-details border">
+        <p class="header">Sold BTC</p>
+        <div class="stat-div mb-2">
+            <p class="stat-name">Status</p>
+            <p class="stat-val">e1t2f2yff3fnfjh3rf2f89e2fffef2fiu2fnsge <span class="muted">(TRC20)</span></p>
+        </div>
+        <div class="stat-div mb-2">
+            <p class="stat-name">To</p>
+            <p class="stat-val">2346778134 <span class="muted">(Zenith)</span></p>
+        </div>
+        <div class="mb-2 row justify-content-between mx-0">
+            <div class="col-8 p-0">
+                <p class="stat-name">Order ID</p>
+                <p class="stat-val">1234567890</p>
+            </div>
+            <div class="col-1 text-center">
+                <span class="tt" title="Copy account number">
+                    <span class="payment material-icons">
+                        content_copy
+                    </span>
+                </span>
+
+            </div>
+        </div>
+    </div>
 </div>

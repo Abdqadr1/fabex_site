@@ -24,7 +24,7 @@ var addRates = function (giftcard) {
     // console.info("fetching rates from server...");
     Ajax.fetchPage("php/get_top_ten.php", function (data) {
         var result = JSON.parse(data);
-        console.log(result);
+        // console.log(result);
         if (result.length > 1) {
             addRates(result);
         }

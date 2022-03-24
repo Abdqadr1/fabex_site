@@ -9,6 +9,40 @@
   --header: #8c8c8c;
   --deep-primary: #0e3b44;
 }
+div.trans-details {
+  margin: 0 auto;
+  border-radius: 8px;
+  padding: 36px !important;
+}
+div.trans-details p.header {
+  text-align: center;
+  font-family: "Overpass";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 130%;
+  color: #131313;
+}
+div.trans-details p.stat-name {
+  font-family: "Overpass";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #131313;
+  margin-bottom: 5px;
+}
+div.trans-details span.muted {
+  font-weight: 400;
+}
+div.trans-details p.stat-val {
+  font-family: "Overpass";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  color: #131313;
+}
 div#inactiveModal div.modal-content,
 div#logoutModal div.modal-content {
   margin: 0 auto;
@@ -236,6 +270,7 @@ p.trans-history {
 div.transaction {
   margin: 0;
   padding: 12px 0;
+  cursor: pointer;
 }
 
 div.history {
