@@ -161,3 +161,7 @@ changePassForm.onsubmit = event => {
     })
 }
 )();
+
+
+// for timeout
+import "./timeout.js";

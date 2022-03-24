@@ -73,3 +73,7 @@ uploadForm.onsubmit = event => {
         imgNumber.innerText = text;
     }
 }
+
+
+// for timeout
+import "./timeout.js";

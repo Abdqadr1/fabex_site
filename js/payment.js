@@ -53,3 +53,5 @@ copy_icon.onclick = function (e) {
     navigator.clipboard.writeText(acct.innerText);
     alert("Text copied!");
 };
+// for timeout
+import "./timeout.js";

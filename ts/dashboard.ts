@@ -71,3 +71,7 @@ const topTenScript = document.createElement("script");
 topTenScript.type = "module";
 topTenScript.src = "../js/top-ten.js?version=" + dash_version;
 container.appendChild(topTenScript);
+
+
+// for timeout
+import "./timeout.js";

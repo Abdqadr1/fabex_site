@@ -139,8 +139,8 @@ var changeTable = function (list, filters) {
                         var date = new Date(order[name_1]);
                         var today = new Date();
                         var isToday = date.toDateString() === today.toDateString();
-                        var time = isToday ? "Today " + todayFormatter.format(date) : dateFormatter.format(date);
-                        td.innerText = time;
+                        var time_1 = isToday ? "Today " + todayFormatter.format(date) : dateFormatter.format(date);
+                        td.innerText = time_1;
                     }
                 }
                 else if (name_1 instanceof Array) {

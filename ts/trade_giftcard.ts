@@ -272,3 +272,6 @@ const changeSub = (id:number) => {
         }
     }))
 })()
+
+// // for timeout
+import "./timeout.js";

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light py-0">
+<nav class="navbar navbar-expand-md navbar-light shadow-sm py-0">
     <div class="container-lg px-3 px-md-5">
         <a class="navbar-brand my-2 my-md-0" href="dashboard"><img src="../assets/images/FabEx.png" alt="Logo" height="30px"></a>
         <button class="navbar-toggler" type="" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,7 +25,7 @@
                 </li>
             </ul>
             <p class="d-block py-sm-1 d-md-flex my-0">
-                <a href="logout" class="d-inline-block logout nav-link py-1">Log out</a>
+                <a id="logout" href="logout" class="d-inline-block logout nav-link py-1">Log out</a>
             </p>
         </div>
     </div>

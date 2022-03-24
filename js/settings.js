@@ -147,3 +147,5 @@ changePassForm.onsubmit = function (event) {
         });
     });
 })();
+// for timeout
+import "./timeout.js";

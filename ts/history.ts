@@ -41,3 +41,7 @@ const addHistory = (list: [][]) => {
         });
     }
 )()
+
+
+// for timeout
+import "./timeout.js";

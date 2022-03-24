@@ -29,3 +29,5 @@ var addHistory = function (list) {
         loadingContainer.classList.add("d-none");
     });
 })();
+// for timeout
+import "./timeout.js";

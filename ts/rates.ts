@@ -47,7 +47,7 @@ const addRates = (content: [][]) => {
     function () { 
         // console.info("fetching rates from server...");
         Ajax.fetchPage("php/get_rates.php", (data: string) => {
-            console.log(data)
+            // console.log(data)
             const result: any[] = JSON.parse(data);
             if (result.length > 1) {
                 addRates(result);
@@ -68,3 +68,7 @@ const addRates = (content: [][]) => {
         });
     }
 )()
+
+
+// for timeout
+import "./timeout.js";

@@ -258,3 +258,7 @@ const changeNetworks = (activeAssets: any[]) => {
         changeNetworks(activeAssets);
     })
 })()
+
+
+// for timeout
+import "./timeout.js";

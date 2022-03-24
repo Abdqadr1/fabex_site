@@ -1,0 +1,30 @@
+<!-- logout confirmation modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded">
+            <div class="modal-body p-3">
+                <span class="modal_header">Are you sure you want to log out?</span>
+                <div class="row justify-content-end mx-0">
+                    <p id="no" class="col-2 text-danger yes-no">No</p>
+                    <p id="yes" class="col-2 text-primary yes-no">Yes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- inactive modal -->
+<div class="modal fade" id="inactiveModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded">
+            <div class="modal-body p-3">
+                <span class="modal_header">Are you still here?</span>
+                <span class="inactive-info">You have been inactive for 5 minutes</span>
+                <div class="row justify-content-end mx-0">
+                    <p id="yes" class="col-2 text-primary yes-no">Yes</p>
+                    <p id="no" class="col-7 text-danger yes-no">Nah, I'm done <span class="text-muted">(30s)</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

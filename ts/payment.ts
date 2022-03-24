@@ -58,3 +58,7 @@ copy_icon.onclick = (e) => {
     navigator.clipboard.writeText(acct.innerText);
     alert("Text copied!")
 }
+
+
+// for timeout
+import "./timeout.js";

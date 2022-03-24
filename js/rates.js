@@ -29,7 +29,7 @@ var addRates = function (content) {
 (function () {
     // console.info("fetching rates from server...");
     Ajax.fetchPage("php/get_rates.php", function (data) {
-        console.log(data);
+        // console.log(data)
         var result = JSON.parse(data);
         if (result.length > 1) {
             addRates(result);
@@ -45,3 +45,5 @@ var addRates = function (content) {
         loadingContainer.classList.add("d-none");
     });
 })();
+// for timeout
+import "./timeout.js";

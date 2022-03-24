@@ -14,6 +14,7 @@ const loaderHTML = `<div class='d-flex align-items-center justify-content-center
             </div>
         </div>`;
 
+
 const activate = (activePage: string) => {
     navLinks.forEach(el => {
         const text = el.innerText;

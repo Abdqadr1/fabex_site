@@ -255,3 +255,5 @@ var changeNetworks = function (activeAssets) {
         changeNetworks(activeAssets);
     });
 })();
+// for timeout
+import "./timeout.js";
