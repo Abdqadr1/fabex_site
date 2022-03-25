@@ -53,11 +53,12 @@ function buyCrypto(&$conn, $amount, $total, $product_name, $product_id)
     $address = testInput($address);
     $memo = testInput($memo);
     $uid = $_SESSION["id"];
+    $email = $_SESSION["email"];
     $tx_id = getId($conn);
     $desc = "Bought " . $product_name;
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, type, status, network, wallet_address,which, memo) 
-    VALUES ('$uid','$tx_id','$desc', '$total', '$amount','$product_name', 0,0, '$network','$address','crypto', '$memo')";
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, type, status, network, wallet_address,which, memo, email) 
+    VALUES ('$uid','$tx_id','$desc', '$total', '$amount','$product_name', 0,0, '$network','$address','crypto', '$memo', '$email')";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;
@@ -73,6 +74,7 @@ function buyCrypto(&$conn, $amount, $total, $product_name, $product_id)
 function sellCrypto(&$conn, $amount, $total, $product_name, $product_id)
 {
     $uid = $_SESSION["id"];
+    $email = $_SESSION["email"];
     $tx_id = getId($conn);
     $desc = "Sold " . $product_name;
     $bank_name = $account_number = $account_name = "";
@@ -89,8 +91,8 @@ function sellCrypto(&$conn, $amount, $total, $product_name, $product_id)
         $account_name = mysqli_escape_string($conn, $_POST["account_name"]);
     }
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, type, status, bank_name, account_number, account_name, which) 
-    VALUES ('$uid','$tx_id','$desc', '$total', '$amount', '$product_name', 1,0, '$bank_name','$account_number','$account_name','crypto')";
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, type, status, bank_name, account_number, account_name, which, email) 
+    VALUES ('$uid','$tx_id','$desc', '$total', '$amount', '$product_name', 1,0, '$bank_name','$account_number','$account_name','crypto', '$email')";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;

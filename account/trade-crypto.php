@@ -58,7 +58,7 @@ include_once "header.php"; ?>
 
 
                 <div class="form-check form-switch my-2 d-none" id="toggle-switch">
-                    <input name="switch" class="form-check-input toggle-switch" type="checkbox" role="switch" id="bankSwitch">
+                    <input name="toggle" class="form-check-input toggle-switch" type="checkbox" role="switch" id="bankSwitch">
                     <label class="form-check-label" for="bankSwitch">Use default account details</label>
                 </div>
 

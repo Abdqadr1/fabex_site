@@ -99,7 +99,7 @@ tradeCryptoForm.onsubmit = event => {
         changeDisability(buttons, true);
     })
     aj.setAfter((responseText: string) => {
-        // console.log(responseText)
+        console.log(responseText)
         if (responseText.toLowerCase().indexOf("success") != -1) {
             if (action === "buy") {
                 location.href = "payment";

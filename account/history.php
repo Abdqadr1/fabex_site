@@ -28,7 +28,7 @@
             </div> -->
         </div>
     </div>
-    <div class="col-md-5 col-lg-3 trans-details border">
+    <!-- <div class="col-md-5 col-lg-3 trans-details">
         <p class="header">Sold BTC</p>
         <div class="stat-div mb-2">
             <p class="stat-name">Status</p>
@@ -52,5 +52,5 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
 </div>

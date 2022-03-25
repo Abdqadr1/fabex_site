@@ -110,3 +110,19 @@ const load = (pageName: string) => {
     }
     activate(activePage)
 })();
+
+
+// get top cryptocurrencies current prices
+const socket = new WebSocket("wss://stream.binance.com:9443/ws")
+const data = {
+    method: 'SUBSCRIBE',
+    params: ['btcusdt@trade', 'ethusdt@trade'],
+    id:1
+}
+socket.onopen = () => {
+    socket.send(JSON.stringify(data))
+}
+socket.onmessage = event => {
+    const data: any = JSON.parse(event.data);
+    console.log(data.s, data.p)
+}

@@ -49,7 +49,7 @@ class User
     }
     public function login(mysqli &$conn)
     {
-        $login_query = "SELECT id, fname, verified, pword FROM users WHERE email = '{$this->email}'";
+        $login_query = "SELECT id, fname, verified, pword, email FROM users WHERE email = '{$this->email}'";
         $result = $conn->query($login_query);
         if ($result->num_rows === 1) {
             $row = $result->fetch_assoc();
@@ -58,6 +58,7 @@ class User
                 if (password_verify($this->pword, $password)) {
                     $_SESSION["id"] = $row["id"];
                     $_SESSION["fname"] = $row["fname"];
+                    $_SESSION["email"] = $row["email"];
                     echo "Success: Account found and verified!";
                 } else {
                     echo "Wrong password!";

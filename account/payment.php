@@ -86,6 +86,9 @@ include_once "header.php";
             <p class="confirm d-none" id="confirm">Your Gift card will be sent to your email address once order is confirmed.</p>
             <form action="php/payment.php" method="POST" id="paidForm">
                 <input type="hidden" name="paid" value="yes" id="paidInput">
+                <input type="hidden" name="bankname" value="<?php echo $bankname; ?>" required>
+                <input type="hidden" name="accountname" value="<?php echo $accountName; ?>" required>
+                <input type="hidden" name="accountnumber" value="<?php echo $accountNumber; ?>" required>
                 <button type="submit" name="paidBtn" class="payment text-center"> I have paid, Proceed</button>
             </form>
         </div>

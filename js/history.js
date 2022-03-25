@@ -66,6 +66,13 @@ function showDetailsModal(each) {
         }
     }
     div.innerHTML += "<div class=\"stat-div mb-2\">\n                <p class=\"stat-name\">Timestamp</p>\n                <p class=\"stat-val\">" + each.timestamp + "</span></p>\n            </div>\n            <div class=\"mb-2 row justify-content-between mx-0\">\n                <div class=\"col-8 p-0\">\n                    <p class=\"stat-name\">Order ID</p>\n                    <p class=\"stat-val text-uppercase\">" + each.tx_id + "</p>\n                </div>\n                <div class=\"col-1 text-center\">\n                    <span class=\"tt\" title=\"Copy order id\">\n                        <span class=\"payment material-icons\">\n                            content_copy\n                        </span>\n                    </span>\n\n                </div>\n            </div>";
+    var copySpan = div.querySelector("span.tt");
+    copySpan.onclick = function (e) {
+        e.stopPropagation();
+        var acct = document.querySelector("span.account-number");
+        navigator.clipboard.writeText(each.tx_id.toUpperCase());
+        alert("Text copied!");
+    };
     transDetailsModalBody.appendChild(div);
     transDetailsModal.show();
 }

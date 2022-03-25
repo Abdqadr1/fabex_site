@@ -124,6 +124,13 @@ function showDetailsModal(each: any): any {
 
                 </div>
             </div>`;
+    const copySpan = div.querySelector("span.tt") as HTMLSpanElement;
+    copySpan.onclick = (e) => {
+        e.stopPropagation();
+        const acct = document.querySelector("span.account-number") as HTMLParagraphElement;
+        navigator.clipboard.writeText((each.tx_id as string).toUpperCase());
+        alert("Text copied!")
+    }
     transDetailsModalBody.appendChild(div)
     transDetailsModal.show();
 }

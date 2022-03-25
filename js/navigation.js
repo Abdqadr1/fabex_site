@@ -100,3 +100,17 @@ var load = function (pageName) {
     }
     activate(activePage);
 })();
+// get top cryptocurrencies current prices
+var socket = new WebSocket("wss://stream.binance.com:9443/ws");
+var data = {
+    method: 'SUBSCRIBE',
+    params: ['btcusdt@trade', 'ethusdt@trade'],
+    id: 1
+};
+socket.onopen = function () {
+    socket.send(JSON.stringify(data));
+};
+socket.onmessage = function (event) {
+    var data = JSON.parse(event.data);
+    console.log(data.s, data.p);
+};
