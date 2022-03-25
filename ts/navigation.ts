@@ -132,9 +132,12 @@ socket.onopen = () => {
 }
 socket.onmessage = event => {
     const data: any = JSON.parse(event.data);
-    const name:string = data.s;
-    const price = numberFormatter.format(data.p);
-    const el = movingRatesDiv.querySelector(`b#${name.toLowerCase()}`) as HTMLElement
-    el.innerText = price;
-    // console.log(name, price)
+    const name: string = data.s;
+    if (name) {
+        const price = numberFormatter.format(data.p);
+        const el = movingRatesDiv.querySelector(`b#${name.toLowerCase()}`) as HTMLElement
+        el.innerText = price;
+        // console.log(name, price) 
+    }
+    
 }

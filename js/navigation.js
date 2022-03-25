@@ -121,8 +121,10 @@ socket.onopen = function () {
 socket.onmessage = function (event) {
     var data = JSON.parse(event.data);
     var name = data.s;
-    var price = numberFormatter.format(data.p);
-    var el = movingRatesDiv.querySelector("b#" + name.toLowerCase());
-    el.innerText = price;
-    // console.log(name, price)
+    if (name) {
+        var price = numberFormatter.format(data.p);
+        var el = movingRatesDiv.querySelector("b#" + name.toLowerCase());
+        el.innerText = price;
+        // console.log(name, price) 
+    }
 };
