@@ -86,12 +86,12 @@ div#moving_rates_div {
   overflow-x: hidden;
 }
 div.moving_rates {
-  width: 180%;
+  width: 100%;
   animation: moving-rate 15s ease-in forwards infinite;
 }
 @keyframes moving-rate {
   0% {
-    transform: translateX(50%);
+    transform: translateX(100%);
   }
   100% {
     transform: translateX(-100%);

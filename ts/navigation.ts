@@ -8,6 +8,7 @@ const navLinks = document.querySelectorAll("li>a.nav-link") as NodeListOf<HTMLAn
 const navToggleButton = document.querySelector(".dropdown-toggle") as HTMLAnchorElement;
 const container = document.querySelector("div#container") as HTMLDivElement;
 const navLinkDiv = document.querySelector("div#navbarTogglerDemo03") as HTMLDivElement;
+const movingRatesDiv = document.querySelector("div.moving_rates") as HTMLDivElement;
 const loaderHTML = `<div class='d-flex align-items-center justify-content-center' style='height: 100%;'>
             <div class='spinner-border text-primary' role='status' style='height: 60px; width:60px;'>
                 <span class='visually-hidden'>Loading...</span>
@@ -111,12 +112,19 @@ const load = (pageName: string) => {
     activate(activePage)
 })();
 
+// number formatter
+const numberFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 2
+})
 
 // get top cryptocurrencies current prices
 const socket = new WebSocket("wss://stream.binance.com:9443/ws")
 const data = {
     method: 'SUBSCRIBE',
-    params: ['btcusdt@trade', 'ethusdt@trade'],
+    params: ['btcusdt@trade', 'ethusdt@trade', 'bnbusdt@trade', 'dogeusdt@trade','solusdt@trade'],
     id:1
 }
 socket.onopen = () => {
@@ -124,5 +132,9 @@ socket.onopen = () => {
 }
 socket.onmessage = event => {
     const data: any = JSON.parse(event.data);
-    console.log(data.s, data.p)
+    const name:string = data.s;
+    const price = numberFormatter.format(data.p);
+    const el = movingRatesDiv.querySelector(`b#${name.toLowerCase()}`) as HTMLElement
+    el.innerText = price;
+    // console.log(name, price)
 }

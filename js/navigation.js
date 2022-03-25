@@ -4,6 +4,7 @@ var navLinks = document.querySelectorAll("li>a.nav-link");
 var navToggleButton = document.querySelector(".dropdown-toggle");
 var container = document.querySelector("div#container");
 var navLinkDiv = document.querySelector("div#navbarTogglerDemo03");
+var movingRatesDiv = document.querySelector("div.moving_rates");
 var loaderHTML = "<div class='d-flex align-items-center justify-content-center' style='height: 100%;'>\n            <div class='spinner-border text-primary' role='status' style='height: 60px; width:60px;'>\n                <span class='visually-hidden'>Loading...</span>\n            </div>\n        </div>";
 var activate = function (activePage) {
     navLinks.forEach(function (el) {
@@ -100,11 +101,18 @@ var load = function (pageName) {
     }
     activate(activePage);
 })();
+// number formatter
+var numberFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 2
+});
 // get top cryptocurrencies current prices
 var socket = new WebSocket("wss://stream.binance.com:9443/ws");
 var data = {
     method: 'SUBSCRIBE',
-    params: ['btcusdt@trade', 'ethusdt@trade'],
+    params: ['btcusdt@trade', 'ethusdt@trade', 'bnbusdt@trade', 'dogeusdt@trade', 'solusdt@trade'],
     id: 1
 };
 socket.onopen = function () {
@@ -112,5 +120,9 @@ socket.onopen = function () {
 };
 socket.onmessage = function (event) {
     var data = JSON.parse(event.data);
-    console.log(data.s, data.p);
+    var name = data.s;
+    var price = numberFormatter.format(data.p);
+    var el = movingRatesDiv.querySelector("b#" + name.toLowerCase());
+    el.innerText = price;
+    // console.log(name, price)
 };

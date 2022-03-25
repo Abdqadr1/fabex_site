@@ -48,9 +48,9 @@
     <p style="margin:15px 0px;">Best Regards.</p>
 
     <div style="margin-top: 4em;">
-        <a href=""><img class="socials" src="http://localhost/fabex/assets/images/fb.png" alt="fabex"></a>
-        <a href=""><img class="socials" src="http://localhost/fabex/assets/images/instagram.png" alt="fabex"></a>
-        <a href="mailto:abdqadr@gmail.com"><img class="socials" src="http://localhost/fabex/assets/images/mail.png" alt="fabex"></a>
+        <a href="https://web.facebook.com/fabexglobal" target="blank"><img class="socials" src="http://localhost/fabex/assets/images/fb.png" alt="fabex"></a>
+        <a href="https://www.instagram.com/fabex_global/" target="blank"><img class="socials" src="http://localhost/fabex/assets/images/instagram.png" alt="fabex"></a>
+        <a href="mailto:fabexglobal@gmail.com"><img class="socials" src="http://localhost/fabex/assets/images/mail.png" alt="fabex"></a>
     </div>
     <p class="address">Suite C2 & C3, Lenu Plaza Sani Abacha,<br /> GRA phase 3, Port Harcourt</p>
 </body>

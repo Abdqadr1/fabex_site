@@ -57,12 +57,12 @@
     <footer class="py-5 px-3 px-md-5">
         <img class="fabex" src="assets/images/FabEx3.png" alt="fabex">
         <div class="d-flex-start mt-4">
-            <a href=""><img class="socials" src="assets/images/fb.png" alt="fabex"></a>
-            <a href=""><img class="socials" src="assets/images/instagram.png" alt="fabex"></a>
-            <a href="mailto:abdqadr@gmail.com"><img class="socials" src="assets/images/mail.png" alt="fabex"></a>
+            <a href="https://web.facebook.com/fabexglobal" target="blank"><img class="socials" src="assets/images/fb.png" alt="fabex"></a>
+            <a href="https://www.instagram.com/fabex_global/" target="blank"><img class="socials" src="assets/images/instagram.png" alt="fabex"></a>
+            <a href="mailto:fabexglobal@gmail.com"><img class="socials" src="assets/images/mail.png" alt="fabex"></a>
         </div>
         <p class="address mt-4">Suite C2 & C3, Lenu Plaza Sani Abacha,<br /> GRA phase 3, Port Harcourt</p>
-        <p class="help">Need Help? <a href="tel:+2348115213342">Call Us</a></p>
+        <p class="help">Need Help? <a href="tel:+2348138640295">Call Us</a></p>
     </footer>
 
     <script type="module" src=""></script>

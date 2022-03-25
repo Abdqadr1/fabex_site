@@ -15,7 +15,11 @@ include "header.php"; ?>
     <div id="moving_rates_div">
         <div class="moving_rates">
             <span><b>Live Crypto Prices</b></span>
-            <span>1 BTC= <b>$48,000</b></span>
+            <span>1 BTC= <b id="btcusdt">$0</b></span>
+            <span>1 ETH= <b id="ethusdt">$0</b></span>
+            <span>1 BNB= <b id="bnbusdt">$0</b></span>
+            <span>1 DOGE= <b id="dogeusdt">$0</b></span>
+            <span>1 SOL= <b id="solusdt">$0</b></span>
         </div>
     </div>
     <?php include_once "navbar.php"; ?>
@@ -26,7 +30,7 @@ include "header.php"; ?>
         document.title = activePage;
         const url = decodeURI(location.href);
         const page = url.split("/").pop() || "Dashboard";
-        console.log(page)
+        // console.log(page)
     </script>
     <div id="container">
         <div class='d-flex align-items-center justify-content-center' style='height: 100%;'>
