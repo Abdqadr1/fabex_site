@@ -64,10 +64,12 @@ export class Ajax{
 
     public static fetchPage(url: string, doAfter: Function, headers: object = {}) {
         fetch(url, {
-            headers:{...headers},
+            headers: { ...headers },
         }
         ).then(response => response.text())
-            .then(data => doAfter(data))
-            .catch(error => console.error("An error occurred", error));
+            .then(data => {
+            if(data.toLowerCase().indexOf("timeout") > -1) location.href="logout"
+                doAfter(data);
+            }).catch(error => console.error("An error occurred", error));
     }
 }

@@ -83,8 +83,11 @@ var Ajax = /** @class */ (function () {
         fetch(url, {
             headers: __assign({}, headers),
         }).then(function (response) { return response.text(); })
-            .then(function (data) { return doAfter(data); })
-            .catch(function (error) { return console.error("An error occurred", error); });
+            .then(function (data) {
+            if (data.toLowerCase().indexOf("timeout") > -1)
+                location.href = "logout";
+            doAfter(data);
+        }).catch(function (error) { return console.error("An error occurred", error); });
     };
     return Ajax;
 }());

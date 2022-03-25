@@ -7,7 +7,7 @@ function isTimeout()
 }
 function isTime()
 {
-    if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 900) {
+    if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 600) {
         exit("Session timeout: Login again");
     }
 }

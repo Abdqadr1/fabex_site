@@ -41,7 +41,7 @@ div.trans-details p.stat-val {
   font-weight: 700;
   font-size: 14px;
   line-height: 18px;
-  color: #131313;
+  color: var(--type);
 }
 div#inactiveModal div.modal-content,
 div#logoutModal div.modal-content {
@@ -802,5 +802,15 @@ a.best-giftcard:hover {
   }
   span.inactive-info {
     font-size: 12px;
+  }
+  div.trans-details {
+    padding: 24px !important;
+  }
+  div.trans-details p.header {
+    font-size: 18px;
+  }
+  div.trans-details p.stat-val {
+    font-size: 12px;
+    line-height: 18px;
   }
 }

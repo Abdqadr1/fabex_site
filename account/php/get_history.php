@@ -28,7 +28,7 @@ function getStatusText($stat)
 {
     switch ($stat) {
         case 1:
-            return "In progress";
+            return "Pending";
         case 2:
             return "Success";
         case 3:
@@ -62,22 +62,18 @@ function getTimeDiff($date, $current_time)
 
 $output = array();
 
-$sql = "SELECT descrip, time, amount, id, tx_id, status FROM trx_history WHERE u_id='$id' AND status != 0 ORDER BY time DESC";
+$sql = "SELECT descrip, time, amount,price, id, tx_id, type, status, email, which, network, memo, wallet_address, bank_name, 
+account_number FROM trx_history WHERE u_id='$id' AND status != 0 ORDER BY time DESC";
 $result = $conn->query($sql);
 if ($result == true && $result->num_rows > 0) {
-    while ($rows = $result->fetch_assoc()) {
-        $status = getStatusColor($rows['status']);
-        $time = getTimeDiff($rows['time'], $current_time);
-        $statText = getStatusText($rows['status']);
-        array_push($output, array(
-            "order_id" => $rows["tx_id"],
-            "id" => $rows['id'],
-            "desc" => $rows["descrip"],
-            "amount" => $rows['amount'],
-            "time" => $time,
-            "status" => $status,
-            "status_text" => $statText
-        ));
+    while ($rows = $result->fetch_array(MYSQLI_ASSOC)) {
+        $stat = $rows['status'];
+        $rows["status_color"] = getStatusColor($stat);
+        $rows['timestamp'] = $rows['time'];
+        $rows['time'] = getTimeDiff($rows['time'], $current_time);
+        $rows['status_text'] = getStatusText($stat);
+        $rows["type"] = ($rows["type"] == 1) ? "sell" : "buy";
+        array_push($output, $rows);
     }
 }
 
