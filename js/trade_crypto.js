@@ -40,6 +40,7 @@ var act = tradeCryptoForm.querySelector("input#hidden");
 var amountParagraph = tradeCryptoForm.querySelector("p#amount");
 var networkSelect = tradeCryptoForm.querySelector("select#network");
 amountInput.onkeyup = function (event) { return changeAmount(); };
+amountInput.onpaste = function () { return changeAmount(); };
 var changeAmount = function () {
     var price = Number(priceInput.value);
     var lowPrice = Number(lowPriceInput.value);

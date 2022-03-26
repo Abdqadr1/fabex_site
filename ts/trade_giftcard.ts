@@ -62,7 +62,8 @@ const errorDiv = tradeGiftcardForm.querySelector("#errorDiv") as HTMLDivElement;
 const categories = tradeGiftcardForm.querySelector("select#category") as HTMLSelectElement;
 const subCategories = tradeGiftcardForm.querySelector("select#subCategory") as HTMLSelectElement;
 const amountParagraph = tradeGiftcardForm.querySelector("p#amount") as HTMLParagraphElement;
-amountInput.onkeyup = event => changeAmount();
+amountInput.onkeyup = () => changeAmount();
+amountInput.onpaste = () => changeAmount();
 const changeAmount = () => {
     const price:number = Number(priceInput.value);
     const amount:number = amountInput.valueAsNumber;

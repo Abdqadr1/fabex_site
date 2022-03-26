@@ -2,7 +2,7 @@
 $server_name = "localhost";
 $username = "root";
 $password = "";
-$database = "crypto_table";
+$database = "fabex";
 
 date_default_timezone_set("Africa/Lagos");
 // turn off error reporting

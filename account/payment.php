@@ -52,7 +52,7 @@ include_once "header.php";
         </span></div>
     <div class="body row justify-content-center payment-row">
         <div class="col-md-5 col-lg-4 col-10">
-            <p class="kindly-pay my-2 text-center mb-5">Kindly pay <span class="amount">N<?php echo $amount; ?></span>
+            <p class="kindly-pay my-2 text-center mb-5">Kindly pay <span class="amount">N<?php echo number_format($amount, 2); ?></span>
                 to the account details below</p>
             <div tabindex="-1" class="alert alert-danger col-10 d-none text-center" id="errorDiv" role="alert"></div>
             <div class="details my-3  row p-2 rounded border paybg">

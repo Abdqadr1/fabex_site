@@ -265,7 +265,7 @@ const fetchOrders = (filters:filterType) => {
         if (message.toLowerCase().indexOf("success") != -1) {
             changeTable(arr[1], filters);
         } else {
-            showModal(message, "text-danger", 3000);
+            // showModal(message, "text-danger", 3000);
             changeTable([], filters);
         }
         loadingContainer.classList.add("d-none");
