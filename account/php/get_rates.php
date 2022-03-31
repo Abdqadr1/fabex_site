@@ -2,8 +2,9 @@
 session_start();
 
 
+include_once "connect_db.php";
 include_once "../functions.php";
-isTime();
+isTime($conn);
 
 if (!isset($_SESSION['id'])) {
     exit("No valid user presents!");
@@ -15,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $id = $_SESSION['id'];
 
-include_once "connect_db.php";
 $rates = array();
 
 $crypto_rates = array();

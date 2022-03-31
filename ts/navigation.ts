@@ -60,8 +60,9 @@ navLinks.forEach(element => {
 });
 
 const load = (pageName: string) => {
-    //TODO: change url before server
-    history.pushState("", "", "http://localhost/fabex/account/" + pageName.toLowerCase());
+    const ur = decodeURI(location.href).split("/");
+    ur[ur.length - 1] = pageName.toLowerCase();
+    history.pushState("", "", ur.join("/"));
     version = version + 0.001;
     const url: string = pageName.toLowerCase() + ".php";
     Ajax.fetchPage(url, (data:string) => {

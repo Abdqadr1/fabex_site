@@ -97,7 +97,7 @@ tradeCryptoForm.onsubmit = function (event) {
         changeDisability(buttons, true);
     });
     aj.setAfter(function (responseText) {
-        console.log(responseText);
+        // console.log(responseText)
         if (responseText.toLowerCase().indexOf("success") != -1) {
             if (action === "buy") {
                 location.href = "payment";
@@ -243,7 +243,7 @@ var changeNetworks = function (activeAssets) {
 (function () {
     Ajax.fetchPage("php/data.php?which=cryptos", function (data) {
         var arr = JSON.parse(data);
-        console.log(arr);
+        // console.log(arr)
         buyCryptos = arr[0];
         sellCryptos = arr[1];
         var activeAssets;

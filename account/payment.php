@@ -1,8 +1,11 @@
 <?php
 session_start();
+
+include_once "php/connect_db.php";
 include_once "functions.php";
 isTimeout();
 isLoggedIn();
+isSessionChanged($conn);
 isTransaction();
 
 $amount = $_SESSION["amount"];
@@ -17,7 +20,6 @@ $d = "d-none";
 
 $tx_id = $_SESSION["tx_id"];
 $act = $_SESSION["act"];
-include_once "php/connect_db.php";
 $sql = "SELECT type, u_id FROM trx_history WHERE tx_id='$tx_id'";
 $res = $conn->query($sql);
 if ($res->num_rows == 1) {

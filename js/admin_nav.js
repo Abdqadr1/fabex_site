@@ -73,8 +73,9 @@ navLinks.forEach(function (element) {
     };
 });
 var load = function (pageName) {
-    //TODO: change url before server
-    history.pushState("", "", "http://localhost/fabex/fabex-admin/" + pageName.toLowerCase());
+    var ur = decodeURI(location.href).split("/");
+    ur[ur.length - 1] = pageName.toLowerCase();
+    history.pushState("", "", ur.join("/"));
     version = version + 0.01;
     var url = pageName.toLowerCase() + ".php";
     Ajax.fetchPage(url, function (data) {

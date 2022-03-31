@@ -1,9 +1,11 @@
 <?php
 session_start();
 
+include_once "php/connect_db.php";
 include_once "functions.php";
 isTimeout();
 isLoggedIn();
+isSessionChanged($conn);
 
 include_once "header.php"; ?>
 

@@ -813,4 +813,7 @@ a.best-giftcard:hover {
     font-size: 12px;
     line-height: 18px;
   }
+  div.moving_rates {
+    width: 150%;
+  }
 }

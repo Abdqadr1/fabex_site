@@ -59,7 +59,14 @@ class User
                     $_SESSION["id"] = $row["id"];
                     $_SESSION["fname"] = $row["fname"];
                     $_SESSION["email"] = $row["email"];
-                    echo "Success: Account found and verified!";
+                    $session_id = substr(uniqid("sid"), 0, 13);
+                    $_SESSION["session_id"] = $session_id;
+                    $sql = "UPDATE users SET session_id='$session_id' WHERE email = '{$this->email}'";
+                    if ($conn->query($sql)) {
+                        echo "Success: Account found and verified!";
+                    } else {
+                        echo "Something went wrong";
+                    }
                 } else {
                     echo "Wrong password!";
                 }

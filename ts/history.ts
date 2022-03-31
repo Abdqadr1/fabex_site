@@ -38,7 +38,7 @@ const addHistory = (list: any[]) => {
         console.info("fetching history from server...");
         Ajax.fetchPage("php/get_history.php", (data: string) => {
             const arr: any[] = JSON.parse(data);
-            console.log(arr)
+            // console.log(arr)
             if (arr.length > 0) {
                 addHistory(arr);
             } else {

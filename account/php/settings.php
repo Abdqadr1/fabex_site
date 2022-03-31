@@ -2,8 +2,9 @@
 session_start();
 
 
+include_once "connect_db.php";
 include_once "../functions.php";
-isTime();
+isTime($conn);
 
 if (
     !isset($_POST["fname"]) || !isset($_POST["lname"]) || !isset($_POST["phone"]) ||
@@ -12,7 +13,6 @@ if (
     exit("Invalid credentials!");
 }
 
-include_once "connect_db.php";
 include_once "user_actions.php";
 $id = $_SESSION["id"];
 

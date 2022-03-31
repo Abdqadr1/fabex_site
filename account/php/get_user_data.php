@@ -2,10 +2,10 @@
 session_start();
 
 
-include_once "../functions.php";
-isTime();
-
 include_once "connect_db.php";
+include_once "../functions.php";
+isTime($conn);
+
 
 
 if (!isset($_SESSION['id'])) {
