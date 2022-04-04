@@ -87,39 +87,44 @@ function getGiftcards(mysqli &$conn)
 function getRates(mysqli &$conn)
 {
     $arr = array();
+
+    // get buy crypto price
     $bSql = "SELECT price, low_price FROM buy_cryptos LIMIT 1";
     $bRes = $conn->query($bSql);
     if ($bRes == true && $bRes->num_rows > 0) {
         $bAll = $bRes->fetch_array();
         array_push($arr, array("which" => "crypto", "price" => $bAll[0], "type" => "buy", "range" => "normal"));
         array_push($arr, array("which" => "crypto", "price" => $bAll[1], "type" => "buy", "range" => "range"));
-
-        $sql = "SELECT price, low_price FROM sell_cryptos LIMIT 1";
-        $res = $conn->query($sql);
-        if ($res == true && $res->num_rows > 0) {
-            $all = $res->fetch_array();
-            array_push($arr, array("which" => "crypto", "price" => $all[0], "type" => "sell", "range" => "normal"));
-            array_push($arr, array("which" => "crypto", "price" => $all[1], "type" => "sell", "range" => "range"));
-            //get giftcards prices
-            $query = "SELECT id, name, price FROM giftcards where type='sub_category'";
-            $result = $conn->query($query);
-            if ($result == true && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    $id = $row['id'];
-                    $name = $row['name'];
-                    $price = $row['price'];
-                    array_push($arr, array("which" => "giftcard", "id" => $id, "name" => $name, "price" => $price));
-                }
-                echo json_encode(array("success", $arr));
-            } else {
-                echo json_encode(array("Something went wrong getting giftcards prices."));
-            }
-        } else {
-            echo json_encode(array("Something went wrong getting sell crypto price " . $conn->error));
+    } else {
+        array_push($arr, array("msg" => "not_found", "which" => "crypto", "price" => "", "type" => "buy", "range" => "normal"));
+        array_push($arr, array("msg" => "not_found", "which" => "crypto", "price" => "", "type" => "buy", "range" => "range"));
+    }
+    // get sell crypto price
+    $sql = "SELECT price, low_price FROM sell_cryptos LIMIT 1";
+    $res = $conn->query($sql);
+    if ($res == true && $res->num_rows > 0) {
+        $all = $res->fetch_array();
+        array_push($arr, array("which" => "crypto", "price" => $all[0], "type" => "sell", "range" => "normal"));
+        array_push($arr, array("which" => "crypto", "price" => $all[1], "type" => "sell", "range" => "range"));
+    } else {
+        array_push($arr, array("msg" => "not_found", "which" => "crypto", "price" => "", "type" => "sell", "range" => "normal"));
+        array_push($arr, array("msg" => "not_found", "which" => "crypto", "price" => "", "type" => "sell", "range" => "range"));
+    }
+    //get giftcards prices
+    $query = "SELECT id, name, price FROM giftcards where type='sub_category'";
+    $result = $conn->query($query);
+    if ($result == true && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $id = $row['id'];
+            $name = $row['name'];
+            $price = $row['price'];
+            array_push($arr, array("which" => "giftcard", "id" => $id, "name" => $name, "price" => $price));
         }
     } else {
-        echo json_encode(array("Something went wrong getting buy crypto price " . $conn->error));
+        array_push($arr, array("msg" => "not_found", "which" => "giftcard", "id" => "", "name" => "No giftcard found", "price" => ""));
     }
+
+    echo json_encode(array("success", $arr));
 }
 
 function getAllOrders(mysqli &$conn, string $which)

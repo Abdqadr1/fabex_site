@@ -10,7 +10,7 @@ isSessionChanged($conn);
 include_once "header.php"; ?>
 
 <body>
-    <div class="container pl-4 my-4"><span class="backBtn material-icons">
+    <div class="container ps-4 my-4"><span class="backBtn material-icons">
             chevron_left
         </span></div>
     <div class="body row justify-content-center payment-row">

@@ -5,6 +5,7 @@ var loadingContainer = document.querySelector("div#loading");
 var rateColumns = document.querySelectorAll("div.rate-column");
 var modalTag = document.querySelector("div#modal");
 var modalBody = modalTag.querySelector("div#modal_body");
+var isModalShown = false;
 var addProducts = function (arr) {
     var counter = 0, len = rateColumns.length;
     arr.forEach(function (obj) {
@@ -17,9 +18,16 @@ var addProducts = function (arr) {
         var rangeName = (range == "range") ? "(10 - 150)" : "";
         var type = (which == "crypto") ? (obj.type === "buy" ? "Buy" : "Sell") : "";
         var name = (which == "crypto") ? "Crypto (" + type + ") " + rangeName : obj.name;
+        var hidden = "", col = "col-8";
+        if (obj.msg === "not_found") {
+            name = (which == "crypto") ? "No " + type + " Crypto found " + rangeName + ", Add in settings" :
+                "No Giftcard found, Add in settings";
+            hidden = "d-none";
+            col = "col-12";
+        }
         var rowDiv = document.createElement("div");
         rowDiv.className = "row justify-content-between mt-3 px-4";
-        rowDiv.innerHTML = "<div class=\"col-7 text-muted text-left\">\n            <span class=\"d-inline-block product-name\">" + name + "</span>\n        </div>\n        <div class=\"col-2\">\n            <input which='" + which + "' type=\"number\" class=\"form-control admin-rate text-center\" id='" + id + "' value='" + price + "'>\n        </div>\n        <div class='spinner-border spinner-border-sm mt-2 text-primary d-none' aria-hidden='true' role='status' id=\"loader\"></div>\n        <span class=\"material-icons text-primary mt-2 d-none\" style=\"width: 24px;\" id=\"mark_icon\">done</span>";
+        rowDiv.innerHTML = "<div class=\"" + col + " text-muted text-left\">\n            <span class=\"d-inline-block product-name\">" + name + "</span>\n        </div>\n        <div class=\"col-2 " + hidden + "\">\n            <input which='" + which + "' type='number' class=\"form-control admin-rate text-center\" id='" + id + "' value='" + price + "'>\n        </div>\n        <div class='spinner-border spinner-border-sm mt-2 text-primary d-none' aria-hidden='true' role='status' id=\"loader\"></div>\n        <span class=\"material-icons text-primary mt-2 d-none\" style=\"width: 24px;\" id=\"mark_icon\">done</span>";
         var input = rowDiv.querySelector("input");
         input.onchange = function (event) {
             updatePrice(input, rowDiv, type.toLowerCase(), range);
@@ -30,7 +38,7 @@ var addProducts = function (arr) {
 };
 //update price function 
 var updatePrice = function (input, row, type, range) {
-    console.log(range);
+    // console.log(range);
     var which = input.getAttribute("which");
     var id = input.id;
     var price = input.value;
@@ -45,13 +53,13 @@ var updatePrice = function (input, row, type, range) {
             showModal(data, "text-danger");
         }
         loader.classList.add("d-none");
-    }, { which: which, id: id, price: price, type: type, range: range });
+    }, { which: which, id: id, price: price, type: type, range_to: range });
 };
 //get all rates
 (function () {
     Ajax.fetchPage("php/admin_data.php?which=rates", function (data) {
         var arr = JSON.parse(data);
-        console.log(arr);
+        // console.log(arr)
         var message = arr[0];
         if (message.toLowerCase().indexOf('success') != -1) {
             loadingContainer.classList.add("d-none");
@@ -63,7 +71,7 @@ var updatePrice = function (input, row, type, range) {
             showModal(message, "text-danger");
             setTimeout(function () {
                 hideModal();
-            }, 2000);
+            }, 1000);
         }
     });
 })();
@@ -75,9 +83,14 @@ var showModal = function (message, colorClass) {
     modal = new bootstrap.Modal(modalTag, {
         keyboard: false
     });
-    modal.show();
-    setTimeout(function () {
-        modal.hide();
-    }, 2000);
+    if (!isModalShown) {
+        modal.show();
+        setTimeout(function () {
+            modal.hide();
+        }, 2000);
+    }
 };
-var hideModal = function () { return modal.hide(); };
+var hideModal = function () {
+    modal.hide();
+    isModalShown = false;
+};

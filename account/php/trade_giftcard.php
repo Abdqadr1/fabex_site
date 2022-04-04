@@ -21,6 +21,8 @@ $sub_category = testInput($sub_category);
 $amount = testInput($amount);
 $total = testInput($total);
 
+$time = date("Y-m-d H:i:s a", time());
+
 
 if (
     !isset($_POST["act"]) || !isset($_POST["category"]) || !isset($_POST["sub_category"]) || !isset($_POST["amount"])
@@ -33,15 +35,15 @@ $dir = "trx_proof/";
 
 
 
-function buyGiftcard(&$conn, $amount, $price, $product_name)
+function buyGiftcard(&$conn, $amount, $price, $product_name, $time)
 {
     $uid = $_SESSION["id"];
     $email = $_SESSION["email"];
     $tx_id = getId($conn);
     $desc = "Bought " . $product_name;
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, type, status, which, email) 
-    VALUES ('$uid','$tx_id','$desc', '$amount', '$price','$product_name', 0,0,'giftcard', '$email')";
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, type, status, which, email, time) 
+    VALUES ('$uid','$tx_id','$desc', '$amount', '$price','$product_name', 0,0,'giftcard', '$email', '$time')";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;
@@ -54,7 +56,7 @@ function buyGiftcard(&$conn, $amount, $price, $product_name)
         exit("Something went wrong " . $conn->error);
     }
 }
-function sellGiftcard(&$conn, $amount, $price, $product_name)
+function sellGiftcard(&$conn, $amount, $price, $product_name, $time)
 {
     $uid = $_SESSION["id"];
     $email = $_SESSION["email"];
@@ -74,8 +76,8 @@ function sellGiftcard(&$conn, $amount, $price, $product_name)
         $account_name = mysqli_escape_string($conn, $_POST["account_name"]);
     }
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, type, status, bank_name, account_number, account_name,which, email) 
-    VALUES ('$uid','$tx_id','$desc', '$amount', '$price', '$product_name', 1,0, '$bank_name','$account_number','$account_name','giftcard', '$email')";
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, type, status, bank_name, account_number, account_name,which, email, time) 
+    VALUES ('$uid','$tx_id','$desc', '$amount', '$price', '$product_name', 1,0, '$bank_name','$account_number','$account_name','giftcard', '$email', '$time')";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;
@@ -93,10 +95,10 @@ echo json_encode($_POST);
 
 switch ($action) {
     case "buy":
-        buyGiftcard($conn, $total, $amount, $category);
+        buyGiftcard($conn, $total, $amount, $category, $time);
         break;
     case "sell":
-        sellGiftcard($conn, $total, $amount, $category);
+        sellGiftcard($conn, $total, $amount, $category, $time);
         break;
     default:
         echo "This action is not supported.";

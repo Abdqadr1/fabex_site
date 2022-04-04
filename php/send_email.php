@@ -5,7 +5,11 @@ function sendEmail(string $type, string $link, string $to, mysqli $conn, string 
 {
     $headers = "From: Fabex <notification@fabex.com>\r\n";
     $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/html;charset=utf-8\r\n";
+    $headers .= "Content-Type: text/html;charset=iso-8859-1\r\n";
+    $headers .= "X-Priority: 1\r\n";
+    $headers .= "X-MSMail-Priority: High\r\n";
+    $headers .= "Importance: High\r\n";
+    $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
     if ($type == "register") {
         $message = file_get_contents("../verify_email_template.php");
         $subject = "Confirm your email";

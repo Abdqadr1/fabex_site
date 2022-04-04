@@ -31,6 +31,7 @@ $asset = testInput($asset);
 $amount = testInput($amount);
 $total = testInput($total);
 $product_id = testInput($product_id);
+$time = date("Y-m-d H:i:s a", time());
 
 if ($amount < 10) {
     exit("The minimum amount allowed is $10");
@@ -38,7 +39,7 @@ if ($amount < 10) {
 
 $dir = "trx_proof/";
 
-function buyCrypto(&$conn, $amount, $total, $product_name, $product_id)
+function buyCrypto(&$conn, $amount, $total, $product_name, $product_id, $time)
 {
     if (!isset($_POST["address"]) || !isset($_POST["network"]) || !isset($_POST["memo"])) {
         exit("Incomplete parameters");
@@ -57,8 +58,8 @@ function buyCrypto(&$conn, $amount, $total, $product_name, $product_id)
     $tx_id = getId($conn);
     $desc = "Bought " . $product_name;
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, type, status, network, wallet_address,which, memo, email) 
-    VALUES ('$uid','$tx_id','$desc', '$total', '$amount','$product_name', 0,0, '$network','$address','crypto', '$memo', '$email')";
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price, product, type, status, network, wallet_address,which, memo, email, time) 
+    VALUES ('$uid','$tx_id','$desc', '$total', '$amount','$product_name', 0,0, '$network','$address','crypto', '$memo', '$email', '$time')";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;
@@ -71,7 +72,7 @@ function buyCrypto(&$conn, $amount, $total, $product_name, $product_id)
     }
 }
 
-function sellCrypto(&$conn, $amount, $total, $product_name, $product_id)
+function sellCrypto(&$conn, $amount, $total, $product_name, $product_id, $time)
 {
     $uid = $_SESSION["id"];
     $email = $_SESSION["email"];
@@ -91,8 +92,8 @@ function sellCrypto(&$conn, $amount, $total, $product_name, $product_id)
         $account_name = mysqli_escape_string($conn, $_POST["account_name"]);
     }
     // insert into transactions
-    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, type, status, bank_name, account_number, account_name, which, email) 
-    VALUES ('$uid','$tx_id','$desc', '$total', '$amount', '$product_name', 1,0, '$bank_name','$account_number','$account_name','crypto', '$email')";
+    $sql = "INSERT INTO trx_history (u_id, tx_id, descrip, amount, price,product, type, status, bank_name, account_number, account_name, which, email, time) 
+    VALUES ('$uid','$tx_id','$desc', '$total', '$amount', '$product_name', 1,0, '$bank_name','$account_number','$account_name','crypto', '$email','$time')";
     $res = $conn->query($sql);
     if ($res === true) {
         $_SESSION['tx_id'] = $tx_id;
@@ -108,10 +109,10 @@ function sellCrypto(&$conn, $amount, $total, $product_name, $product_id)
 
 switch ($action) {
     case "buy":
-        buyCrypto($conn, $amount, $total, $asset, $product_id);
+        buyCrypto($conn, $amount, $total, $asset, $product_id, $time);
         break;
     case "sell":
-        sellCrypto($conn, $amount, $total, $asset, $product_id);
+        sellCrypto($conn, $amount, $total, $asset, $product_id, $time);
         break;
     default:
         echo "This action is not supported.";

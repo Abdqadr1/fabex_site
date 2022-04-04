@@ -53,7 +53,7 @@ include_once "header.php"; ?>
                 <div class="details my-3  row p-2 rounded border paybg">
                     <div class="col-8 p-0">
                         <span class="d-block title">Network</span>
-                        <span class="value"><?php echo $network; ?></span>
+                        <span class="value"><?php echo strtoupper($network);  ?></span>
                     </div>
                 </div>
                 <div class="details my-3 row p-2 rounded border justify-content-between paybg">

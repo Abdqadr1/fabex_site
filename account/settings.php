@@ -1,4 +1,4 @@
-<div class="container pl-5 my-4">
+<div class="container ps-4 my-4">
     <span class="backBtn material-icons d-none" id="backbtn">
         chevron_left
     </span>

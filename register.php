@@ -44,7 +44,7 @@
                     <div class="form-check no-margin px-md-3">
                         <input name="agree" class="form-check-input mx-3" type="checkbox" id="flexCheckChecked" required>
                         <label class="form-check-label" for="flexCheckChecked" style="max-width: 80%;">
-                            I agree to the terms, conditions and privacy policy
+                            I agree to the <a href="terms">terms, conditions</a> and <a href="privacy">privacy policy</a>
                         </label>
                     </div>
                     <div class="row justify-content-center">

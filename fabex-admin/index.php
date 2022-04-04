@@ -1,4 +1,13 @@
 <?php
+
+session_start();
+if (
+    !isset($_SESSION["username"]) || !isset($_SESSION["admin_id"])
+    || empty($_SESSION["username"]) || empty($_SESSION["admin_id"])
+) {
+    header("location: login");
+}
+
 include "header.php"; ?>
 
 <body>

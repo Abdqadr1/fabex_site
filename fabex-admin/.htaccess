@@ -2,12 +2,10 @@ RewriteEngine On    # Turn on the rewriting engine
 
 RewriteRule    ^dashboard/?$    index.php    [NC,L]   
 RewriteRule    ^logout/?$    logout.php    [NC,L] 
+RewriteRule    ^login/?$    login.php    [NC,L] 
 
 ## Protect directory
-AuthName "Admin file"
-AuthType Basic
-AuthUserFile C:\xampp\htdocs\fabex\fabex-admin\.htpasswd
-Require valid-user
+
 
 ## Redirect non existting pages to profile.php
 Options +SymLinksIfOwnerMatch

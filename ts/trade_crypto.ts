@@ -42,8 +42,8 @@ const act = tradeCryptoForm.querySelector("input#hidden") as HTMLInputElement;
 const amountParagraph = tradeCryptoForm.querySelector("p#amount") as HTMLParagraphElement;
 const networkSelect = tradeCryptoForm.querySelector("select#network") as HTMLSelectElement;
 
-amountInput.onkeyup = event => changeAmount();
-amountInput.onpaste = () => changeAmount();
+amountInput.oninput = () => changeAmount();
+
 const changeAmount = () => {
     let price:number = Number(priceInput.value);
     const lowPrice:number = Number(lowPriceInput.value);

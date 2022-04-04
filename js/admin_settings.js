@@ -54,9 +54,11 @@ var findIndex = function (arr, id) {
 var writeNetwork = function (type, value, index) {
     if (type === "buy") {
         buyNetworks[index] = value;
+        console.log(buyNetworks);
     }
     else {
         sellNetworks[index] = value;
+        console.log(sellNetworks);
     }
 };
 buyNetwork1Input.onkeyup = function () {
@@ -268,7 +270,7 @@ var submitSubGiftCard = function (form, subCatDiv) {
             var deleteAction = div_1.querySelector("span#delete");
             var editAction = div_1.querySelector("span#edit");
             editAction.onclick = function () { return showEdit("giftcard", content_1); };
-            deleteAction.onclick = function () { return deleteProduct("giftcard", div_1, content_1[0]); };
+            deleteAction.onclick = function () { return deleteProduct("giftcard", div_1, content_1[0], "sub_category"); };
             input.onchange = function (event) { return toggleProduct(event, 'giftcard'); };
             subCatDiv.appendChild(div_1);
             form.reset();
@@ -303,7 +305,7 @@ var addGiftCardFun = function (content, children) {
     var deleteAction = each.querySelector("span#delete");
     var editAction = each.querySelector("span#edit");
     editAction.onclick = function () { return showEdit("giftcard", content); };
-    deleteAction.onclick = function () { return deleteProduct("giftcard", div, id); };
+    deleteAction.onclick = function () { return deleteProduct("giftcard", div, id, "category"); };
     input.onchange = function (event) { return toggleProduct(event, 'giftcard'); };
     var subCatDiv = document.createElement("div");
     subCatDiv.id = "sub_cat_div";
@@ -322,7 +324,7 @@ var addGiftCardFun = function (content, children) {
             var deleteAction = div.querySelector("span#delete");
             var editAction = div.querySelector("span#edit");
             editAction.onclick = function () { return showEdit("giftcard", cat); };
-            deleteAction.onclick = function () { return deleteProduct("giftcard", div, id); };
+            deleteAction.onclick = function () { return deleteProduct("giftcard", div, cat[0], "sub_category"); };
             input.onchange = function (event) { return toggleProduct(event, 'giftcard'); };
             subCatDiv.appendChild(div);
         });
@@ -506,6 +508,7 @@ var updateProduct = function (which, modal, data, type) {
 //delete product
 var deleteProduct = function (which, el, id, type) {
     if (type === void 0) { type = "null"; }
+    console.log(id, type);
     if (confirm("Delete " + which + ", Are you sure?")) {
         var parent_1 = el.parentElement;
         console.log(id);
@@ -551,17 +554,13 @@ var getAllBuyCryptos = function () {
         else {
             buyCryptoLoading.classList.add("d-none");
             buyCryptoDiv.classList.remove("d-none");
-            showModal(data, "text-danger");
-            setTimeout(function () {
-                hideModal();
-            }, 2000);
         }
     });
 };
 var getAllSellCryptos = function () {
     Ajax.fetchPage("php/admin_data.php?which=sell_crypto", function (data) {
         var object = JSON.parse(data);
-        console.log(object);
+        // console.log(object)
         var keys = Object.keys(object);
         var message = keys[0];
         if (message.toLowerCase().indexOf('success') != -1) {
@@ -576,10 +575,6 @@ var getAllSellCryptos = function () {
         else {
             sellCryptoLoading.classList.add("d-none");
             sellCryptoDiv.classList.remove("d-none");
-            showModal(data, "text-danger");
-            setTimeout(function () {
-                hideModal();
-            }, 2000);
         }
     });
 };
@@ -589,9 +584,9 @@ var getAllGiftcards = function () {
         allGiftcards = arr;
         var cat = arr[0];
         var subCat = arr[1];
-        if (data.toLowerCase().indexOf('No giftcard.') != -1) {
+        if (data.toLowerCase().indexOf('no giftcard.') != -1) {
             giftcardLoading.classList.add("d-none");
-            showModal(data, "text-danger");
+            giftcardDiv.classList.remove("d-none");
         }
         else {
             if (cat.length > 0) {

@@ -11,7 +11,7 @@ if (!isset($_SESSION['id']) || empty($_SESSION['id'])) {
 $id = $_SESSION['id'];
 
 $r_time = $conn->query("SELECT CURRENT_TIMESTAMP()");
-$current_time = $r_time->fetch_array()[0];
+$current_time = date("Y-m-d H:i:s a", time());
 
 function getStatusColor($stat)
 {

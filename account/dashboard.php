@@ -58,7 +58,7 @@
                 <div class='spinner-border spinner-border-sm text-primary' aria-hidden='true' role='status' style='width:4em;height:4em;'></div>
             </div>
             <div class="row justify-content-center my-5 no-margin d-none" id="no-history">
-                <div class="col-6 text-center">
+                <div class="col-12 col-md-6 text-center">
                     <span class="material-icons rounded-pill no-history">
                         sync_alt
                     </span>

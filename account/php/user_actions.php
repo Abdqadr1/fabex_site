@@ -85,9 +85,10 @@ class User
         $verify_url = $verify_url . $code;
         $email_query = "SELECT email FROM users WHERE email = '{$this->email}'";
         $email_result = $conn->query($email_query);
+        $time = date("Y-m-d H:i:s a", time());
         $register_query =
-            "INSERT INTO users (fname, lname, email, pword, phone, v_code) 
-            VALUES ('{$this->fname}', '{$this->lname}', '{$this->email}', '{$this->pword}', '{$this->phone}', '$code')";
+            "INSERT INTO users (fname, lname, email, pword, phone, v_code, time) 
+            VALUES ('{$this->fname}', '{$this->lname}', '{$this->email}', '{$this->pword}', '{$this->phone}', '$code', '$time')";
         if ($email_result->num_rows > 0) {
             // output data of each row
             echo "Email already exists!";

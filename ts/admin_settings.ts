@@ -59,8 +59,10 @@ const findIndex = (arr: [][], id: number) => {
 const writeNetwork = (type: string, value:string, index:number) => {
     if (type === "buy") {
         buyNetworks[index] = value;
+        console.log(buyNetworks);
     } else {
         sellNetworks[index] = value;
+        console.log(sellNetworks)
     }
 }
 buyNetwork1Input.onkeyup = () => {
@@ -292,7 +294,7 @@ const submitSubGiftCard = (form: HTMLFormElement, subCatDiv:HTMLDivElement) => {
             const deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
             const editAction = div.querySelector("span#edit") as HTMLSpanElement;
             editAction.onclick = () => showEdit("giftcard", content);
-            deleteAction.onclick = () => deleteProduct("giftcard", div, content[0]);
+            deleteAction.onclick = () => deleteProduct("giftcard", div, content[0], "sub_category");
             input.onchange = event => toggleProduct(event, 'giftcard');
             subCatDiv.appendChild(div);
             form.reset();
@@ -338,7 +340,7 @@ const addGiftCardFun = (content: any[], children: any[]) => {
     let deleteAction = each.querySelector("span#delete") as HTMLSpanElement;
     let editAction = each.querySelector("span#edit") as HTMLSpanElement;
     editAction.onclick = () => showEdit("giftcard", content);
-    deleteAction.onclick = () => deleteProduct("giftcard", div, id);
+    deleteAction.onclick = () => deleteProduct("giftcard", div, id, "category");
     input.onchange = event => toggleProduct(event, 'giftcard');
     const subCatDiv = document.createElement("div") as HTMLDivElement;
     subCatDiv.id = "sub_cat_div";
@@ -367,7 +369,7 @@ const addGiftCardFun = (content: any[], children: any[]) => {
             let deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
             let editAction = div.querySelector("span#edit") as HTMLSpanElement;
             editAction.onclick = () => showEdit("giftcard", cat);
-            deleteAction.onclick = () => deleteProduct("giftcard", div, id);
+            deleteAction.onclick = () => deleteProduct("giftcard", div, cat[0], "sub_category");
             input.onchange = event => toggleProduct(event, 'giftcard');
             subCatDiv.appendChild(div);
         })
@@ -562,6 +564,7 @@ const updateProduct = (which: string, modal: HTMLDivElement, data: any[], type:s
 
 //delete product
 const deleteProduct = (which: string, el: HTMLSpanElement, id: number, type: string = "null") => {
+    console.log(id, type);
     if (confirm(`Delete ${which}, Are you sure?`)) {
         const parent = el.parentElement as HTMLDivElement;
         console.log(id);
@@ -607,17 +610,13 @@ const getAllBuyCryptos = () => {
         } else {
             buyCryptoLoading.classList.add("d-none");
             buyCryptoDiv.classList.remove("d-none");
-            showModal(data, "text-danger");
-            setTimeout(() => {
-                hideModal();
-            }, 2000);
         }
     }); 
 }
 const getAllSellCryptos = () => {
     Ajax.fetchPage("php/admin_data.php?which=sell_crypto", (data: string) => {
         const object: { success: [][] } = JSON.parse(data);
-        console.log(object)
+        // console.log(object)
         const keys = Object.keys(object);
         const message: string = keys[0];
         if (message.toLowerCase().indexOf('success') != -1) {
@@ -631,10 +630,6 @@ const getAllSellCryptos = () => {
         } else {
             sellCryptoLoading.classList.add("d-none");
             sellCryptoDiv.classList.remove("d-none");
-            showModal(data, "text-danger");
-            setTimeout(() => {
-                hideModal();
-            }, 2000);
         }
     }); 
 }
@@ -644,9 +639,9 @@ const getAllGiftcards = () => {
         allGiftcards = arr;
         const cat:[] = arr[0];
         const subCat:[] = arr[1];
-        if (data.toLowerCase().indexOf('No giftcard.') != -1) {
+        if (data.toLowerCase().indexOf('no giftcard.') != -1) {
             giftcardLoading.classList.add("d-none");
-            showModal(data, "text-danger");
+            giftcardDiv.classList.remove("d-none");
         } else {
             if (cat.length > 0) {
                 cat.forEach((category: any[]) => {
