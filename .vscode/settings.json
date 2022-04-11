@@ -2,6 +2,7 @@
   "cSpell.words": [
     "accountnumber",
     "Adeleye",
+    "Alat",
     "backbtn",
     "bankname",
     "changepass",
@@ -9,11 +10,9 @@
     "currentpass",
     "Kuda",
     "lastname",
-    "newpass", 
-    "Wema",
-    "Alat"
+    "newpass",
+    "topten",
+    "Wema"
   ],
-  "cSpell.ignoreWords": [
-    "descrip"
-  ]
+  "cSpell.ignoreWords": ["descrip"]
 }

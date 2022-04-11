@@ -4,7 +4,6 @@ $_SESSION = array();
 include_once "header.php"; ?>
 
 <body>
-    <?php echo password_hash("Mrfabex1960.$$", PASSWORD_DEFAULT); ?>
 
     <div class="body no-margin">
         <div class="row justify-content-center mt-5">

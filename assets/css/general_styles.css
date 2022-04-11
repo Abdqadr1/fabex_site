@@ -822,4 +822,9 @@ a.best-giftcard:hover {
     color: var(--primary-color);
     font-size: 90px;
   }
+  div.top-rates {
+    height: auto;
+    max-height: max-content;
+    overflow-y: scroll;
+  }
 }

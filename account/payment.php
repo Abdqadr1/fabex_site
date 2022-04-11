@@ -49,7 +49,7 @@ include_once "header.php";
 </script>
 
 <body>
-    <div class="container-md pl-5 my-4 mx-auto"><span class="backBtn material-icons">
+    <div class="container pl-5 my-4 mx-auto"><span class="backBtn material-icons">
             chevron_left
         </span></div>
     <div class="body row justify-content-center payment-row">

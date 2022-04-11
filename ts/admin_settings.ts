@@ -288,13 +288,16 @@ const submitSubGiftCard = (form: HTMLFormElement, subCatDiv:HTMLDivElement) => {
                                     <ul class="dropdown-menu" aria-labelledby="dropdown">
                                         <li><span id='edit' class="dropdown-item text-primary">Edit</span></li>
                                         <li><span id='delete' class="dropdown-item text-danger">Delete</span></li>
+                                        <li><span id='toggle' class="dropdown-item text-secondary">Add To Top 10</span></li>
                                     </ul>
                                 </div>`;
             const input = div.querySelector("input") as HTMLInputElement;
             const deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
             const editAction = div.querySelector("span#edit") as HTMLSpanElement;
+            const toggleAction = div.querySelector("span#toggle") as HTMLSpanElement;
             editAction.onclick = () => showEdit("giftcard", content);
             deleteAction.onclick = () => deleteProduct("giftcard", div, content[0], "sub_category");
+            toggleAction.onclick = () => toggleTopTen(content[0], 0, toggleAction);
             input.onchange = event => toggleProduct(event, 'giftcard');
             subCatDiv.appendChild(div);
             form.reset();
@@ -351,6 +354,8 @@ const addGiftCardFun = (content: any[], children: any[]) => {
         subCatDiv.appendChild(span);
         children.forEach((cat: any[]) => {
             const checked = cat[3] == 1 ? true : false;
+            const isTop10 = cat[5] == 1 ? true : false;
+            const tenName = isTop10 ? "Remove From" : "Add To";
             const div = document.createElement("div") as HTMLDivElement
             div.className = "inline-block mt-2";
             div.innerHTML = `<span id='${cat[0]}' class="d-inline-block crypto-name">${cat[1]}</span>
@@ -362,14 +367,17 @@ const addGiftCardFun = (content: any[], children: any[]) => {
                                     <ul class="dropdown-menu" aria-labelledby="dropdown">
                                         <li><span id='edit' class="dropdown-item text-primary">Edit</span></li>
                                         <li><span id='delete' class="dropdown-item text-danger">Delete</span></li>
+                                        <li><span id='toggle' class="dropdown-item text-secondary">${tenName} Top 10</span></li>
                                     </ul>
                                 </div>`;
             const input = div.querySelector("input") as HTMLInputElement;
             input.checked = checked;   
             let deleteAction = div.querySelector("span#delete") as HTMLSpanElement;
             let editAction = div.querySelector("span#edit") as HTMLSpanElement;
+            let toggleAction = div.querySelector("span#toggle") as HTMLSpanElement;
             editAction.onclick = () => showEdit("giftcard", cat);
             deleteAction.onclick = () => deleteProduct("giftcard", div, cat[0], "sub_category");
+            toggleAction.onclick = () => toggleTopTen(cat[0], cat[5], toggleAction);
             input.onchange = event => toggleProduct(event, 'giftcard');
             subCatDiv.appendChild(div);
         })
@@ -728,4 +736,28 @@ const showBanks = () => {
         banksTableBody.innerHTML = `<td class='text-center text-danger' colspan='5'>No bank account found!</td>`; 
     }
     
+}
+
+
+// for adding and removing giftcard sub categories from the top 10
+function toggleTopTen(id:number, prevState:number, el: HTMLSpanElement): void {
+    Ajax.fetchPage(`php/admin_data.php?which=toggle_ten`, (data: string) => {
+        const response: {message:string} = JSON.parse(data);
+        if (response.message.indexOf("success") != -1) {
+            showModal(response.message)
+            let text, newState:number;
+            if (prevState === 1) {
+                text = "Add To"
+                newState = 0;
+            } else {
+                text = "Remove From";
+                newState = 1
+            }
+            el.innerHTML = `${text} Top 10`;
+            el.onclick = () => toggleTopTen(id, newState, el);
+        } else {
+            showModal(response.message, 'text-danger')
+            console.error(response.message);
+        }
+    }, {id, prevState})
 }

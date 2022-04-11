@@ -21,7 +21,7 @@ $rates = array();
 
 // get giftcards rates
 
-$g_sql = "SELECT name, price FROM giftcards WHERE type='sub_category' LIMIT 10";
+$g_sql = "SELECT name, price FROM giftcards WHERE type='sub_category' AND topten=1 AND price>0 LIMIT 10";
 $g_res = $conn->query($g_sql);
 $arr = array();
 if ($g_res == true && $g_res->num_rows > 0) {

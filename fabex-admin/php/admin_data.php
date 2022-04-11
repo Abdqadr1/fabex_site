@@ -14,8 +14,9 @@ function getBanks(mysqli &$conn)
         $row = $result->fetch_all();
         echo json_encode(array("Success", $row));
     } else {
-        exit("Something went wrong");
+        echo ("Something went wrong");
     }
+    $conn->close();
 };
 
 function getSellCryptos(mysqli &$conn)
@@ -31,8 +32,9 @@ function getSellCryptos(mysqli &$conn)
         }
         echo json_encode(array("success" => $array));
     } else {
-        exit("Something went wrong");
+        echo ("Something went wrong");
     }
+    $conn->close();
 }
 
 function getBuyCryptos(mysqli &$conn)
@@ -48,8 +50,9 @@ function getBuyCryptos(mysqli &$conn)
         }
         echo json_encode(array("success" => $array));
     } else {
-        exit(json_encode("No buy crypto found"));
+        echo (json_encode("No buy crypto found"));
     }
+    $conn->close();
 }
 
 function getGiftcards(mysqli &$conn)
@@ -65,14 +68,14 @@ function getGiftcards(mysqli &$conn)
             $status = $row['status'];
             $arr = array($parent_id, $name, "category", $status);
             array_push($cat, $arr);
-            $query = "SELECT id, name, status FROM giftcards WHERE parent='$parent_id'";
+            $query = "SELECT id, name, status, topten FROM giftcards WHERE parent='$parent_id'";
             $res = $conn->query($query);
             if ($res == true && $res->num_rows > 0) {
                 while ($roww = $res->fetch_assoc()) {
                     $id = $roww['id'];
                     $childName = $roww["name"];
                     $stat = $roww['status'];
-                    array_push($sub_cat, array($id, $childName, "sub_category", $stat, $parent_id));
+                    array_push($sub_cat, array($id, $childName, "sub_category", $stat, $parent_id, $roww['topten']));
                 }
             } else {
                 array_push($sub_cat, array());
@@ -80,8 +83,9 @@ function getGiftcards(mysqli &$conn)
         }
         echo json_encode(array($cat, $sub_cat));
     } else {
-        exit("No giftcard.");
+        echo ("No giftcard.");
     }
+    $conn->close();
 }
 
 function getRates(mysqli &$conn)
@@ -125,6 +129,7 @@ function getRates(mysqli &$conn)
     }
 
     echo json_encode(array("success", $arr));
+    $conn->close();
 }
 
 function getAllOrders(mysqli &$conn, string $which)
@@ -163,6 +168,7 @@ function getAllOrders(mysqli &$conn, string $which)
         array_push($arr, "type: " . $type, "action: " . $action, "status: " . $status);
         echo (json_encode(array("No transaction found for the search queries \n\n" . json_encode($arr), $arr)));
     }
+    $conn->close();
 }
 
 function deleteBank(mysqli &$conn)
@@ -181,8 +187,36 @@ function deleteBank(mysqli &$conn)
     } else {
         echo "Invalid parameters";
     }
+    $conn->close();
 }
+
+function toggleTen(mysqli &$conn)
+{
+    $headers = getallheaders();
+    if (!isset($headers["prevState"]) || !isset($headers['id']) || empty($headers["id"])) {
+        $conn->close();
+
+        exit(json_encode(array("message" => "No previous state or id included")));
+    }
+    $prev = $conn->real_escape_string($headers["prevState"]);
+    $id = $conn->real_escape_string($headers["id"]);
+    $prev = testInput($prev);
+    $id = testInput($id);
+    $new = $prev == 1 ? 0 : 1;
+    $sql = "UPDATE giftcards SET topten='$new' WHERE id='$id'";
+    if ($conn->query($sql)) {
+        $msg = $new === 1 ? "added to" : "removed from";
+        echo (json_encode(array("message" => "giftcard $msg top 10 successfully")));
+    } else {
+        $msg = $new === 1 ? " adding giftcard to " : " removing giftcard from ";
+        echo (json_encode(array("message" => "something went wrong $msg top 10.Try again")));
+    }
+}
+
+
 switch ($which) {
+    case "toggle_ten":
+        return toggleTen($conn);
     case "bank":
         return getBanks($conn);
     case "deleteBank":
