@@ -30,7 +30,6 @@ if ($g_res == true && $g_res->num_rows > 0) {
     };
 } else {
     array_push($arr, array("No giftcard yet.. Contact Admin"));
-    $conn->close();
 }
 echo json_encode($arr);
 $conn->close();

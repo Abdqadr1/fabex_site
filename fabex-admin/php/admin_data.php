@@ -193,12 +193,12 @@ function deleteBank(mysqli &$conn)
 function toggleTen(mysqli &$conn)
 {
     $headers = getallheaders();
-    if (!isset($headers["prevState"]) || !isset($headers['id']) || empty($headers["id"])) {
+    if (!isset($headers["prevstate"]) || !isset($headers['id']) || empty($headers["id"])) {
         $conn->close();
 
         exit(json_encode(array("message" => "No previous state or id included")));
     }
-    $prev = $conn->real_escape_string($headers["prevState"]);
+    $prev = $conn->real_escape_string($headers["prevstate"]);
     $id = $conn->real_escape_string($headers["id"]);
     $prev = testInput($prev);
     $id = testInput($id);
