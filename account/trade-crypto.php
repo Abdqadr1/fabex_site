@@ -52,9 +52,9 @@ include_once "header.php"; ?>
                         </select>
                     </div>
                     <!-- Memo -->
-                    <div class="for-buy d-none">
+                    <div class="for-buy d-none" id="memoDiv">
                         <label for="memo" class="form-label mb-1 mt-3">Memo</label>
-                        <input name="memo" type="text" class="form-control form-control-lg buyInput" id="memo" placeholder="Enter memo">
+                        <input name="memo" type="text" class="form-control form-control-lg buyInput" id="memo" placeholder="Enter memo" required>
                     </div>
                 </div>
 

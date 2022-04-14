@@ -220,7 +220,6 @@ var showTransactionDetails = function (order) {
         var For = child.getAttribute("for");
         var el = child.querySelector("div#" + For);
         var val = order[For || ""];
-        console.log(val);
         if (val === undefined || val === null || val === "") {
             child.classList.add("d-none");
         }
@@ -229,7 +228,6 @@ var showTransactionDetails = function (order) {
             if (For === "proof") {
                 el.innerHTML = "";
                 var str = order[For];
-                console.log(str);
                 if (str !== "") {
                     var url_1 = "../account/php/";
                     var images = str.split(",");

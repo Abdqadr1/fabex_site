@@ -33,7 +33,7 @@ include_once "header.php"; ?>
                 <div class="mt-3">
                     <label for="subCategory" class="form-label">Sub Category</label>
                     <select name="sub_category" class="form-select rad8" id="subCategory" aria-id="0" required>
-                        <option value="" selected hidden>Select sub...</option>
+                        <option selected hidden>Select sub category...</option>
                     </select>
                 </div>
 
@@ -53,8 +53,8 @@ include_once "header.php"; ?>
                     <!-- bank name -->
                     <div class="mt-3 for-sell bank">
                         <label for="bankName" class="form-label">Bank Name</label>
-                        <select name="bank_name" class="form-select rad8 sell-input" id="bankName" disabled>
-                            <option value="" selected disabled hidden>Select Bank Name</option>
+                        <select name="bank_name" class="form-select rad8 sell-input" id="bankName" disabled required>
+                            <option selected disabled hidden>Select Bank Name</option>
                         </select>
                     </div>
                     <!-- account number -->
@@ -66,7 +66,6 @@ include_once "header.php"; ?>
                     <div class="for-sell bank">
                         <label for="accountName" class="form-label mb-1 mt-3">Account name</label>
                         <input name="account_name" type="text" class="form-control form-control-lg sell-input" id="accountName" placeholder="Enter account name" required disabled>
-
                     </div>
                 </div>
                 <input type="hidden" name="act" id="hidden" value="buy">

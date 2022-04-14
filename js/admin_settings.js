@@ -24,8 +24,6 @@ var allSellNetworksInput = addSellCryptoForm.querySelector("input#all_networks")
 var addBankForm = document.querySelector("form#addBankForm");
 var addBankSubmitBtn = addBankForm.querySelector("button");
 var bankSelect = addBankForm.querySelector("select#bankname");
-var accountName = addBankForm.querySelector("input#accountname");
-var accountNumber = addBankForm.querySelector("input#accountnumber");
 var bankErrorDiv = addBankForm.querySelector('div#errorDiv');
 var bankSuccessDiv = addBankForm.querySelector("div#successDiv");
 var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>\n                Please wait... ";
@@ -54,18 +52,16 @@ var findIndex = function (arr, id) {
 var writeNetwork = function (type, value, index) {
     if (type === "buy") {
         buyNetworks[index] = value;
-        console.log(buyNetworks);
     }
     else {
         sellNetworks[index] = value;
-        console.log(sellNetworks);
     }
 };
-buyNetwork1Input.onkeyup = function () {
+buyNetwork1Input.oninput = function () {
     writeNetwork("buy", buyNetwork1Input.value, 0);
     allBuyNetworksInput.value = buyNetworks.join(",");
 };
-sellNetwork1Input.onkeyup = function () {
+sellNetwork1Input.oninput = function () {
     writeNetwork("sell", sellNetwork1Input.value, 0);
     allSellNetworksInput.value = sellNetworks.join(",");
 };
@@ -76,7 +72,7 @@ addNetworkBuy.onclick = function () {
     newNode.innerHTML =
         " <label for=\"network1\" class=\"form-label\">Network " + (no + 1) + "</label>\n    <input id=\"network" + (no + 1) + "\" name=\"network" + (no + 1) + "\" type=\"text\" class=\"form-control form-control-lg rad8\" placeholder=\"Enter Network " + (no + 1) + "\">";
     var input = newNode.querySelector("input");
-    input.onkeyup = function () {
+    input.oninput = function () {
         writeNetwork("buy", input.value, no);
         allBuyNetworksInput.value = buyNetworks.join(",");
     };
@@ -90,7 +86,7 @@ addNetworkSell.onclick = function () {
     newNode.innerHTML =
         " <label for=\"network1\" class=\"form-label\">Network " + (no + 1) + "</label>\n    <input id=\"network" + (no + 1) + "\" name=\"network" + (no + 1) + "\" type=\"text\" class=\"form-control form-control-lg rad8\" placeholder=\"Enter Network " + (no + 1) + "\">";
     var input = newNode.querySelector("input");
-    input.onkeyup = function () {
+    input.oninput = function () {
         writeNetwork("sell", input.value, no);
         allSellNetworksInput.value = sellNetworks.join(",");
     };
@@ -173,7 +169,7 @@ addSellCryptoForm.onsubmit = function (event) {
         addSellCryptoSubmitBtn.innerHTML = spinner;
     });
     aj.setAfter(function (responseText) {
-        console.log(responseText);
+        // console.log(responseText)
         var arr = JSON.parse(responseText);
         var message = arr[0];
         if (message.toLowerCase().indexOf("success") != -1) {

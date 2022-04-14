@@ -41,6 +41,11 @@
                     <label for="short_name" class="form-label">Acronym</label>
                     <input id="short_name" name="short_name" type="text" class="form-control form-control-lg rad8" placeholder="Short name" required>
                 </div>
+                <!-- memo -->
+                <div class="mt-3">
+                    <label for="memo" class="form-label">Memo</label>
+                    <input id="memo" name="memo" type="text" class="form-control form-control-lg rad8" placeholder="Memo">
+                </div>
                 <!-- network -->
                 <div class="mt-3">
                     <label for="network1" class="form-label">Network 1</label>
@@ -105,7 +110,7 @@
                 <!-- memo -->
                 <div class="mt-3">
                     <label for="memo" class="form-label">Memo</label>
-                    <input id="memo" name="memo" type="text" class="form-control form-control-lg rad8" placeholder="Memo" required>
+                    <input id="memo" name="memo" type="text" class="form-control form-control-lg rad8" placeholder="Memo">
                 </div>
                 <!-- network -->
                 <div class="mt-3">

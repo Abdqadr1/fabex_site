@@ -32,6 +32,7 @@ if ($res->num_rows == 1) {
             $address = $r["address"];
             $acronym = $r["acronym"];
             $memo = $r["memo"];
+            if (empty($memo)) $memo = 'No memo';
         } else {
             exit("Error getting crypto details...");
         }

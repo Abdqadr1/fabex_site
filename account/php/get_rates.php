@@ -49,12 +49,12 @@ array_push($rates, $crypto_rates);
 
 // get giftcards rates
 
-$g_sql = "SELECT name, price FROM giftcards WHERE type='sub_category'";
+$g_sql = "SELECT name, buy_price, sell_price FROM giftcards WHERE type='sub_category' AND status=1";
 $g_res = $conn->query($g_sql);
 $arr = array();
 if ($g_res == true && $g_res->num_rows > 0) {
     while ($r = $g_res->fetch_assoc()) {
-        array_push($arr, array($r['name'], $r["price"]));
+        array_push($arr, array('name' => $r['name'], 'buy_price' => $r["buy_price"], 'sell_price' => $r['sell_price']));
     };
     array_push($rates, $arr);
 } else {

@@ -41,6 +41,7 @@ const errorDiv = tradeCryptoForm.querySelector("div#errorDiv") as HTMLDivElement
 const act = tradeCryptoForm.querySelector("input#hidden") as HTMLInputElement;
 const amountParagraph = tradeCryptoForm.querySelector("p#amount") as HTMLParagraphElement;
 const networkSelect = tradeCryptoForm.querySelector("select#network") as HTMLSelectElement;
+const memoDiv = tradeCryptoForm.querySelector("div#memoDiv") as HTMLDivElement;
 
 amountInput.oninput = () => changeAmount();
 
@@ -146,7 +147,7 @@ buttons.forEach(element => {
             act.value = action
             cryptoButton.textContent = "Sell Crypto"
         }
-        changeNetworks((action=="buy" ? buyCryptos : sellCryptos))
+        populateAssets((action=="buy" ? buyCryptos : sellCryptos))
         const parent = element.parentElement as HTMLDivElement;
         const children = parent.children;
         for (var i = 0; i < children.length; i++) {
@@ -199,48 +200,57 @@ buttons.forEach(element => {
 assets.onchange = event => {
     const select = event.target as HTMLSelectElement;
     const children = select.children;
+    const array = (action === "buy") ? buyCryptos : sellCryptos;
     const crypto_name = select.value;
+    networkSelect.innerHTML = `<option value="" selected hidden>Select network...</option>`;
     for (let i = 0; i < children.length; i++){
         const child = children[i] as HTMLOptionElement;
-        if (child.value === crypto_name) {
+        if (child.value.toLowerCase() === crypto_name.toLowerCase()) {
             assets.setAttribute("aria-id", child.id);
             priceInput.value = child.getAttribute("price") as string;
             lowPriceInput.value = child.getAttribute("low_price") as string;
             productIdInput.value = child.id;
             changeAmount();
+            const obj = array.filter(el => el.id === child.id)[0];
+            if (obj.memo) memoDiv.className = 'for-buy'
+            else memoDiv.className = 'for-buy d-none';
+            const networks = array.filter(arr => arr.acronym.toLowerCase() === child.value.toLowerCase())
+            networks.forEach(net => {
+                const network = net.network.toUpperCase();
+                networkSelect.innerHTML += `<option id='${net.id}' value='${network}'>${network}</option>`;
+            })
         }
     }
 }
 
-const changeNetworks = (activeAssets: any[]) => {
-    networkSelect.innerHTML = `<option value="" selected hidden>Select network...</option>`;
+const populateAssets = (activeAssets: any[]) => {
     assets.innerHTML = `<option value="" selected hidden>Select coin...</option>`;
+    const insertedNames: any[] = [];
      if (activeAssets.length > 0) {
-            activeAssets.forEach((crypto: any) => {
-                const option = document.createElement("option");
-                option.innerText = crypto.name;
-                option.value = crypto.acronym;
-                option.id = crypto.id;
-                option.setAttribute("price", crypto.price);
-                option.setAttribute("low_price", crypto.low_price);
-                assets.appendChild(option);
-                const networkOption = document.createElement("option");
-                const network: string = crypto.network;
-                networkOption.innerText = network.toUpperCase();
-                networkOption.value = network.toUpperCase();
-                networkOption.id = crypto.id;
-                networkSelect.appendChild(networkOption);
-            })
-        } else {
+        activeAssets.forEach((crypto: any) => {
+        if (insertedNames.indexOf(crypto.acronym) == -1) {
             const option = document.createElement("option");
-            option.innerText = "No crypto available, contact admin";
-            option.disabled = true;
+            option.innerText = crypto.name;
+            option.value = crypto.acronym;
+            option.id = crypto.id;
+            option.setAttribute("price", crypto.price);
+            option.setAttribute("low_price", crypto.low_price);
             assets.appendChild(option);
-            const net = document.createElement("option");
-            net.innerText = "No network available";
-            net.disabled = true;
-            networkSelect.appendChild(net);
+            insertedNames.push(crypto.acronym);
         }
+            
+        })
+    } else {
+        const option = document.createElement("option");
+        option.innerText = "No crypto available, contact admin";
+        option.disabled = true;
+        assets.appendChild(option);
+        const net = document.createElement("option");
+        net.innerText = "No network available";
+        net.disabled = true;
+        networkSelect.innerHTML = `<option value="" selected hidden>Select network...</option>`;
+        networkSelect.appendChild(net);
+    }
 }
 
 //get all cryptos
@@ -256,7 +266,7 @@ const changeNetworks = (activeAssets: any[]) => {
         } else {
             activeAssets = sellCryptos
         }
-        changeNetworks(activeAssets);
+        populateAssets(activeAssets);
     })
 })()
 

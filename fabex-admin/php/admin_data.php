@@ -97,32 +97,29 @@ function getRates(mysqli &$conn)
     $bRes = $conn->query($bSql);
     if ($bRes == true && $bRes->num_rows > 0) {
         $bAll = $bRes->fetch_array();
-        array_push($arr, array("which" => "crypto", "price" => $bAll[0], "type" => "buy", "range" => "normal"));
-        array_push($arr, array("which" => "crypto", "price" => $bAll[1], "type" => "buy", "range" => "range"));
+        array_push($arr, array("which" => "crypto", "price" => $bAll[0], "low_price" => $bAll[1], "type" => "buy"));
     } else {
-        array_push($arr, array("msg" => "not_found", "which" => "crypto", "price" => "", "type" => "buy", "range" => "normal"));
-        array_push($arr, array("msg" => "not_found", "which" => "crypto", "price" => "", "type" => "buy", "range" => "range"));
+        array_push($arr, array("msg" => "not_found", "which" => "crypto", "price" => "", "type" => "buy"));
     }
     // get sell crypto price
     $sql = "SELECT price, low_price FROM sell_cryptos LIMIT 1";
     $res = $conn->query($sql);
     if ($res == true && $res->num_rows > 0) {
         $all = $res->fetch_array();
-        array_push($arr, array("which" => "crypto", "price" => $all[0], "type" => "sell", "range" => "normal"));
-        array_push($arr, array("which" => "crypto", "price" => $all[1], "type" => "sell", "range" => "range"));
+        array_push($arr, array("which" => "crypto", "price" => $all[0], "low_price" => $all[1], "type" => "sell"));
     } else {
-        array_push($arr, array("msg" => "not_found", "which" => "crypto", "price" => "", "type" => "sell", "range" => "normal"));
-        array_push($arr, array("msg" => "not_found", "which" => "crypto", "price" => "", "type" => "sell", "range" => "range"));
+        array_push($arr, array("msg" => "not_found", "which" => "crypto", "price" => "", "type" => "sell"));
     }
     //get giftcards prices
-    $query = "SELECT id, name, price FROM giftcards where type='sub_category'";
+    $query = "SELECT id, name, sell_price, buy_price FROM giftcards where type='sub_category'";
     $result = $conn->query($query);
     if ($result == true && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $id = $row['id'];
             $name = $row['name'];
-            $price = $row['price'];
-            array_push($arr, array("which" => "giftcard", "id" => $id, "name" => $name, "price" => $price));
+            $sell_price = $row['sell_price'];
+            $buy_price = $row['buy_price'];
+            array_push($arr, array("which" => "giftcard", "id" => $id, "name" => $name, "sell_price" => $sell_price, "buy_price" => $buy_price));
         }
     } else {
         array_push($arr, array("msg" => "not_found", "which" => "giftcard", "id" => "", "name" => "No giftcard found", "price" => ""));

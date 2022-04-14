@@ -72,7 +72,7 @@ const changeAmount = () => {
     if (price && amount && amount > 0 && price > 0) {
         const tot = Number(price * amount);
         totalInput.value = "" + tot.toFixed(2);
-        amountParagraph.innerText = "Total: " + numberFormatter.format(tot);
+        amountParagraph.innerText = `Total: ${numberFormatter.format(tot)} @ ${price}/$`;
     } else {
         totalInput.value = "";
         amountParagraph.innerText = "Total: N0";
@@ -93,7 +93,7 @@ tradeGiftcardForm.onsubmit = event => {
     event.preventDefault();
     hiddenInput.value = action;
     const act:string = action;
-    // console.log("submitting...")
+    console.log("submitting...", tradeGiftcardForm)
     const aj = new Ajax(tradeGiftcardForm as HTMLFormElement);
     aj.setTimer(timeoutFun, 120000);
     aj.setBefore(() => {
@@ -122,6 +122,7 @@ tradeGiftcardForm.onsubmit = event => {
 }
 
 toggleBank.onchange = (event) => {
+    console.log(toggleBank)
     if (toggleBank.checked) {
         bankField.forEach(element => {
             element.classList.remove("d-block");
@@ -144,11 +145,11 @@ actionButtons.forEach(element => {
         element.classList.add("active");
         if (element.classList.contains("buy")) {
             action = "buy";
-            giftcardButton.textContent = "Buy Crypto"
+            giftcardButton.textContent = "Buy Giftcard"
             
         } else {
             action = "sell";
-            giftcardButton.textContent = "Sell Crypto"
+            giftcardButton.textContent = "Sell Giftcard"
         }
         const parent = element.parentElement as HTMLDivElement;
         const children = parent.children;
@@ -191,8 +192,11 @@ actionButtons.forEach(element => {
                 //change ui 
             }
         }
-            
+        // reset categories and sub categories
+        categories.innerHTML += `<option selected="" hidden="">Select category...</option>`;
+        subCategories.innerHTML = `<option  selected="" hidden="">Select sub category...</option>`;
     }
+   
 })
 
 const banks = tradeGiftcardForm.querySelector("select#bankName") as HTMLSelectElement;
@@ -233,16 +237,17 @@ subCategories.onchange = event => {
 
 let cats: any[] = [];
 let subCats: any[] = [];
-const changeSub = (id:number) => {
-    const sub: any[] = subCats.filter(each => each.parent == id);
+const changeSub = (id: number) => {
+    const prop = action === 'buy' ? 'buy_price' : 'sell_price';
+    const sub: any[] = subCats.filter(each => each.parent == id && each[prop] > 0);
     // console.log(id, sub);
     if (sub.length > 0) {
-        subCategories.innerHTML = `<option value="" selected hidden>Select sub...</option>`;
+        subCategories.innerHTML = `<option value="" selected hidden>Select sub category...</option>`;
         sub.forEach(giftcard => {
             const option = document.createElement("option");
             option.innerText = giftcard.name;
             option.value = giftcard.name;
-            option.setAttribute("price", giftcard.price)
+            option.setAttribute("price", giftcard[prop])
             subCategories.appendChild(option);
         })
     } else {
@@ -263,7 +268,7 @@ const changeSub = (id:number) => {
         } 
         if (typeof el === "object") {
             cats = result.filter((each:any) => each.type === "category");
-            subCats = result.filter((each:any) => each.type === "sub_category" && each.price > 0);
+            subCats = result.filter((each:any) => each.type === "sub_category");
             cats.forEach(category => {
                 const option = document.createElement("option");
                 option.id = category.id;

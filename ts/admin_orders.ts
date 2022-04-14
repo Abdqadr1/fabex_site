@@ -218,7 +218,6 @@ const showTransactionDetails = (order: any) => {
         const For = child.getAttribute("for")
         const el = child.querySelector(`div#${For}`) as HTMLDivElement
         const val: string = order[For || ""];
-        console.log(val);
         if (val === undefined || val === null || val === "") {
             child.classList.add("d-none");
         } else {
@@ -226,7 +225,6 @@ const showTransactionDetails = (order: any) => {
             if (For === "proof") {
                 el.innerHTML = "";
                 const str: string = order[For];
-                console.log(str);
                 if (str !== "") {
                     const url = "../account/php/";
                     const images: string[] = str.split(",");

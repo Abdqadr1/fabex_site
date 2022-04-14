@@ -69,7 +69,7 @@ var changeAmount = function () {
     if (price && amount && amount > 0 && price > 0) {
         var tot = Number(price * amount);
         totalInput.value = "" + tot.toFixed(2);
-        amountParagraph.innerText = "Total: " + numberFormatter.format(tot);
+        amountParagraph.innerText = "Total: " + numberFormatter.format(tot) + " @ " + price + "/$";
     }
     else {
         totalInput.value = "";
@@ -89,7 +89,7 @@ tradeGiftcardForm.onsubmit = function (event) {
     event.preventDefault();
     hiddenInput.value = action;
     var act = action;
-    // console.log("submitting...")
+    console.log("submitting...", tradeGiftcardForm);
     var aj = new Ajax(tradeGiftcardForm);
     aj.setTimer(timeoutFun, 120000);
     aj.setBefore(function () {
@@ -119,6 +119,7 @@ tradeGiftcardForm.onsubmit = function (event) {
     aj.start();
 };
 toggleBank.onchange = function (event) {
+    console.log(toggleBank);
     if (toggleBank.checked) {
         bankField.forEach(function (element) {
             element.classList.remove("d-block");
@@ -141,11 +142,11 @@ actionButtons.forEach(function (element) {
         element.classList.add("active");
         if (element.classList.contains("buy")) {
             action = "buy";
-            giftcardButton.textContent = "Buy Crypto";
+            giftcardButton.textContent = "Buy Giftcard";
         }
         else {
             action = "sell";
-            giftcardButton.textContent = "Sell Crypto";
+            giftcardButton.textContent = "Sell Giftcard";
         }
         var parent = element.parentElement;
         var children = parent.children;
@@ -190,6 +191,9 @@ actionButtons.forEach(function (element) {
                 //change ui 
             }
         }
+        // reset categories and sub categories
+        categories.innerHTML += "<option selected=\"\" hidden=\"\">Select category...</option>";
+        subCategories.innerHTML = "<option  selected=\"\" hidden=\"\">Select sub category...</option>";
     };
 });
 var banks = tradeGiftcardForm.querySelector("select#bankName");
@@ -228,15 +232,16 @@ subCategories.onchange = function (event) {
 var cats = [];
 var subCats = [];
 var changeSub = function (id) {
-    var sub = subCats.filter(function (each) { return each.parent == id; });
+    var prop = action === 'buy' ? 'buy_price' : 'sell_price';
+    var sub = subCats.filter(function (each) { return each.parent == id && each[prop] > 0; });
     // console.log(id, sub);
     if (sub.length > 0) {
-        subCategories.innerHTML = "<option value=\"\" selected hidden>Select sub...</option>";
+        subCategories.innerHTML = "<option value=\"\" selected hidden>Select sub category...</option>";
         sub.forEach(function (giftcard) {
             var option = document.createElement("option");
             option.innerText = giftcard.name;
             option.value = giftcard.name;
-            option.setAttribute("price", giftcard.price);
+            option.setAttribute("price", giftcard[prop]);
             subCategories.appendChild(option);
         });
     }
@@ -258,7 +263,7 @@ var changeSub = function (id) {
         }
         if (typeof el === "object") {
             cats = result.filter(function (each) { return each.type === "category"; });
-            subCats = result.filter(function (each) { return each.type === "sub_category" && each.price > 0; });
+            subCats = result.filter(function (each) { return each.type === "sub_category"; });
             cats.forEach(function (category) {
                 var option = document.createElement("option");
                 option.id = category.id;

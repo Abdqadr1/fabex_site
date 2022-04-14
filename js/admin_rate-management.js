@@ -1,70 +1,104 @@
 import { Ajax } from "./ajax.js";
 var modal;
+var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>\n                Please wait... ";
 var adminRateDiv = document.querySelector("div#admin_rate");
+var buyDiv = document.querySelector("div#buyDiv");
+var sellDiv = document.querySelector("div#sellDiv");
 var loadingContainer = document.querySelector("div#loading");
-var rateColumns = document.querySelectorAll("div.rate-column");
 var modalTag = document.querySelector("div#modal");
 var modalBody = modalTag.querySelector("div#modal_body");
 var isModalShown = false;
+var applyBtn = document.querySelector("btn#applyBtn");
+var changes = [];
+applyBtn.onclick = function () {
+    var json = JSON.stringify(changes);
+    if (json.length > 2) {
+        updatePrice(json);
+    }
+};
 var addProducts = function (arr) {
-    var counter = 0, len = rateColumns.length;
-    arr.forEach(function (obj) {
-        var index = counter % len;
-        var parent = rateColumns[index];
+    arr.forEach(function (obj, index) {
         var which = obj.which;
-        var id = (which == "crypto") ? "" : obj.id;
-        var price = obj.price;
-        var range = (which == "crypto") ? obj.range : "";
-        var rangeName = (range == "range") ? "(10 - 150)" : "";
-        var type = (which == "crypto") ? (obj.type === "buy" ? "Buy" : "Sell") : "";
-        var name = (which == "crypto") ? "Crypto (" + type + ") " + rangeName : obj.name;
         var hidden = "", col = "col-8";
+        var type = obj.type === "buy" ? "Buy" : "Sell";
+        var parent = obj.type === "buy" ? buyDiv : sellDiv;
+        var range = obj.range;
+        var rangeName = (range == "range") ? "(10 - 150)" : "";
+        var name = (which == "crypto") ? "Crypto " + rangeName : obj.name;
+        var id = (which == "crypto") ? "" : obj.id;
         if (obj.msg === "not_found") {
             name = (which == "crypto") ? "No " + type + " Crypto found " + rangeName + ", Add in settings" :
                 "No Giftcard found, Add in settings";
             hidden = "d-none";
             col = "col-12";
+            parent.innerHTML += "<div class='row justify-content-between mt-3 px-4'>\n                        <div class=\"" + col + " text-muted text-left\">\n                <span class=\"d-inline-block product-name\">" + name + "</span>\n                </div></div>";
         }
-        var rowDiv = document.createElement("div");
-        rowDiv.className = "row justify-content-between mt-3 px-4";
-        rowDiv.innerHTML = "<div class=\"" + col + " text-muted text-left\">\n            <span class=\"d-inline-block product-name\">" + name + "</span>\n        </div>\n        <div class=\"col-2 " + hidden + "\">\n            <input which='" + which + "' type='number' class=\"form-control admin-rate text-center\" id='" + id + "' value='" + price + "'>\n        </div>\n        <div class='spinner-border spinner-border-sm mt-2 text-primary d-none' aria-hidden='true' role='status' id=\"loader\"></div>\n        <span class=\"material-icons text-primary mt-2 d-none\" style=\"width: 24px;\" id=\"mark_icon\">done</span>";
-        var input = rowDiv.querySelector("input");
-        input.onchange = function (event) {
-            updatePrice(input, rowDiv, type.toLowerCase(), range);
+        else {
+            if (which === "crypto") {
+                // for normal price
+                parent.innerHTML += "<div class='row justify-content-between mt-3 px-4'>\n                        <div class=\"" + col + " text-muted text-left\">\n                <span class=\"d-inline-block product-name\">" + name + "</span>\n                </div>\n                <div class=\"col-4 row justify-content-around " + hidden + "\">\n                    <input which='" + which + "' type='number' trade-type='" + obj.type + "' id='" + id + "'\n                    value='" + obj.price + "' range='normal' class=\"form-control col admin-rate text-center\">\n                </div></div>";
+                // for low price
+                parent.innerHTML += "<div class='row justify-content-between mt-3 px-4'>\n                        <div class=\"" + col + " text-muted text-left\">\n                <span class=\"d-inline-block product-name\">" + name + "(10 - 150)</span>\n                </div>\n                <div class=\"col-4 row justify-content-around " + hidden + "\">\n                    <input which='" + which + "' range='range' type='number' trade-type='" + obj.type + "' id='" + id + "'\n                     value='" + obj.low_price + "' class=\"form-control col admin-rate text-center\">\n                </div></div>";
+            }
+            else {
+                var buyPrice = obj['buy_price'];
+                var sellPrice = obj['sell_price'];
+                buyDiv.innerHTML += "<div class='row justify-content-between mt-3 px-4'>\n                        <div class=\"" + col + " text-muted text-left\">\n                <span class=\"d-inline-block product-name\">" + name + "</span>\n                </div>\n                <div class=\"col-4 row justify-content-around " + hidden + "\">\n                    <input which='" + which + "' type='number' trade-type='buy' id='" + id + "' value='" + buyPrice + "' class=\"form-control col admin-rate text-center\">\n                </div></div>";
+                sellDiv.innerHTML += "<div class='row justify-content-between mt-3 px-4'>\n                        <div class=\"" + col + " text-muted text-left\">\n                <span class=\"d-inline-block product-name\">" + name + "</span>\n                </div>\n                <div class=\"col-4 row justify-content-around " + hidden + "\">\n                    <input which='" + which + "' type='number' trade-type='sell' id='" + id + "' value='" + sellPrice + "' class=\"form-control col admin-rate text-center\">\n                </div></div>";
+            }
+        }
+    });
+    var allInputs = adminRateDiv.querySelectorAll("input[type='number']");
+    allInputs.forEach(function (input) {
+        input.onchange = function () {
+            if (input.value) {
+                var obj = {
+                    type: input.getAttribute('trade-type'),
+                    id: input.id,
+                    value: input.valueAsNumber,
+                    which: input.getAttribute('which'),
+                    range: input.getAttribute('range')
+                };
+                var index = input.getAttribute('index');
+                if (index === undefined || index === null || index < 0) {
+                    index = changes.length;
+                    changes[index] = obj;
+                    input.setAttribute('index', index);
+                }
+                else {
+                    changes[index] = obj;
+                }
+            }
         };
-        parent.appendChild(rowDiv);
-        counter++;
     });
 };
 //update price function 
-var updatePrice = function (input, row, type, range) {
-    // console.log(range);
-    var which = input.getAttribute("which");
-    var id = input.id;
-    var price = input.value;
-    var loader = row.querySelector("div#loader");
-    loader.classList.remove("d-none");
-    var icon = row.querySelector("span#mark_icon");
+var updatePrice = function (data_sent) {
+    applyBtn.innerHTML = spinner;
+    applyBtn.disabled = true;
     Ajax.fetchPage("php/update_prices.php", function (data) {
+        applyBtn.innerHTML = "Apply";
+        applyBtn.disabled = false;
         if (data.toLowerCase().indexOf("success") != -1) {
             showModal(data);
+            changes = [];
         }
         else {
             showModal(data, "text-danger");
         }
-        loader.classList.add("d-none");
-    }, { which: which, id: id, price: price, type: type, range_to: range });
+    }, { data_sent: data_sent });
 };
 //get all rates
 (function () {
+    applyBtn.disabled = true;
     Ajax.fetchPage("php/admin_data.php?which=rates", function (data) {
         var arr = JSON.parse(data);
-        // console.log(arr)
         var message = arr[0];
         if (message.toLowerCase().indexOf('success') != -1) {
             loadingContainer.classList.add("d-none");
             adminRateDiv.classList.remove("d-none");
             addProducts(arr[1]);
+            applyBtn.disabled = false;
         }
         else {
             loadingContainer.classList.add("d-none");

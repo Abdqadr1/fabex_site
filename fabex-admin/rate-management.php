@@ -6,8 +6,11 @@
     </div>
 </div>
 <!-- rates -->
-<div class="admin-rate row justify-content-between py-3 d-none" id="admin_rate">
-    <div class="col-6 bordered p-4 rate-column">
+<div class="admin-rate row justify-content-between py-1 d-none" id="admin_rate">
+    <div class="col-6 px-4 py-0 rate-column" id="buyDiv">
+        <div class="sticky-top bg-white">
+            <h4 class="text-primary py-2 border-bottom border-secondary rounded border-1 me-4">Buy</h4>
+        </div>
         <!-- each rate -->
         <!-- <div class="row justify-content-between mt-3 px-4">
             <div class="col-8 text-muted text-left">
@@ -18,7 +21,10 @@
             </div>
         </div> -->
     </div>
-    <div class="col-6 p-4 rate-column">
+    <div class="col-6 px-4 py-0 rate-column" id="sellDiv">
+        <div class="sticky-top bg-white">
+            <h4 class="text-primary py-2 border-bottom border-secondary rounded border-1 me-4">Sell</h4>
+        </div>
         <!-- each rate -->
         <!-- <div class="row justify-content-between mt-3 px-4">
             <div class="col-7 text-muted text-left">
@@ -32,6 +38,10 @@
         </div> -->
 
     </div>
+</div>
+<!-- apply button  -->
+<div class="d-flex justify-content-end pe-3">
+    <btn class="btn btn-primary px-5 mt-4" id="applyBtn">Apply</b>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

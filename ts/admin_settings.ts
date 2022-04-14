@@ -28,8 +28,6 @@ const allSellNetworksInput = addSellCryptoForm.querySelector("input#all_networks
 const addBankForm = document.querySelector("form#addBankForm") as HTMLFormElement;
 const addBankSubmitBtn = addBankForm.querySelector("button") as HTMLButtonElement;
 const bankSelect = addBankForm.querySelector("select#bankname") as HTMLSelectElement;
-const accountName = addBankForm.querySelector("input#accountname") as HTMLInputElement;
-const accountNumber = addBankForm.querySelector("input#accountnumber") as HTMLInputElement;
 const bankErrorDiv = addBankForm.querySelector('div#errorDiv') as HTMLDivElement;
 const bankSuccessDiv = addBankForm.querySelector("div#successDiv") as HTMLDivElement;
 
@@ -59,17 +57,15 @@ const findIndex = (arr: [][], id: number) => {
 const writeNetwork = (type: string, value:string, index:number) => {
     if (type === "buy") {
         buyNetworks[index] = value;
-        console.log(buyNetworks);
     } else {
         sellNetworks[index] = value;
-        console.log(sellNetworks)
     }
 }
-buyNetwork1Input.onkeyup = () => {
+buyNetwork1Input.oninput = () => {
     writeNetwork("buy", buyNetwork1Input.value, 0)
     allBuyNetworksInput.value = buyNetworks.join(",");
 }
-sellNetwork1Input.onkeyup = () => {
+sellNetwork1Input.oninput = () => {
     writeNetwork("sell", sellNetwork1Input.value, 0)
     allSellNetworksInput.value = sellNetworks.join(",");
 }
@@ -81,7 +77,7 @@ addNetworkBuy.onclick = () => {
         ` <label for="network1" class="form-label">Network ${no + 1}</label>
     <input id="network${no + 1}" name="network${no + 1}" type="text" class="form-control form-control-lg rad8" placeholder="Enter Network ${no + 1}">`;
     const input = newNode.querySelector("input") as HTMLInputElement;
-    input.onkeyup = () => {
+    input.oninput = () => {
         writeNetwork("buy", input.value, no)
         allBuyNetworksInput.value = buyNetworks.join(",");
     }
@@ -96,7 +92,7 @@ addNetworkSell.onclick = () => {
         ` <label for="network1" class="form-label">Network ${no + 1}</label>
     <input id="network${no + 1}" name="network${no + 1}" type="text" class="form-control form-control-lg rad8" placeholder="Enter Network ${no + 1}">`;
     const input = newNode.querySelector("input") as HTMLInputElement;
-    input.onkeyup = () => {
+    input.oninput = () => {
         writeNetwork("sell", input.value, no)
         allSellNetworksInput.value = sellNetworks.join(",");
     }
@@ -189,7 +185,7 @@ addSellCryptoForm.onsubmit = event => {
         addSellCryptoSubmitBtn.innerHTML = spinner;
     })
     aj.setAfter((responseText:string) => {
-        console.log(responseText)
+        // console.log(responseText)
         const arr:any[] = JSON.parse(responseText);
         const message = arr[0];
         if (message.toLowerCase().indexOf("success") != -1) {

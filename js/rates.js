@@ -18,10 +18,11 @@ var addRates = function (content) {
     var dg = document.createElement("div");
     dg.className = "rates";
     giftcard.forEach(function (cont) {
-        var sec = cont[1] ? cont[1] + "/$" : "";
+        var buyPrice = cont['buy_price'] ? cont['buy_price'] + "/$" : "";
+        var sellPrice = cont['sell_price'] ? cont['sell_price'] + "/$" : "";
         var d = document.createElement("div");
         d.className = "row justify-content-between rate";
-        d.innerHTML = "\n                <div class=\"col-9 ml-2\">\n                    <span class=\"rate-title\">" + cont[0] + "</span><br>\n                </div>\n                <div class=\"col-3 text-to-right\">\n                    <span class=\"rate-price\">" + sec + "</span>\n                </div>";
+        d.innerHTML = "\n                <div class=\"col-7 ml-2\">\n                    <span class=\"rate-title\">" + cont.name + "</span><br>\n                </div>\n                <div class=\"col-5 text-to-right\">\n                    <span class=\"rate-price\">(Buy)" + buyPrice + "</span>\n                    <span class=\"rate-price\">(Sell)" + sellPrice + "</span>\n                </div>";
         dg.appendChild(d);
     });
     rates_container.appendChild(dg);
@@ -29,8 +30,8 @@ var addRates = function (content) {
 (function () {
     // console.info("fetching rates from server...");
     Ajax.fetchPage("php/get_rates.php", function (data) {
-        // console.log(data)
         var result = JSON.parse(data);
+        console.log(result);
         if (result.length > 1) {
             addRates(result);
         }

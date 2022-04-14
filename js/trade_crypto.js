@@ -39,6 +39,7 @@ var errorDiv = tradeCryptoForm.querySelector("div#errorDiv");
 var act = tradeCryptoForm.querySelector("input#hidden");
 var amountParagraph = tradeCryptoForm.querySelector("p#amount");
 var networkSelect = tradeCryptoForm.querySelector("select#network");
+var memoDiv = tradeCryptoForm.querySelector("div#memoDiv");
 amountInput.oninput = function () { return changeAmount(); };
 var changeAmount = function () {
     var price = Number(priceInput.value);
@@ -143,7 +144,7 @@ buttons.forEach(function (element) {
             act.value = action;
             cryptoButton.textContent = "Sell Crypto";
         }
-        changeNetworks((action == "buy" ? buyCryptos : sellCryptos));
+        populateAssets((action == "buy" ? buyCryptos : sellCryptos));
         var parent = element.parentElement;
         var children = parent.children;
         for (var i = 0; i < children.length; i++) {
@@ -195,36 +196,48 @@ buttons.forEach(function (element) {
 assets.onchange = function (event) {
     var select = event.target;
     var children = select.children;
+    var array = (action === "buy") ? buyCryptos : sellCryptos;
     var crypto_name = select.value;
-    for (var i = 0; i < children.length; i++) {
+    networkSelect.innerHTML = "<option value=\"\" selected hidden>Select network...</option>";
+    var _loop_1 = function (i) {
         var child = children[i];
-        if (child.value === crypto_name) {
+        if (child.value.toLowerCase() === crypto_name.toLowerCase()) {
             assets.setAttribute("aria-id", child.id);
             priceInput.value = child.getAttribute("price");
             lowPriceInput.value = child.getAttribute("low_price");
             productIdInput.value = child.id;
             changeAmount();
+            var obj = array.filter(function (el) { return el.id === child.id; })[0];
+            if (obj.memo)
+                memoDiv.className = 'for-buy';
+            else
+                memoDiv.className = 'for-buy d-none';
+            var networks = array.filter(function (arr) { return arr.acronym.toLowerCase() === child.value.toLowerCase(); });
+            networks.forEach(function (net) {
+                var network = net.network.toUpperCase();
+                networkSelect.innerHTML += "<option id='" + net.id + "' value='" + network + "'>" + network + "</option>";
+            });
         }
+    };
+    for (var i = 0; i < children.length; i++) {
+        _loop_1(i);
     }
 };
-var changeNetworks = function (activeAssets) {
-    networkSelect.innerHTML = "<option value=\"\" selected hidden>Select network...</option>";
+var populateAssets = function (activeAssets) {
     assets.innerHTML = "<option value=\"\" selected hidden>Select coin...</option>";
+    var insertedNames = [];
     if (activeAssets.length > 0) {
         activeAssets.forEach(function (crypto) {
-            var option = document.createElement("option");
-            option.innerText = crypto.name;
-            option.value = crypto.acronym;
-            option.id = crypto.id;
-            option.setAttribute("price", crypto.price);
-            option.setAttribute("low_price", crypto.low_price);
-            assets.appendChild(option);
-            var networkOption = document.createElement("option");
-            var network = crypto.network;
-            networkOption.innerText = network.toUpperCase();
-            networkOption.value = network.toUpperCase();
-            networkOption.id = crypto.id;
-            networkSelect.appendChild(networkOption);
+            if (insertedNames.indexOf(crypto.acronym) == -1) {
+                var option = document.createElement("option");
+                option.innerText = crypto.name;
+                option.value = crypto.acronym;
+                option.id = crypto.id;
+                option.setAttribute("price", crypto.price);
+                option.setAttribute("low_price", crypto.low_price);
+                assets.appendChild(option);
+                insertedNames.push(crypto.acronym);
+            }
         });
     }
     else {
@@ -235,6 +248,7 @@ var changeNetworks = function (activeAssets) {
         var net = document.createElement("option");
         net.innerText = "No network available";
         net.disabled = true;
+        networkSelect.innerHTML = "<option value=\"\" selected hidden>Select network...</option>";
         networkSelect.appendChild(net);
     }
 };
@@ -252,7 +266,7 @@ var changeNetworks = function (activeAssets) {
         else {
             activeAssets = sellCryptos;
         }
-        changeNetworks(activeAssets);
+        populateAssets(activeAssets);
     });
 })();
 // for timeout
