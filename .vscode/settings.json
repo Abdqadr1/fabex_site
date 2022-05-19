@@ -15,5 +15,10 @@
     "topten",
     "Wema"
   ],
-  "cSpell.ignoreWords": ["descrip"]
+  "cSpell.ignoreWords": [
+    "descrip"
+  ],
+  "editor.unicodeHighlight.allowedCharacters": {
+    "U+200B": true
+  }
 }

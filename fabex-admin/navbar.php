@@ -17,6 +17,17 @@
                 <li class="nav-item">
                     <a class="nav-link py-md-3 py-1" style="cursor: pointer;" href="settings">Settings</a>
                 </li>
+                <?php
+                if (
+                    isset($_SESSION["access_level"]) &&
+                    $_SESSION["access_level"] == 1
+                ) {
+                    echo "<li class='nav-item'>
+                            <a class='nav-link py-md-3 py-1' style='cursor: pointer;' href='settings'>Admin-Management</a>
+                        </li>";
+                }
+                ?>
+
                 <li class="d-none d-md-">
                     <hr href="" class="dropdown-divider" />
                 </li>

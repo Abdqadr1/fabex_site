@@ -14,6 +14,7 @@ var Ajax = /** @class */ (function () {
         var _this = this;
         if (isF === void 0) { isF = false; }
         this.before = function () { };
+        this.finally = function () { };
         this.after = function () { };
         this.error = function () { };
         this.xhttp = new XMLHttpRequest();
@@ -22,6 +23,7 @@ var Ajax = /** @class */ (function () {
             _this.isFetch = u;
         };
         this.setBefore = function (f) { _this.before = f; };
+        this.setFinally = function (f) { _this.finally = f; };
         this.setAfter = function (f) { _this.after = f; };
         this.setError = function (f) { _this.error = f; };
         this.setTimer = function (f, t) {
@@ -62,6 +64,7 @@ var Ajax = /** @class */ (function () {
             else {
                 _this.error(_this.xhttp);
             }
+            _this.finally(_this.xhttp);
         });
         this.xhttp.addEventListener("error", function (e) {
             _this.clearTimer();
@@ -78,16 +81,30 @@ var Ajax = /** @class */ (function () {
         else
             this.ajax();
     };
-    Ajax.fetchPage = function (url, doAfter, headers) {
+    Ajax.fetchPage = function (url, doAfter, headers, funcs) {
         if (headers === void 0) { headers = {}; }
+        if (funcs === void 0) { funcs = [function () { }, function () { }]; }
         fetch(url, {
             headers: __assign({}, headers),
-        }).then(function (response) { return response.text(); })
+        }).then(function (response) {
+            if (response.status === 200)
+                return response.text();
+            funcs[0](response);
+        })
             .then(function (data) {
-            if (data.toLowerCase().indexOf("timeout") > -1)
-                location.href = "logout";
-            doAfter(data);
-        }).catch(function (error) { return console.error("An error occurred", error); });
+            if (data) {
+                if (data.toLowerCase().indexOf("timeout") > -1)
+                    location.href = "logout";
+                doAfter(data);
+            }
+        })
+            .catch(function (error) {
+            console.error("An error occurred", error);
+            if (funcs[0])
+                funcs[0](error);
+        })
+            .finally(function () { if (funcs[1])
+            funcs[1](); });
     };
     return Ajax;
 }());

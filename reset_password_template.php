@@ -34,8 +34,7 @@
 </head>
 
 <body style="padding: 8px 12px; font-family: Overpass, sans-serif;">
-    <!-- TODO: correct the image url-->
-    <img src="http://localhost/fabex/assets/images/FabEx.png" alt="Fabex Logo" style="margin: 10px auto; width: auto;">
+    <img src="https://www.fabex.io/assets/images/FabEx.png" alt="Fabex Logo" style="margin: 10px auto; width: auto;">
     <h3 style="margin-bottom:20px;color:#166d71;font-size:24px;">Reset your password</h3>
     <p>Hi <em>{FIRST_NAME}</em>,</p>
     <p>You requested to change your password <br> Click the link below to do so</p>
@@ -44,9 +43,9 @@
 
 
     <div style="margin-top: 4em;">
-        <a href="https://web.facebook.com/fabexglobal" target="blank"><img class="socials" src="http://localhost/fabex/assets/images/fb.png" alt="fabex"></a>
-        <a href="https://www.instagram.com/fabex_global/" target="blank"><img class="socials" src="http://localhost/fabex/assets/images/instagram.png" alt="fabex"></a>
-        <a href="mailto:fabexglobal@gmail.com"><img class="socials" src="http://localhost/fabex/assets/images/mail.png" alt="fabex"></a>
+        <a href="https://web.facebook.com/fabexglobal" target="blank"><img class="socials" src="https://www.fabex.io/assets/images/fb.png" alt="fabex"></a>
+        <a href="https://www.instagram.com/fabex_global/" target="blank"><img class="socials" src="https://www.fabex.io/assets/images/instagram.png" alt="fabex"></a>
+        <a href="mailto:fabexglobal@gmail.com"><img class="socials" src="https://www.fabex.io/assets/images/mail.png" alt="fabex"></a>
     </div>
     <p class="address">Suite C2 & C3, Lenu Plaza Sani Abacha,<br /> GRA phase 3, Port Harcourt</p>
 </body>

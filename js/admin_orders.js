@@ -6,17 +6,26 @@ var table = document.querySelector("table#table");
 var tableHeader = table.querySelector("thead#header");
 var headers = tableHeader.querySelectorAll("tr.heading");
 var tableBody = table.querySelector("tbody#table_body");
-var spinner = "<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>";
+var spinner = "<div class='spinner-border text-success spinner-border-sm' aria-hidden='true' role='status'></div>";
 var tabs = document.querySelectorAll(".nav-tab");
 var modal = document.querySelector("div#modal");
 var modalBody = modal.querySelector("div.modal-body");
 var detailsModal = document.querySelector("div#details_modal");
+var searchForm = document.querySelector("form#searchForm");
+var searchInput = searchForm.querySelector("[aria-describedby=search]");
 var detailsModalBody = detailsModal.querySelector("div#details_modal_body");
-var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+var activityFeedTemplate = document.querySelector("[activity-feed-template]");
+searchInput.oninput = function () { return filterObj.keyword = searchInput.value; };
+searchForm.onsubmit = function (event) {
+    event.preventDefault();
+    console.log(filterObj);
+    fetchOrders(filterObj);
+};
 var filterObj = {
     which: "crypto",
     type: 0,
-    status: 1
+    status: 1,
+    keyword: ''
 };
 whichSelect.onchange = function (event) {
     if (whichSelect.value != filterObj.which) {
@@ -136,11 +145,7 @@ var changeTable = function (list, filters) {
                             };
                     }
                     if (name_1 === "time") {
-                        var date = new Date(order[name_1]);
-                        var today = new Date();
-                        var isToday = date.toDateString() === today.toDateString();
-                        var time_1 = isToday ? "Today " + todayFormatter.format(date) : dateFormatter.format(date);
-                        td.innerText = time_1;
+                        td.innerText = formatDate(order[name_1]);
                     }
                 }
                 else if (name_1 instanceof Array) {
@@ -168,11 +173,11 @@ var changeTable = function (list, filters) {
                         };
                 }
                 else {
-                    var id = order['id'];
+                    var id_1 = order['id'];
                     var first = filters.status === 2 ? "reject" : "approve";
                     var second = filters.status === 1 ? "reject" : "undo";
                     td.className = "d-flex justify-content-center align-top";
-                    td.innerHTML = "<button aria-id='" + id + "' class=\"action-button text-capitalize " + first + "\">" + first + "</button>\n                    <button aria-id='" + id + "' class=\"action-button text-capitalize " + second + "\">" + second + "</button>";
+                    td.innerHTML = "<button aria-id='" + id_1 + "' class=\"action-button text-capitalize " + first + "\">" + first + "</button>\n                    <button aria-id='" + id_1 + "' class=\"action-button text-capitalize " + second + "\">" + second + "</button>\n                    <div class=\"dropdown\">\n                        <span data-feed-button data-feed class=\"material-icons\" id=" + id_1 + " aria-expanded=\"false\"\n                         data-bs-toggle=\"dropdown\" title='show activities'>feed</span>\n                        <ul class=\"dropdown-menu\" aria-labelledby=" + id_1 + " style='min-width: 20rem;' data-order-feeds>\n                            <li><a class=\"dropdown-item\" href=\"#\">Action</a></li>\n                            <li><a class=\"dropdown-item\" href=\"#\">Another action</a></li>\n                        </ul>\n                        </div>";
                     //registering click events for buttons
                     td.querySelectorAll("button").forEach(function (btn) {
                         btn.onclick = function (event) {
@@ -180,6 +185,11 @@ var changeTable = function (list, filters) {
                             changeStatus(btn);
                         };
                     });
+                    td.querySelector("[data-feed]")
+                        .onclick = function (event) {
+                        event.stopPropagation();
+                        loadActivityFeeds(Number(id_1), event.target);
+                    };
                 }
                 tr.appendChild(td);
             };
@@ -260,6 +270,7 @@ var fetchOrders = function (filters) {
     var which = filters.which;
     var status = filters.status;
     var action = filters.type;
+    var _keyword = filters.keyword;
     loadingContainer.classList.remove("d-none");
     table.classList.add("d-none");
     Ajax.fetchPage("php/admin_data.php?which=orders", function (data) {
@@ -274,27 +285,67 @@ var fetchOrders = function (filters) {
             changeTable([], filters);
         }
         loadingContainer.classList.add("d-none");
-    }, { "type": which, "action": action, "status": status });
+    }, { "type": which, "action": action, "status": status, _keyword: _keyword });
 };
 //change order status 
 var changeStatus = function (btn) {
     var id = btn.getAttribute("aria-id");
     var val = btn.innerText.toLowerCase();
-    // console.log("clicking ", id, val);
-    // change the transaction status
     btn.innerHTML = spinner;
-    Ajax.fetchPage("php/change_tx_status.php", function (data) {
+    Ajax.fetchPage("php/change_tx_status.php", function () {
         var _a;
-        if (data.indexOf("success") != -1) {
-            var tr = (_a = btn.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement;
-            tableBody.removeChild(tr);
+        var tr = (_a = btn.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement;
+        tableBody.removeChild(tr);
+    }, { "code": id, "action": val }, [function () {
+            btn.innerText = val;
+            showModal("Could not perform action", "text-danger", 3000);
+        }]);
+};
+var loadActivityFeeds = function (id, span) {
+    var dropdown = span.parentElement;
+    var menu = dropdown.querySelector(".dropdown-menu");
+    menu.innerHTML = "<div class=\"d-flex justify-content-center py-3\">" + spinner + "</div>";
+    Ajax.fetchPage("php/activity_feeds.php?id=" + id, function (data) {
+        var arr = JSON.parse(data);
+        console.log(arr);
+        if (arr.length > 0) {
+            menu.innerHTML = "";
+            arr.forEach(function (feed) {
+                var color = "success";
+                if (feed.description.startsWith("reject")) {
+                    color = "red";
+                }
+                else if (feed.description.startsWith("und")) {
+                    color = "secondary";
+                }
+                var template = activityFeedTemplate.content.cloneNode(true)
+                    .childNodes[1];
+                var indicator = template.querySelector("[indicator]");
+                var title = template.querySelector("[data-title]");
+                var name = template.querySelector("[data-name]");
+                var time = template.querySelector("[data-time]");
+                indicator.innerHTML = "<span class=\"ellipse\" style=\"--type: var(--" + color + ");\"></span>";
+                title.textContent = feed.description;
+                name.textContent = feed.full_name;
+                time.textContent = formatDate(feed.time);
+                template.onclick = function (event) { return event.stopPropagation(); };
+                menu.appendChild(template);
+            });
         }
         else {
-            btn.innerText = val;
-            showModal(data, "text-danger", 3000);
+            menu.innerHTML = "<li><a class=\"dropdown-item text-center\">No activity yet</li>";
         }
-    }, { "code": id, "action": val });
+    }, {});
 };
+// format time 
+function formatDate(dateString) {
+    var date = new Date(dateString);
+    var today = new Date();
+    var isToday = date.toDateString() === today.toDateString();
+    return isToday
+        ? "Today " + todayFormatter.format(date)
+        : dateFormatter.format(date);
+}
 // get all orders
 (function () {
     fetchOrders(filterObj);

@@ -7,18 +7,29 @@ const table = document.querySelector("table#table") as HTMLTableElement;
 const tableHeader = table.querySelector("thead#header") as HTMLTableSectionElement
 const headers = tableHeader.querySelectorAll("tr.heading") as NodeListOf<HTMLTableRowElement>;
 const tableBody = table.querySelector("tbody#table_body") as HTMLTableSectionElement
-const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>`;
+const spinner = `<div class='spinner-border text-success spinner-border-sm' aria-hidden='true' role='status'></div>`;
 const tabs = document.querySelectorAll(".nav-tab") as NodeListOf<HTMLAnchorElement>;
 const modal = document.querySelector("div#modal") as HTMLDivElement;
 const modalBody = modal.querySelector("div.modal-body") as HTMLDivElement;
 const detailsModal = document.querySelector("div#details_modal") as HTMLDivElement;
+const searchForm = document.querySelector("form#searchForm") as HTMLFormElement;
+const searchInput = searchForm.querySelector("[aria-describedby=search]") as HTMLInputElement
 const detailsModalBody = detailsModal.querySelector("div#details_modal_body") as HTMLDivElement;
-type filterType = { which: string, type: number, status: number };
-const days: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+const activityFeedTemplate = document.querySelector("[activity-feed-template]") as HTMLTemplateElement;
+type filterType = { which: string, type: number, status: number, keyword:string|null };
+type feedType = {description:string, full_name:string,time: string}
+
+searchInput.oninput = () => filterObj.keyword = searchInput.value
+searchForm.onsubmit = function(event){
+    event.preventDefault();
+    console.log(filterObj)
+    fetchOrders(filterObj)
+}
 const filterObj:filterType  = {
     which: "crypto",
     type: 0,
-    status: 1
+    status: 1,
+    keyword: ''
 };
 whichSelect.onchange = event => {
     if (whichSelect.value != filterObj.which) { 
@@ -137,11 +148,7 @@ const changeTable = (list: any[], filters: filterType) => {
                         }
                     }
                     if (name === "time") {
-                        const date = new Date(order[name]);
-                        const today = new Date();
-                        const isToday = date.toDateString() === today.toDateString();
-                        const time:string = isToday ? "Today " + todayFormatter.format(date) : dateFormatter.format(date)
-                        td.innerText = time;
+                        td.innerText = formatDate(order[name]);
                     }
                 } else if (name instanceof Array) {
                     let content:string = order[name[0]];
@@ -173,14 +180,27 @@ const changeTable = (list: any[], filters: filterType) => {
                     const second = filters.status === 1 ? "reject" : "undo"
                     td.className = "d-flex justify-content-center align-top";
                     td.innerHTML = `<button aria-id='${id}' class="action-button text-capitalize ${first}">${first}</button>
-                    <button aria-id='${id}' class="action-button text-capitalize ${second}">${second}</button>`;
+                    <button aria-id='${id}' class="action-button text-capitalize ${second}">${second}</button>
+                    <div class="dropdown">
+                        <span data-feed-button data-feed class="material-icons" id=${id} aria-expanded="false"
+                         data-bs-toggle="dropdown" title='show activities'>feed</span>
+                        <ul class="dropdown-menu" aria-labelledby=${id} style='min-width: 20rem;' data-order-feeds>
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                        </ul>
+                        </div>`;
                     //registering click events for buttons
                     td.querySelectorAll("button").forEach(btn => {
                         btn.onclick = event => {
                             event.stopPropagation();
                             changeStatus(btn as HTMLButtonElement);
                         }
-                    })
+                    });
+                    (td.querySelector("[data-feed]") as HTMLSpanElement)
+                    .onclick = (event) => {
+                        event.stopPropagation();
+                        loadActivityFeeds(Number(id), event.target as HTMLSpanElement);
+                    }
                 }
                 tr.appendChild(td);
             }
@@ -254,6 +274,7 @@ const fetchOrders = (filters:filterType) => {
     const which = filters.which;
     const status = filters.status;
     const action = filters.type;
+    const _keyword = filters.keyword;
     loadingContainer.classList.remove("d-none");
     table.classList.add("d-none");
     Ajax.fetchPage(`php/admin_data.php?which=orders`, (data: string) => {
@@ -267,24 +288,71 @@ const fetchOrders = (filters:filterType) => {
             changeTable([], filters);
         }
         loadingContainer.classList.add("d-none");
-    }, { "type": which, "action":action, "status":status });
+    }, { "type": which, "action":action, "status":status, _keyword });
 }
 //change order status 
 const changeStatus = (btn:HTMLButtonElement) => {
     const id = btn.getAttribute("aria-id");
     const val = btn.innerText.toLowerCase();
-    // console.log("clicking ", id, val);
-    // change the transaction status
     btn.innerHTML = spinner;
-    Ajax.fetchPage(`php/change_tx_status.php`, (data: string) => {
-        if (data.indexOf("success") != -1) {
-            const tr = btn.parentElement?.parentElement as HTMLTableRowElement;
-            tableBody.removeChild(tr);
-        } else {
-            btn.innerText = val;
-            showModal(data, "text-danger", 3000);
+    Ajax.fetchPage(`php/change_tx_status.php`, () => {
+        const tr = btn.parentElement?.parentElement as HTMLTableRowElement;
+        tableBody.removeChild(tr);
+    }, {"code":id,"action":val}, [() =>{
+        btn.innerText = val;
+        showModal("Could not perform action", "text-danger", 3000);
+    }])
+}
+
+const loadActivityFeeds = (id: number, span: HTMLSpanElement) => {
+    const dropdown = span.parentElement as HTMLDListElement;
+    const menu = dropdown.querySelector(".dropdown-menu") as HTMLUListElement;
+    menu.innerHTML = `<div class="d-flex justify-content-center py-3">${spinner}</div>`;
+    Ajax.fetchPage(
+      `php/activity_feeds.php?id=${id}`,
+      (data: string) => {
+        const arr: feedType[] = JSON.parse(data);
+        console.log(arr)
+        if(arr.length > 0){
+            menu.innerHTML= ""
+            arr.forEach(feed =>{
+                let color = "success";
+                if (feed.description.startsWith("reject")){
+                    color = "red"
+                }else if(feed.description.startsWith("und")){
+                    color = "secondary"
+                }
+                  const template = activityFeedTemplate.content.cloneNode(true)
+                    .childNodes[1] as HTMLDivElement;
+                const indicator = template.querySelector("[indicator]") as HTMLDivElement;
+                const title = template.querySelector("[data-title]") as HTMLSpanElement;
+                const name = template.querySelector("[data-name]") as HTMLElement;
+                const time = template.querySelector("[data-time]") as HTMLSpanElement;
+                indicator.innerHTML = `<span class="ellipse" style="--type: var(--${color});"></span>`;
+                title.textContent = feed.description;
+                name.textContent = feed.full_name;
+                
+                time.textContent = formatDate(feed.time);
+                template.onclick = event => event.stopPropagation()
+                menu.appendChild(template);
+            })
+        }else {
+            menu.innerHTML = `<li><a class="dropdown-item text-center">No activity yet</li>`;        
         }
-    }, {"code":id,"action":val})
+      },
+      {}
+    );
+}
+
+// format time 
+function formatDate(dateString:string){
+    const date = new Date(dateString);
+    const today = new Date();
+    const isToday =
+        date.toDateString() === today.toDateString();
+    return isToday
+        ? "Today " + todayFormatter.format(date)
+        : dateFormatter.format(date);
 }
 
 // get all orders

@@ -1,5 +1,5 @@
 <div class="container ps-4 my-4">
-    <span class="backBtn material-icons d-none" id="backbtn">
+    <span class="backBtn p-3 material-icons d-none" id="backbtn">
         chevron_left
     </span>
 </div>
@@ -16,21 +16,21 @@
                     <div tabindex="-1" class="alert alert-danger col-10 d-none text-center mx-auto" id="errorDiv" role="alert"></div>
                     <div class="col-11 col-md-5 mx-auto">
                         <label for="firstname" class="form-label settings">First name</label>
-                        <input name="fname" type="text" class="form-control rad8" id="firstname" placeholder="Joseph" required>
+                        <input name="fname" type="text" class="form-control rad8" id="firstname" placeholder="" required>
                     </div>
                     <div class="col-11 col-md-5 mx-auto">
                         <label for="lastname" class="form-label settings">Last name</label>
-                        <input name="lname" type="text" class="form-control rad8" id="lastname" placeholder="Adeleye" required>
+                        <input name="lname" type="text" class="form-control rad8" id="lastname" placeholder="" required>
                     </div>
                 </div>
                 <div class="row justify-content-between gap no-margin mt-1 my-3">
                     <div class="col-11 col-md-5 mx-auto">
                         <label for="phonenumber" class="form-label settings">Phone number</label>
-                        <input name="phone" type="text" class="form-control rad8" id="phonenumber" placeholder="08172847341" required>
+                        <input name="phone" type="text" class="form-control rad8" id="phonenumber" placeholder="" required>
                     </div>
                     <div class="col-11 col-md-5 mx-auto">
                         <label for="email" class="form-label settings">Email</label>
-                        <input name="email" type="email" class="form-control rad8" id="email" placeholder="josephy123@gmail.com" disabled>
+                        <input name="email" type="email" class="form-control rad8" id="email" placeholder="" disabled>
                     </div>
                 </div>
                 <p class="fw-bold mt-3 mx-3 mx-md-4 fs-5">Bank Information</p>
@@ -42,14 +42,14 @@
                     </div>
                     <div class="col-11 col-md-5 mx-auto">
                         <label for="accountnumber" class="form-label settings">Account number</label>
-                        <input name="account_number" type="text" class="form-control rad8 mb-2" id="accountnumber" placeholder="2222225555" required>
-                        <span class="text-caps" id="account_name">Adeleye Joseph</span>
+                        <input name="account_number" type="text" class="form-control rad8 mb-2" id="accountnumber" placeholder="" required>
+                        <span class="text-caps" id="account_name"></span>
                     </div>
                 </div>
                 <div class="row justify-content-between gap no-margin mt-1 my-3">
                     <div class="col-11 col-md-5 mx-auto">
                         <label for="bvn" class="form-label settings">Bank verification number</label>
-                        <input name="bvn" type="text" class="form-control rad8" id="bvn" placeholder="2222225555" disabled>
+                        <input name="bvn" type="text" class="form-control rad8" id="bvn" placeholder="" disabled>
                     </div>
                     <div class="col-11 col-md-5 mx-auto">
                     </div>

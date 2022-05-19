@@ -8,6 +8,7 @@
   --success: #166d71;
   --header: #8c8c8c;
   --deep-primary: #0e3b44;
+  --secondary: #6c757d;
 }
 div.trans-details {
   margin: 0 auto;
@@ -56,6 +57,9 @@ p.yes-no {
   font-weight: 700;
   font-size: 18px;
   line-height: 23px;
+  cursor: pointer;
+}
+.pointer{
   cursor: pointer;
 }
 span.modal_header {
@@ -278,7 +282,7 @@ div.history {
   background-color: #f7f7f7;
   border-radius: 8px;
   max-height: 550px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 span.no-history {
@@ -525,7 +529,7 @@ p.changepass a {
   text-decoration: none;
   cursor: pointer;
 }
-button.settings {
+button.settings, a.settings {
   background-color: var(--primary-color);
   color: white;
   padding: 12px 0;
@@ -587,7 +591,7 @@ p.forgotpass a {
 /* admin pages */
 div.admin-rate > div#buyDiv, div.admin-rate>div#sellDiv{
   max-height: 600px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 button.action-button {
   display: inline-block;
@@ -770,7 +774,7 @@ a.best-giftcard {
 }
 div.top-rates {
   max-height: 200px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 /* Hide scrollbar for IE, Edge and Firefox */
 div.top-rates,
@@ -823,6 +827,9 @@ a.best-giftcard:hover {
   color: white;
 }
 @media screen and (max-width: 700px) {
+  div.moving_rates {
+      animation: moving-rate 30s ease-in forwards infinite;
+    }
   div#inactiveModal div.modal-content,
   div#logoutModal div.modal-content {
     width: max(300px, 100%);
@@ -855,6 +862,49 @@ a.best-giftcard:hover {
   div.top-rates {
     height: auto;
     max-height: max-content;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
+}
+/* admin management audit */
+[data-delete-button], [data-feed-button]{
+  color: var(--header); 
+  display:inline; 
+  vertical-align:middle;
+  cursor: pointer;
+  margin: auto 0;
+}
+[ data-admins]{
+  height: 60vh;
+}
+[data-audit]{
+  height: 70vh;
+  max-height: 70vh;
+  background-color: var(--todo-bg);
+  border-radius: 6px;
+}
+[data-order-feeds]{
+  max-height: 250px;
+  overflow-x: auto;
+  scrollbar-width: 8px;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

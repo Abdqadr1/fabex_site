@@ -1,8 +1,10 @@
 <div class="body row justify-content-center">
     <div class="col-md-5 col-lg-5 col-10" id="">
-        <div class="container pl-4 my-4"><span class="backBtn material-icons" id="backBtn" title="back">
+        <div class="container my-4">
+            <span class="backBtn p-3 material-icons" id="backBtn" title="back">
                 chevron_left
-            </span></div>
+            </span>
+        </div>
         <div class="mx-auto mb-3" id="rates_container">
             <p class="trans-history">Top 10 Giftcards</p>
             <!-- rates -->

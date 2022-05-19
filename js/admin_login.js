@@ -33,19 +33,27 @@ loginForm.onsubmit = function (e) {
         button.innerHTML = spinner;
     });
     aj.setError(function (xhttp) {
-        console.log(xhttp.status);
+        if (xhttp.status === 403)
+            location.href = "../errors/403.html";
     });
     aj.setAfter(function (responseText) {
         if (responseText.toLowerCase().indexOf("success") != -1)
             location.href = "orders";
-        else {
-            errorDiv.innerText = responseText;
-            errorDiv.classList.remove("d-none");
-            errorDiv.classList.add("d-block");
-            button.disabled = false;
-            button.innerHTML = "Login";
-            errorDiv.focus();
+    });
+    aj.setFinally(function (xhttp) {
+        if (xhttp.status === 200) {
+            errorDiv.classList.replace("alert-danger", "alert-success");
+            errorDiv.innerText = "Logging...";
         }
+        else {
+            errorDiv.classList.replace("alert-success", "alert-danger");
+            errorDiv.innerText = xhttp.responseText;
+            button.disabled = false;
+        }
+        errorDiv.classList.remove("d-none");
+        errorDiv.classList.add("d-block");
+        button.innerHTML = "Login";
+        errorDiv.focus();
     });
     aj.start();
 };

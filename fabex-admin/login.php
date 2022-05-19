@@ -27,13 +27,13 @@ $_SESSION = array();
         <div class="row justify-content-center mt-5">
             <div class="col-11 col-md-5 col-lg-4 mt-5" id="settings_pass_div">
                 <a href="/"><img src="../assets/images/FabEx.png" class="mx-auto d-block" alt="Logo"></a>
-                <p class="text-center mt-2 fw-bold fs-4">Admin Login</p>
+                <p class="text-center mt-2 fw-bold fs-4">Login as an Admin</p>
                 <form action="php/login.php" method="POST" id="loginForm">
                     <div class="row justify-content-center">
                         <div tabindex="-1" class="alert alert-danger col-10 d-none text-center" id="errorDiv" role="alert"></div>
                         <div class="col-10 mt-1 my-3">
-                            <label for="username" class="form-label settings">Username</label>
-                            <input name="username" type="text" class="form-control rad8" id="username" placeholder="Enter Username" required>
+                            <label for="email" class="form-label settings">Email</label>
+                            <input name="email" type="text" class="form-control rad8" id="email" placeholder="Enter email address" required>
                         </div>
                         <div class="col-10 mt-1 my-3 position-relative">
                             <label for="password" class="form-label settings">Password</label>

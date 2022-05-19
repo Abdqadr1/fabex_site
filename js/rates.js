@@ -31,7 +31,6 @@ var addRates = function (content) {
     // console.info("fetching rates from server...");
     Ajax.fetchPage("php/get_rates.php", function (data) {
         var result = JSON.parse(data);
-        console.log(result);
         if (result.length > 1) {
             addRates(result);
         }

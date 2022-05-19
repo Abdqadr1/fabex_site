@@ -7,10 +7,23 @@
     </select>
 </div>
 <!-- buy and sell buttons -->
-<div class="d-flex justify-content-center mt-3" id="action_buttons">
-    <button aria-value='0' class="btn btn-outline-secondary mr-3 buy active trading" type="buy">Buy Orders</button>
-    <button aria-value='1' class="btn btn-outline-secondary ml-3 buy trading" type="sell">Sell Orders</button>
+<div class="row justify-content-around mx-0">
+    <div class="col-6 d-flex justify-content-start mt-3 mx-0" id="action_buttons">
+        <button aria-value='0' class="btn btn-outline-secondary mr-3 buy active trading" type="buy">Buy Orders</button>
+        <button aria-value='1' class="btn btn-outline-secondary ml-3 buy trading" type="sell">Sell Orders</button>
+    </div>
+    <div class="col-6 d-flex justify-content-end mt-3 mx-0">
+        <form id="searchForm">
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text bg-light" id="search">
+                    <span class="material-icons">search</span>
+                </span>
+                <input type="text" class="form-control bg-light" placeholder="Search Transaction" aria-describedby="search">
+            </div>
+        </form>
+    </div>
 </div>
+
 <!-- tabs -->
 <nav class="navbar navbar-expand-md py-0 text-black">
     <div class="d-flex justify-content-start px-3 px-md-5">
@@ -94,6 +107,21 @@
         </tr> -->
     </tbody>
 </table>
+
+<!-- activity feed -->
+<template activity-feed-template>
+    <div style="font-size:13px" class="mx-0 p-2 row justify-content-around align-items-center">
+        <div class="col-1 d-flex justify-content-end" indicator></div>
+        <div class="col-10">
+            <span class="d-block">
+                <span data-title class="text-capitalize"></span> by
+                <b data-name></b></span>
+            <span style="font-size:0.8em" class="d-block text-muted" data-time></span>
+        </div>
+    </div>
+</template>
+
+
 <!-- Modal -->
 <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -129,7 +157,7 @@
                 </div>
                 <div class="row justify-content-between mx-0 mt-2 d-none" for="wallet_address">
                     <div class="col-4 fw-bold">Wallet Address:</div>
-                    <div class="col-7 text-success" id="wallet_address"></div>
+                    <div class="col-7 text-success text-break" id="wallet_address"></div>
                 </div>
                 <div class="row justify-content-between mx-0 mt-2 d-none" for="email">
                     <div class="col-4 fw-bold">Email:</div>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 if (!isset($_GET["which"]) || empty($_GET["which"])) {
     echo ("Invalid parameters..");
 }
@@ -132,16 +133,21 @@ function getRates(mysqli &$conn)
 function getAllOrders(mysqli &$conn, string $which)
 {
     $header = getallheaders();
-    if (!isset($header["type"]) || empty($header["type"]) || !isset($header["action"]) || !isset($header["status"])) {
+    if (
+        !isset($header["type"]) || empty($header["type"]) || !isset($header["action"])
+        || !isset($header["status"]) || !isset($header["_keyword"])
+    ) {
         echo ("Invalid parameters..");
     }
     $arr = array();
     $type = mysqli_escape_string($conn, $header["type"]);
     $action = mysqli_escape_string($conn, $header["action"]);
     $status = mysqli_escape_string($conn, $header["status"]);
+    $keyword = mysqli_escape_string($conn, $header["_keyword"]);
     $type = testInput($type);
     $action = testInput($action);
     $status = testInput($status);
+    $keyword = testInput($keyword);
     $need = "";
     if ($type == "crypto") {
         $need = "CONCAT (users.fname,' ', users.lname) AS name, users.bank_name AS user_bank, users.account_number AS user_account_number, trx_history.id, trx_history.tx_id, trx_history.product, 
@@ -153,7 +159,10 @@ function getAllOrders(mysqli &$conn, string $which)
         trx_history.bank_name, trx_history.account_number, trx_history.which, trx_history.proof";
     }
     $sql = "SELECT " . $need . " FROM trx_history INNER JOIN users ON trx_history.u_id=users.id 
-    AND trx_history.which='$type' AND trx_history.type='$action' AND trx_history.status='$status' ORDER BY trx_history.time DESC";
+    AND trx_history.which='$type' AND trx_history.type='$action' AND trx_history.status='$status' AND 
+    CONCAT(trx_history.tx_id, ' ',trx_history.descrip,' ',trx_history.amount,' ',trx_history.price,' ',trx_history.email, ' ', trx_history.bank_name,
+    ' ', trx_history.account_name,' ', trx_history.account_number, ' ', trx_history.wallet_address, ' ', trx_history.network, ' ', trx_history.memo) LIKE 
+    '%$keyword%' ORDER BY trx_history.time DESC";
 
     $result = $conn->query($sql);
     if ($result == true && $result->num_rows > 0) {
@@ -162,8 +171,8 @@ function getAllOrders(mysqli &$conn, string $which)
         }
         echo json_encode(array("success", $arr));
     } else {
-        array_push($arr, "type: " . $type, "action: " . $action, "status: " . $status);
-        echo (json_encode(array("No transaction found for the search queries \n\n" . json_encode($arr), $arr)));
+        array_push($arr, "type: " . $type, "action: " . $action, "status: " . $status, "keyword: " . $keyword);
+        echo (json_encode(array("No transaction found for the search queries\n" . json_encode($arr))));
     }
     $conn->close();
 }
@@ -210,6 +219,25 @@ function toggleTen(mysqli &$conn)
     }
 }
 
+function getAllAdmins(mysqli &$conn)
+{
+    if ($_SESSION["access_level"] == 1) {
+        $sql = "SELECT id, full_name, email, access_level, access FROM admins WHERE access_level!=1";
+        $res = $conn->query($sql);
+        if ($res->num_rows > 0) {
+            $arr = array();
+            while ($row = $res->fetch_assoc()) {
+                array_push($arr, $row);
+            }
+            echo json_encode($arr);
+        } else {
+            echo json_encode([]);
+        }
+    } else {
+        http_response_code(403);
+    }
+}
+
 
 switch ($which) {
     case "toggle_ten":
@@ -228,5 +256,7 @@ switch ($which) {
         return getRates($conn);
     case "orders":
         return getAllOrders($conn, $which);
+    case "admins":
+        return getAllAdmins($conn);
 }
 $conn->close();
