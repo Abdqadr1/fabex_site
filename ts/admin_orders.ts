@@ -22,7 +22,6 @@ type feedType = {description:string, full_name:string,time: string}
 searchInput.oninput = () => filterObj.keyword = searchInput.value
 searchForm.onsubmit = function(event){
     event.preventDefault();
-    console.log(filterObj)
     fetchOrders(filterObj)
 }
 const filterObj:filterType  = {
@@ -204,7 +203,7 @@ const changeTable = (list: any[], filters: filterType) => {
                 }
                 tr.appendChild(td);
             }
-            tr.onclick = () => showTransactionDetails(order);
+            tr.ondblclick = () => showTransactionDetails(order);
             tableBody.appendChild(tr);
         })
     } else {
@@ -312,7 +311,7 @@ const loadActivityFeeds = (id: number, span: HTMLSpanElement) => {
       `php/activity_feeds.php?id=${id}`,
       (data: string) => {
         const arr: feedType[] = JSON.parse(data);
-        console.log(arr)
+        // console.log(arr)
         if(arr.length > 0){
             menu.innerHTML= ""
             arr.forEach(feed =>{

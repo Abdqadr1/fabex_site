@@ -150,26 +150,20 @@ function getAllOrders(mysqli &$conn, string $which)
     $keyword = testInput($keyword);
     $need = "";
     if ($type == "crypto") {
-        $need = "CONCAT (users.fname,' ', users.lname) AS name, users.bank_name AS user_bank, users.account_number AS user_account_number, trx_history.id, trx_history.tx_id, trx_history.product, 
-        trx_history.amount, trx_history.price, trx_history.wallet_address, trx_history.time, trx_history.status, 
-        trx_history.type, trx_history.bank_name, trx_history.account_number, trx_history.memo, trx_history.which, trx_history.network, trx_history.proof";
+        $need = "CONCAT (u.fname,' ', u.lname) AS name, u.bank_name AS user_bank, u.account_number AS user_account_number, t.id, t.tx_id, t.product, 
+        t.amount, t.price, t.wallet_address, t.time, t.status, t.type, t.bank_name, t.account_number, t.memo, t.which, t.network, t.proof";
     } else {
-        $need = "CONCAT (users.fname,' ', users.lname) AS name, users.bank_name AS user_bank, users.account_number AS user_account_number,trx_history.email, trx_history.id, trx_history.tx_id, trx_history.product, 
-        trx_history.amount, trx_history.price, trx_history.time, trx_history.status, trx_history.type,
-        trx_history.bank_name, trx_history.account_number, trx_history.which, trx_history.proof";
+        $need = "CONCAT (u.fname,' ', u.lname) AS name, u.bank_name AS user_bank, u.account_number AS user_account_number,t.email, t.id, t.tx_id, t.product, 
+        t.amount, t.price, t.time, t.status, t.type,t.bank_name, t.account_number, t.which, t.proof";
     }
-    $sql = "SELECT " . $need . " FROM trx_history INNER JOIN users ON trx_history.u_id=users.id 
-    AND trx_history.which='$type' AND trx_history.type='$action' AND trx_history.status='$status' AND 
-    CONCAT(trx_history.tx_id, ' ',trx_history.descrip,' ',trx_history.amount,' ',trx_history.price,' ',trx_history.email, ' ', trx_history.bank_name,
-    ' ', trx_history.account_name,' ', trx_history.account_number, ' ', trx_history.wallet_address, ' ', trx_history.network, ' ', trx_history.memo) LIKE 
-    '%$keyword%' ORDER BY trx_history.time DESC";
+    $sql = "SELECT " . $need . " FROM trx_history AS t INNER JOIN users AS u ON t.u_id=u.id 
+    AND t.which='$type' AND t.type='$action' AND t.status='$status' AND CONCAT(t.tx_id, ' ',t.descrip,' ',t.amount,' ',t.price,' ',t.email, ' ', t.bank_name,
+    ' ', t.account_name,' ', t.account_number, ' ', t.wallet_address, ' ', t.network, ' ', t.memo) LIKE '%$keyword%' ORDER BY t.time DESC";
 
+    error_reporting(E_ALL);
     $result = $conn->query($sql);
     if ($result == true && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            array_push($arr, $row);
-        }
-        echo json_encode(array("success", $arr));
+        echo json_encode(array("success", $result->fetch_all(MYSQLI_ASSOC)));
     } else {
         array_push($arr, "type: " . $type, "action: " . $action, "status: " . $status, "keyword: " . $keyword);
         echo (json_encode(array("No transaction found for the search queries\n" . json_encode($arr))));

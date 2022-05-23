@@ -1,7 +1,7 @@
 <?php
 $server_name = "localhost";
 $username = "root";
-$password = "";
+$p = "";
 $database = "fabex";
 
 date_default_timezone_set("Africa/Lagos");
@@ -9,7 +9,7 @@ date_default_timezone_set("Africa/Lagos");
 // error_reporting(0);
 
 // Create connection
-$conn = new mysqli($server_name, $username, $password, $database);
+$conn = new mysqli($server_name, $username, $p, $database);
 
 // Check connection
 if ($conn->connect_error) {

@@ -18,7 +18,6 @@ var activityFeedTemplate = document.querySelector("[activity-feed-template]");
 searchInput.oninput = function () { return filterObj.keyword = searchInput.value; };
 searchForm.onsubmit = function (event) {
     event.preventDefault();
-    console.log(filterObj);
     fetchOrders(filterObj);
 };
 var filterObj = {
@@ -196,7 +195,7 @@ var changeTable = function (list, filters) {
             for (var i = 0; i < numberOfCells; i++) {
                 _loop_1(i);
             }
-            tr.onclick = function () { return showTransactionDetails(order); };
+            tr.ondblclick = function () { return showTransactionDetails(order); };
             tableBody.appendChild(tr);
         });
     }
@@ -307,7 +306,7 @@ var loadActivityFeeds = function (id, span) {
     menu.innerHTML = "<div class=\"d-flex justify-content-center py-3\">" + spinner + "</div>";
     Ajax.fetchPage("php/activity_feeds.php?id=" + id, function (data) {
         var arr = JSON.parse(data);
-        console.log(arr);
+        // console.log(arr)
         if (arr.length > 0) {
             menu.innerHTML = "";
             arr.forEach(function (feed) {
