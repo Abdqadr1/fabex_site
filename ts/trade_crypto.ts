@@ -42,6 +42,7 @@ const act = tradeCryptoForm.querySelector("input#hidden") as HTMLInputElement;
 const amountParagraph = tradeCryptoForm.querySelector("p#amount") as HTMLParagraphElement;
 const networkSelect = tradeCryptoForm.querySelector("select#network") as HTMLSelectElement;
 const memoDiv = tradeCryptoForm.querySelector("div#memoDiv") as HTMLDivElement;
+const memoInput = memoDiv.querySelector("input[name=memo]") as HTMLInputElement;
 
 amountInput.oninput = () => changeAmount();
 
@@ -212,8 +213,14 @@ assets.onchange = event => {
             productIdInput.value = child.id;
             changeAmount();
             const obj = array.filter(el => el.id === child.id)[0];
-            if (obj.memo) memoDiv.className = 'for-buy'
-            else memoDiv.className = 'for-buy d-none';
+            if (obj.memo) {
+                memoInput.required = true;
+                memoDiv.classList.remove('d-none');
+            }
+            else {
+                memoInput.required = false;
+                memoDiv.classList.add('d-none');
+            }
             const networks = array.filter(arr => arr.acronym.toLowerCase() === child.value.toLowerCase())
             networks.forEach(net => {
                 const network = net.network.toUpperCase();

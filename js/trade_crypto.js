@@ -40,6 +40,7 @@ var act = tradeCryptoForm.querySelector("input#hidden");
 var amountParagraph = tradeCryptoForm.querySelector("p#amount");
 var networkSelect = tradeCryptoForm.querySelector("select#network");
 var memoDiv = tradeCryptoForm.querySelector("div#memoDiv");
+var memoInput = memoDiv.querySelector("input[name=memo]");
 amountInput.oninput = function () { return changeAmount(); };
 var changeAmount = function () {
     var price = Number(priceInput.value);
@@ -208,10 +209,14 @@ assets.onchange = function (event) {
             productIdInput.value = child.id;
             changeAmount();
             var obj = array.filter(function (el) { return el.id === child.id; })[0];
-            if (obj.memo)
-                memoDiv.className = 'for-buy';
-            else
-                memoDiv.className = 'for-buy d-none';
+            if (obj.memo) {
+                memoInput.required = true;
+                memoDiv.classList.remove('d-none');
+            }
+            else {
+                memoInput.required = false;
+                memoDiv.classList.add('d-none');
+            }
             var networks = array.filter(function (arr) { return arr.acronym.toLowerCase() === child.value.toLowerCase(); });
             networks.forEach(function (net) {
                 var network = net.network.toUpperCase();
