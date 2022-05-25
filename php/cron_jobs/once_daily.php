@@ -1,27 +1,9 @@
 <?php
 include_once "../../account/php/connect_db.php";
 // for accounts  that has not been verified after 3 days
-$sql = "SELECT id FROM users where time<= CURRENT_DATE - INTERVAL 3 DAY AND verified='0'";
-$result = $conn->query($sql);
-if ($result == true && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $id = $row["id"];
-        $query = "DELETE FROM users WHERE id='$id' LIMIT 1";
-        $conn->query($query);
-    }
-} else {
-    // echo "No user found! " . $conn->error;
-}
+$sql = "DELETE FROM users where time<= CURRENT_DATE - INTERVAL 3 DAY AND verified=0";
+$users_result = $conn->query($sql);
 
 // for transaction that was not completed after 24 hours
-$sql = "SELECT id FROM trx_history where time<= CURRENT_DATE - INTERVAL 1 DAY AND status='0'";
-$result = $conn->query($sql);
-if ($result == true && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $id = $row["id"];
-        $query = "DELETE FROM trx_history WHERE id='$id' LIMIT 1";
-        $conn->query($query);
-    }
-} else {
-    // echo "No transaction found! " . $conn->error;
-}
+$sql = "DELETE FROM trx_history where time<= CURRENT_DATE - INTERVAL 1 DAY AND status=0";
+$history_result = $conn->query($sql);
