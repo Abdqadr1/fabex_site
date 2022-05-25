@@ -33,20 +33,26 @@ if ($action === "undo") {
 }
 
 if ($val > 0) {
-    $sql = "UPDATE trx_history SET status='$val' WHERE id='$id'";
-    $result = $conn->query($sql);
-    if ($result === true) {
-        $adminSql = "INSERT INTO activity_feeds (admin_id,description, tx_id, time) VALUES
-         ('$admin_id', '$action', '$id', '$time')";
-        if ($conn->query($adminSql)) {
+    if ($conn->begin_transaction()) {
+        try {
+
+            $sql = "UPDATE trx_history SET status='$val' WHERE id='$id'";
+            $result = $conn->query($sql);
+
+            $adminSql = "INSERT INTO activity_feeds (admin_id,description, tx_id, time) VALUES
+            ('$admin_id', '$action', '$id', '$time')";
+            $conn->query($adminSql);
+
+            $conn->commit();
             echo json_encode("Transaction status updated successfully.");
-        } else {
+        } catch (mysqli_sql_exception $e) {
+            $conn->rollback();
             http_response_code(500);
-            exit(json_encode("Error occur while updating feeds table"));
+            echo (json_encode("Error occur while inserting records"));
         }
     } else {
         http_response_code(500);
-        echo json_encode("Error occur updating record");
+        echo (json_encode("Could not start transaction"));
     }
 } else {
     http_response_code(400);
