@@ -1,47 +1,48 @@
 import { Ajax } from "./ajax.js";
 const loadingContainer = document.querySelector("div#loadingContainer") as HTMLDivElement;
 const rates_container = document.querySelector("div#rates_container") as HTMLDivElement;
+const giftcardRateTemplate = document.querySelector("[data-giftcard-rate]") as HTMLTemplateElement;
+const cryptoRateTemplate = document.querySelector("[data-crypto-rate]") as HTMLTemplateElement;
+const noRateTemplate = document.querySelector("[data-no-rate]") as HTMLTemplateElement;
+const cryptoRatesDiv = document.querySelector("[data-crypto-rates]") as HTMLDivElement;
+const giftcardRatesDiv = document.querySelector("[data-giftcard-rates]") as HTMLDivElement;
 
 const addRates = (content: [][]) => {
     const cryptos: any[] = content[0];
     const giftcard: any[] = content[1];
 
-    const dc = document.createElement("div");
-    dc.className = "rates";
     cryptos.forEach((crypto: string) => {
         const sec = crypto[1] ? crypto[1] + "/$" : "";
-        const d = document.createElement("div");
-        d.className = "row justify-content-between rate";
-        d.innerHTML = `
-                        <div class="col-9 ml-2">
-                            <span class="rate-title text-caps">${crypto[0]} (${crypto[2]})</span><br>
-                        </div>
-                        <div class="col-3 text-to-right">
-                            <span class="rate-price">${sec}</span>
-                        </div>`;
-        dc.appendChild(d)
+        const el =cryptoRateTemplate.content.cloneNode(true).childNodes[1] as HTMLDivElement;
+        const title = el.querySelector(".rate-title") as HTMLSpanElement;
+        const price = el.querySelector(".rate-price") as HTMLSpanElement;
+        title.textContent = `${crypto[0]} (${crypto[2]})`;
+        price.textContent = sec;
+        cryptoRatesDiv.appendChild(el)
     });
-    rates_container.appendChild(dc);
     
     // for giftcards
-    const dg = document.createElement("div");
-    dg.className = "rates";
     giftcard.forEach((cont: any) => {
-        const buyPrice = cont['buy_price'] ? cont['buy_price'] + "/$" : "";
-        const sellPrice = cont['sell_price'] ? cont['sell_price'] + "/$" : "";
-        const d = document.createElement("div");
-        d.className = "row justify-content-between rate";
-        d.innerHTML = `
-                <div class="col-7 ml-2">
-                    <span class="rate-title">${cont.name}</span><br>
-                </div>
-                <div class="col-5 text-to-right">
-                    <span class="rate-price">(Buy)${buyPrice}</span>
-                    <span class="rate-price">(Sell)${sellPrice}</span>
-                </div>`;
-        dg.appendChild(d);
+        const buyPrice = Number(cont['buy_price']);
+        const sellPrice = Number(cont['sell_price']);
+        const el = giftcardRateTemplate.content.cloneNode(true).childNodes[1] as HTMLDivElement;
+        const title = el.querySelector(".rate-title") as HTMLSpanElement;
+        const buySpan = el.querySelector("[data-buy]") as HTMLSpanElement;
+        const sellSpan = el.querySelector("[data-sell]") as HTMLSpanElement;
+
+        title.textContent = cont.name;
+        if(buyPrice > 0){
+            buySpan.textContent = `(Buy)${buyPrice}/$`;
+        }else {
+            buySpan.classList.add("d-none")
+        }
+        if (sellPrice > 0) {
+          sellSpan.textContent = `(Buy)${sellPrice}/$`;
+        } else {
+          sellSpan.classList.add("d-none");
+        }
+        giftcardRatesDiv.appendChild(el);
     });
-    rates_container.appendChild(dg)
     
 }
 
@@ -54,15 +55,11 @@ const addRates = (content: [][]) => {
                 addRates(result);
             } else { 
                 const t:string = result[0][0];
-                const div = document.createElement("div");
-                div.className = "rates"
-                div.innerHTML = `
-                <div class="row justify-content-center rate">
-                    <div class="col-10 ml-2">
-                        <span class="rate-title text-caps">${t}</span><br>
-                    </div>
-                </div>`;
-                rates_container.appendChild(div);
+                const el = noRateTemplate.content.cloneNode(true).childNodes[1] as HTMLDivElement;
+                const title = el.querySelector(".rate-title") as HTMLSpanElement;
+                title.textContent = t;
+                cryptoRatesDiv.appendChild(el);
+                giftcardRatesDiv.remove();
             }
             loadingContainer.classList.remove("d-block");
             loadingContainer.classList.add("d-none");

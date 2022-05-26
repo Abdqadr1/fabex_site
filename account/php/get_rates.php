@@ -52,15 +52,10 @@ array_push($rates, $crypto_rates);
 $g_sql = "SELECT name, buy_price, sell_price FROM giftcards WHERE type='sub_category'
      AND status=1 AND (buy_price > 0 OR sell_price > 0)";
 $g_res = $conn->query($g_sql);
-$arr = array();
 if ($g_res == true && $g_res->num_rows > 0) {
-    while ($r = $g_res->fetch_assoc()) {
-        array_push($arr, array('name' => $r['name'], 'buy_price' => $r["buy_price"], 'sell_price' => $r['sell_price']));
-    };
-    array_push($rates, $arr);
+    array_push($rates, $g_res->fetch_all(MYSQLI_ASSOC));
 } else {
-    array_push($arr, array("No giftcard yet.. Contact Admin"));
-    array_push($rates, $arr);
+    array_push($rates, []);
     $conn->close();
 }
 echo json_encode($rates);

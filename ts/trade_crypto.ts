@@ -43,21 +43,24 @@ const amountParagraph = tradeCryptoForm.querySelector("p#amount") as HTMLParagra
 const networkSelect = tradeCryptoForm.querySelector("select#network") as HTMLSelectElement;
 const memoDiv = tradeCryptoForm.querySelector("div#memoDiv") as HTMLDivElement;
 const memoInput = memoDiv.querySelector("input[name=memo]") as HTMLInputElement;
+const priceNote = tradeCryptoForm.querySelector("#priceNote") as HTMLParagraphElement;
 
 amountInput.oninput = () => changeAmount();
 
 const changeAmount = () => {
+    const charge = action === "buy" ? 1000 : 0;
     let price:number = Number(priceInput.value);
     const lowPrice:number = Number(lowPriceInput.value);
     const amount = amountInput.valueAsNumber;
     // console.log(price, amount);
     if (price && amount && amount > 0 && price > 0) {
         if (amount < 150) price = lowPrice;
-        const tot = Number(price * amount);
+        let tot = Number(price * amount);
+        amountParagraph.innerText = `Total: ${numberFormatter.format(tot)} @ ${price}/$ + #${charge}`;
+        tot += charge;
         totalInput.value = "" + tot.toFixed(2);
-        amountParagraph.innerText = `Total: ${numberFormatter.format(tot)} @ ${price}/$`;
     } else {
-        totalInput.value = "" + (price * amount);
+        totalInput.value = "" + ((price * amount) + charge);
         amountParagraph.innerText = "Total: N0";
     }
 }
@@ -186,7 +189,8 @@ buttons.forEach(element => {
                 //change ui 
             }
         }
-            
+        if(action === "buy") priceNote.classList.remove("d-none");
+        else priceNote.classList.add("d-none");
     }
 });
 

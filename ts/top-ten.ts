@@ -20,7 +20,9 @@ const addRates = (giftcard: any[]) => {
         const title = el.querySelector(".rate-title") as HTMLSpanElement;
         const price = el.querySelector(".rate-price") as HTMLSpanElement;
         title.textContent = giftcard.name;
-        price.textContent = `${giftcard.buy_price}/$(buy) ${giftcard.sell_price}/$(sell)`;
+        const buy = giftcard.buy_price > 0 ? `${giftcard.buy_price}/$(buy)` : "";
+        const sell = giftcard.sell_price > 0 ? `${giftcard.sell_price}/$(sell)` : "";
+        price.textContent = `${buy} ${sell}`;
         dg.appendChild(el);
     });
     rates_container.appendChild(dg)

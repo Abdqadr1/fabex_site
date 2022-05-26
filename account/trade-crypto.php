@@ -32,6 +32,7 @@ include_once "header.php"; ?>
                 <!-- amount -->
                 <label for="amount" class="form-label mb-1 mt-3">Amount ($)</label>
                 <input name="amount" type="number" step="0.01" class="form-control form-control-lg" id="amount" minlength="10" required>
+                <p class="mt-2 text-danger fw-bold" id="priceNote">Note: Buying Bitcoin attracts #1000 charge</p>
                 <p class="mt-2 mb-0 fw-bold" id="amount">Total: N0</p>
                 <input type="hidden" name="price" value="" id="priceInput" required>
                 <input type="hidden" name="low_price" value="" id="lowPriceInput" required>

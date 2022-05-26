@@ -41,8 +41,10 @@ var amountParagraph = tradeCryptoForm.querySelector("p#amount");
 var networkSelect = tradeCryptoForm.querySelector("select#network");
 var memoDiv = tradeCryptoForm.querySelector("div#memoDiv");
 var memoInput = memoDiv.querySelector("input[name=memo]");
+var priceNote = tradeCryptoForm.querySelector("#priceNote");
 amountInput.oninput = function () { return changeAmount(); };
 var changeAmount = function () {
+    var charge = action === "buy" ? 1000 : 0;
     var price = Number(priceInput.value);
     var lowPrice = Number(lowPriceInput.value);
     var amount = amountInput.valueAsNumber;
@@ -51,11 +53,12 @@ var changeAmount = function () {
         if (amount < 150)
             price = lowPrice;
         var tot = Number(price * amount);
+        amountParagraph.innerText = "Total: " + numberFormatter.format(tot) + " @ " + price + "/$ + #" + charge;
+        tot += charge;
         totalInput.value = "" + tot.toFixed(2);
-        amountParagraph.innerText = "Total: " + numberFormatter.format(tot) + " @ " + price + "/$";
     }
     else {
-        totalInput.value = "" + (price * amount);
+        totalInput.value = "" + ((price * amount) + charge);
         amountParagraph.innerText = "Total: N0";
     }
 };
@@ -185,6 +188,10 @@ buttons.forEach(function (element) {
                 //change ui 
             }
         }
+        if (action === "buy")
+            priceNote.classList.remove("d-none");
+        else
+            priceNote.classList.add("d-none");
     };
 });
 // get all banks

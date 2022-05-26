@@ -21,7 +21,8 @@ $id = $_SESSION['id'];
 
 // get giftcards rates
 
-$g_sql = "SELECT name, buy_price, sell_price FROM giftcards WHERE type='sub_category' AND topten=1 LIMIT 10";
+$g_sql = "SELECT name, buy_price, sell_price FROM giftcards WHERE type='sub_category' AND topten=1 
+ AND (buy_price > 0 OR sell_price > 0) LIMIT 10";
 $g_res = $conn->query($g_sql);
 if ($g_res == true && $g_res->num_rows > 0) {
     echo json_encode($g_res->fetch_all(MYSQLI_ASSOC));

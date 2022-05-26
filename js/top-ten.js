@@ -18,7 +18,9 @@ var addRates = function (giftcard) {
         var title = el.querySelector(".rate-title");
         var price = el.querySelector(".rate-price");
         title.textContent = giftcard.name;
-        price.textContent = giftcard.buy_price + "/$(buy) " + giftcard.sell_price + "/$(sell)";
+        var buy = giftcard.buy_price > 0 ? giftcard.buy_price + "/$(buy)" : "";
+        var sell = giftcard.sell_price > 0 ? giftcard.sell_price + "/$(sell)" : "";
+        price.textContent = buy + " " + sell;
         dg.appendChild(el);
     });
     rates_container.appendChild(dg);
