@@ -34,7 +34,7 @@ var addRates = function (content) {
             buySpan.classList.add("d-none");
         }
         if (sellPrice > 0) {
-            sellSpan.textContent = "(Buy)" + sellPrice + "/$";
+            sellSpan.textContent = "(Sell)" + sellPrice + "/$";
         }
         else {
             sellSpan.classList.add("d-none");
