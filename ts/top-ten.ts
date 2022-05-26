@@ -2,29 +2,26 @@ import { Ajax } from "./ajax.js";
 const loadingContainer = document.querySelector("div#loadingContainer") as HTMLDivElement;
 const rates_container = document.querySelector("div#rates_container") as HTMLDivElement;
 const backBtn = document.querySelector("span#backBtn") as HTMLSpanElement || "not_exist";
+const rateTemplate = document.querySelector("[data-top-ten]") as HTMLTemplateElement;
+const noRateTemplate = document.querySelector("[data-no-ten]") as HTMLTemplateElement;
 
 if (backBtn instanceof HTMLSpanElement) {
     backBtn.onclick = event => {
         event.stopPropagation();
-        history.go(-1);
+        location.href ="dashboard";
     }
 }
 
 const addRates = (giftcard: any[]) => {
     const dg = document.createElement("div");
     dg.className = "rates top-rates";
-    giftcard.forEach((cont: string) => {
-        const sec = cont[1] ? cont[1] + "/$" : "";
-        const d = document.createElement("div");
-        d.className = "row justify-content-between rate";
-        d.innerHTML = `
-                <div class="col-9 ml-2">
-                    <span class="rate-title">${cont[0]}</span><br>
-                </div>
-                <div class="col-3 text-to-right">
-                    <span class="rate-price">${sec}</span>
-                </div>`;
-        dg.appendChild(d);
+    giftcard.forEach((giftcard:any) => {
+        const el = rateTemplate.content.cloneNode(true).childNodes[1] as HTMLSpanElement;
+        const title = el.querySelector(".rate-title") as HTMLSpanElement;
+        const price = el.querySelector(".rate-price") as HTMLSpanElement;
+        title.textContent = giftcard.name;
+        price.textContent = `${giftcard.buy_price}/$(buy) ${giftcard.sell_price}/$(sell)`;
+        dg.appendChild(el);
     });
     rates_container.appendChild(dg)
     
@@ -32,23 +29,15 @@ const addRates = (giftcard: any[]) => {
 
 (
     function () { 
-        // console.info("fetching rates from server...");
         Ajax.fetchPage("php/get_top_ten.php", (data: string) => {
             const result: any[] = JSON.parse(data);
-            // console.log(result);
-            if (result[0].length > 1) {
+            if (result.length > 0) {
                 addRates(result);
             } else { 
-                const t:string = result[0];
-                const div = document.createElement("div");
-                div.className = "rates"
-                div.innerHTML = `
-                <div class="row justify-content-center rate">
-                    <div class="col-10 ml-2">
-                        <span class="rate-title text-caps">${t}</span><br>
-                    </div>
-                </div>`;
-                rates_container.appendChild(div);
+                const el = noRateTemplate.content.cloneNode(true).childNodes[1] as HTMLDivElement;
+                const title = el.querySelector(".rate-title") as HTMLSpanElement;
+                title.textContent = "No Top 10 Yet..."
+                rates_container.appendChild(el);
             }
             loadingContainer.classList.remove("d-block");
             loadingContainer.classList.add("d-none");

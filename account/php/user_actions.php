@@ -119,7 +119,8 @@ class User
         if ($bank_query === true) {
             echo "Bank details added successfully";
         } else {
-            echo "Error updating record: " . $conn->error;
+            http_response_code(500);
+            echo "Error adding user's bank";
         }
     }
     public function resetPassword(mysqli &$conn)

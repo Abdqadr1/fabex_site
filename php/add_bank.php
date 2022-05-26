@@ -1,21 +1,28 @@
 <?php
 session_start();
-if (!isset($_SESSION['id']) || empty($_SESSION['id'])) {
-    exit("Invalid parameters");
+if (!isset($_SESSION['id']) || empty($_SESSION['id']) || !isset($_SESSION['verified'])) {
+    http_response_code(403);
+    exit(json_encode("Forbidden"));
 }
 
 $id = $_SESSION['id'];
 
 
-// set_time_limit(150);
-
 if (
     !isset($_POST["bank_name"]) || !isset($_POST["account_number"]) || !isset($_POST["bvn"])
     || empty($_POST["bank_name"]) || empty($_POST["account_number"]) || empty($_POST["bvn"])
 ) {
-    exit("Invalid credentials!");
+    http_response_code(400);
+    exit(json_encode("All fields are required!"));
 }
 
+if (
+    strlen($_POST["account_number"])  != 10 || !is_numeric($_POST["account_number"])
+    || !is_numeric($_POST["bvn"]) || strlen($_POST["bvn"]) != 11
+) {
+    http_response_code(400);
+    exit(json_encode("Account Number or BVN is not valid"));
+}
 
 include_once "../account/php/connect_db.php";
 include_once "../account/php/user_actions.php";
@@ -35,4 +42,6 @@ $user->setBvn($bvn);
 
 $user->addBank($conn);
 
+unset($_SESSION['id']);
+unset($_SESSION['verified']);
 $conn->close();

@@ -1,9 +1,10 @@
 <?php
 session_start();
-if (!isset($_SESSION["id"]) || empty($_SESSION["id"])) {
-    echo ("Invalid parameters..");
-    sleep(2);
-    header("location: login.php");
+if (
+    !isset($_SESSION["id"]) || empty($_SESSION["id"])
+    || !isset($_SESSION["verified"])
+) {
+    header("location: errors/403.html");
 }
 include_once "header.php"; ?>
 
@@ -24,11 +25,11 @@ include_once "header.php"; ?>
                     </div>
                     <div class="mt-1 my-3">
                         <label for="accountnumber" class="form-label settings">Account number</label>
-                        <input name="account_number" type="text" class="form-control rad8" id="accountnumber" placeholder="2222225555" maxlength="10" required>
+                        <input name="account_number" type="text" class="form-control rad8" id="accountnumber" placeholder="Enter account number" maxlength="10" minlength="10" required>
                     </div>
                     <div class="mt-1 mt-3 mb-1">
                         <label for="bvn" class="form-label settings">Bank verification number</label>
-                        <input name="bvn" type="text" class="form-control rad8" id="bvn" placeholder="2222225555" maxlength="11" required>
+                        <input name="bvn" type="text" class="form-control rad8" id="bvn" placeholder="Enter BVN" maxlength="11" minlength="11" required>
                     </div>
                     <div class="row justify-content-center no-margin">
                         <button type="submit" class="col-12 settings text-center mx-auto">Add account details</button>

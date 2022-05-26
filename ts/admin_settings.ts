@@ -711,7 +711,7 @@ const deleteAdminBank = (span: HTMLSpanElement, tr: HTMLTableRowElement) => {
     }
 }
 
-// function to show admin bnaks
+// function to show admin banks
 const showBanks = () => {
     banksTableBody.innerHTML = "";
     if (adminBanks.length > 0) {
@@ -736,13 +736,13 @@ const showBanks = () => {
 
 
 // for adding and removing giftcard sub categories from the top 10
-function toggleTopTen(id:number, prevState:number, el: HTMLSpanElement): void {
+function toggleTopTen(_id:number, _prevstate:number, el: HTMLSpanElement): void {
     Ajax.fetchPage(`php/admin_data.php?which=toggle_ten`, (data: string) => {
         const response: {message:string} = JSON.parse(data);
         if (response.message.indexOf("success") != -1) {
             showModal(response.message)
             let text, newState:number;
-            if (prevState === 1) {
+            if (_prevstate === 1) {
                 text = "Add To"
                 newState = 0;
             } else {
@@ -750,10 +750,10 @@ function toggleTopTen(id:number, prevState:number, el: HTMLSpanElement): void {
                 newState = 1
             }
             el.innerHTML = `${text} Top 10`;
-            el.onclick = () => toggleTopTen(id, newState, el);
+            el.onclick = () => toggleTopTen(_id, newState, el);
         } else {
             showModal(response.message, 'text-danger')
             console.error(response.message);
         }
-    }, {id, prevState})
+    }, { _id, _prevstate})
 }

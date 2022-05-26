@@ -14,11 +14,7 @@ if ($method === "GET") {
         INNER JOIN admins AS d ON a.admin_id=d.id WHERE tx_id='$id' ORDER BY a.time DESC";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
-            $arr = array();
-            while ($row = $result->fetch_assoc()) {
-                array_push($arr, $row);
-            }
-            echo json_encode($arr);
+            echo json_encode($result->fetch_all(MYSQLI_ASSOC));
         } else {
             echo json_encode([]);
         }
@@ -29,14 +25,10 @@ if ($method === "GET") {
             include_once "../../account/php/connect_db.php";
             $sql = "SELECT t.tx_id, d.full_name, a.description FROM activity_feeds AS a 
             JOIN trx_history AS t ON a.tx_id=t.id JOIN admins AS d 
-            ON a.admin_id=d.id ORDER BY a.time DESC";
+            ON a.admin_id=d.id ORDER BY a.time DESC LIMIT 20";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
-                $arr = array();
-                while ($row = $result->fetch_assoc()) {
-                    array_push($arr, $row);
-                }
-                echo json_encode($arr);
+                echo json_encode($result->fetch_all(MYSQLI_ASSOC));
             } else {
                 echo json_encode([]);
             }

@@ -655,7 +655,7 @@ var deleteAdminBank = function (span, tr) {
         }, { ref: ref_1 });
     }
 };
-// function to show admin bnaks
+// function to show admin banks
 var showBanks = function () {
     banksTableBody.innerHTML = "";
     if (adminBanks.length > 0) {
@@ -672,13 +672,13 @@ var showBanks = function () {
     }
 };
 // for adding and removing giftcard sub categories from the top 10
-function toggleTopTen(id, prevState, el) {
+function toggleTopTen(_id, _prevstate, el) {
     Ajax.fetchPage("php/admin_data.php?which=toggle_ten", function (data) {
         var response = JSON.parse(data);
         if (response.message.indexOf("success") != -1) {
             showModal(response.message);
             var text = void 0, newState_1;
-            if (prevState === 1) {
+            if (_prevstate === 1) {
                 text = "Add To";
                 newState_1 = 0;
             }
@@ -687,11 +687,11 @@ function toggleTopTen(id, prevState, el) {
                 newState_1 = 1;
             }
             el.innerHTML = text + " Top 10";
-            el.onclick = function () { return toggleTopTen(id, newState_1, el); };
+            el.onclick = function () { return toggleTopTen(_id, newState_1, el); };
         }
         else {
             showModal(response.message, 'text-danger');
             console.error(response.message);
         }
-    }, { id: id, prevState: prevState });
+    }, { _id: _id, _prevstate: _prevstate });
 }

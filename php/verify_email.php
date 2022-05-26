@@ -29,6 +29,7 @@ if (
             if ($res == true) {
                 $_SESSION["id"] = $id;
                 $_SESSION["email"] = $email;
+                $_SESSION["verified"] = $verified;
                 header("location: ../add-bank.php");
             } else {
                 echo "Error occur while updating record: " . $conn->error;
