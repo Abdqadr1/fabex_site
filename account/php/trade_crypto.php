@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+if (empty($_SESSION["nin"])) {
+    exit("Forbidden");
+}
+
 if (!isset($_SESSION["id"])) {
     exit("No valid user!");
 }
@@ -17,6 +21,12 @@ $product_id = $_POST["product_id"];
 if (empty($action) || empty($asset) || empty($amount) || empty($total) || empty($product_id)) {
     exit("Fill the required fields!");
 }
+
+
+if (!is_numeric($_POST["amount"]) || !is_numeric($_POST["total"])) {
+    exit("Enter a valid amount");
+}
+
 
 include_once "connect_db.php";
 include_once "user_actions.php";

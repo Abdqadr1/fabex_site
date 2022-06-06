@@ -7,6 +7,10 @@ isTimeout();
 isLoggedIn();
 isSessionChanged($conn);
 
+if (empty($_SESSION["nin"])) {
+    header("location: dashboard");
+}
+
 include_once "header.php"; ?>
 
 <body>

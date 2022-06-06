@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+if (empty($_SESSION["nin"])) {
+    exit("Forbidden: Verify your identity first!");
+}
+
 if (!isset($_SESSION['timestamp']) || (time() - $_SESSION['timestamp']) > 1800) {
     exit("Session timeout: Login again");
 }
@@ -24,18 +28,18 @@ $con_password = testInput($con_password);
 if (
     !empty($current_password) && !empty($con_password) && !empty($new_password)
 ) {
+    if (strlen($new_password) < 8 || strlen($con_password) < 8 || strlen($current_password) < 8) {
+        exit("Password must be at least 8 characters!");
+    }
     if ($new_password !== $con_password) {
         exit("Confirm your password!");
-    }
-    if (strlen($new_password) < 8) {
-        exit("Password must be at least 8 characters!");
     }
     if ($new_password == $current_password) {
         exit("Old and new password must be different!");
     }
     $user = new User("", $current_password);
     $user->setId($id);
-    $user->changeCurrentPassword($conn, password_hash($new_password, PASSWORD_DEFAULT));
+    $user->changeCurrentPassword($conn, $new_password);
 } else {
     exit("All fields are required!");
 }

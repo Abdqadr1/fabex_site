@@ -55,7 +55,6 @@ changeInfoForm.onsubmit = function (event) {
         changeInfoBtn.innerHTML = spinner;
     });
     aj.setAfter(function (responseText) {
-        console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
             changeInfoSuccessDiv.innerText = responseText;
             changeInfoSuccessDiv.classList.remove("d-none");
@@ -127,7 +126,7 @@ changePassForm.onsubmit = function (event) {
         option.innerText = json.bank_name;
         changeInfoForm.querySelector("select#bankname").appendChild(option);
         changeInfoForm.querySelector("input#accountnumber").value = json.account_number;
-        changeInfoForm.querySelector("input#bvn").value = json.bvn;
+        changeInfoForm.querySelector("input#nin").value = json.nin;
         changeInfoForm.querySelector("span#account_name").innerText = json.fname + " " + json.lname;
         loadingContainer.classList.remove("d-block");
         loadingContainer.classList.add("d-none");

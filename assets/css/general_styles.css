@@ -912,3 +912,10 @@ a.best-giftcard:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+.click-here{
+  text-decoration: underline;
+  cursor: pointer;
+}
+.click-here:hover{
+  filter: opacity(70%);
+}

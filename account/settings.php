@@ -26,7 +26,7 @@
                 <div class="row justify-content-between gap no-margin mt-1 my-3">
                     <div class="col-11 col-md-5 mx-auto">
                         <label for="phonenumber" class="form-label settings">Phone number</label>
-                        <input name="phone" type="text" class="form-control rad8" id="phonenumber" placeholder="" required>
+                        <input name="phone" type="number" class="form-control rad8" id="phonenumber" placeholder="" minlength="11" maxlength="11" required>
                     </div>
                     <div class="col-11 col-md-5 mx-auto">
                         <label for="email" class="form-label settings">Email</label>
@@ -42,14 +42,14 @@
                     </div>
                     <div class="col-11 col-md-5 mx-auto">
                         <label for="accountnumber" class="form-label settings">Account number</label>
-                        <input name="account_number" type="text" class="form-control rad8 mb-2" id="accountnumber" placeholder="" required>
+                        <input name="account_number" type="number" class="form-control rad8 mb-2" id="accountnumber" placeholder="" required minlength="10" maxlength="10">
                         <span class="text-caps" id="account_name"></span>
                     </div>
                 </div>
                 <div class="row justify-content-between gap no-margin mt-1 my-3">
                     <div class="col-11 col-md-5 mx-auto">
-                        <label for="bvn" class="form-label settings">Bank verification number</label>
-                        <input name="bvn" type="text" class="form-control rad8" id="bvn" placeholder="" disabled>
+                        <label for="bvn" class="form-label settings">National Identity Number</label>
+                        <input name="bvn" type="text" class="form-control rad8" id="nin" placeholder="" disabled>
                     </div>
                     <div class="col-11 col-md-5 mx-auto">
                     </div>
@@ -69,17 +69,17 @@
                     <div tabindex="-1" class="alert alert-danger col-10 d-none text-center" id="errorDiv" role="alert"></div>
                     <div class="col-10 mt-1 my-3 position-relative">
                         <label for="currentpass" class="form-label settings">Current password</label>
-                        <input name="current_password" type="password" class="form-control rad8" id="currentpass" placeholder="" required>
+                        <input name="current_password" type="password" class="form-control rad8" id="currentpass" placeholder="" required minlength="8">
                         <span class="material-icons toggle-password">visibility</span>
                     </div>
                     <div class="col-10 mt-1 my-3 position-relative">
                         <label for="newpass" class="form-label settings">New password</label>
-                        <input name="new_password" type="password" class="form-control rad8" id="newpass" placeholder="At least 8 characters" required>
+                        <input name="new_password" type="password" class="form-control rad8" id="newpass" placeholder="At least 8 characters" required minlength="8">
                         <span class="material-icons toggle-password">visibility</span>
                     </div>
                     <div class="col-10 mt-1 my-3 position-relative">
                         <label for="conpass" class="form-label settings">Confirm password</label>
-                        <input name="con_password" type="password" class="form-control rad8" id="conpass" placeholder="At least 8 characters" required>
+                        <input name="con_password" type="password" class="form-control rad8" id="conpass" placeholder="At least 8 characters" required minlength="8">
                         <span class="material-icons toggle-password">visibility</span>
                     </div>
 

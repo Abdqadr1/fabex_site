@@ -22,7 +22,7 @@
                     <div class="row justify-content-center justify-content-md-between gap no-margin mt-1 my-3">
                         <div class="col-11 col-md-5 mx-auto">
                             <label for="phonenumber" class="form-label settings">Phone number</label>
-                            <input name="phone" type="text" class="form-control rad8" id="phonenumber" placeholder="Enter phone number" maxlength="11" required>
+                            <input name="phone" type="number" class="form-control rad8" id="phonenumber" placeholder="Enter phone number" minlength="11" maxlength="11" required>
                         </div>
                         <div class="col-11 col-md-5 mx-auto">
                             <label for="email" class="form-label settings">Email</label>

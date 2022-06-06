@@ -1,6 +1,7 @@
 import { Ajax } from "./ajax.js";
 const registerForm = document.getElementById('registerForm') as HTMLFormElement;
 const submitBtn = registerForm.querySelector("button") as HTMLButtonElement;
+const phoneInput = registerForm.querySelector("#phonenumber") as HTMLInputElement;
 const errorDiv = registerForm.querySelector("#errorDiv") as HTMLDivElement;
 const spinner = `<div class='spinner-border spinner-border-sm' aria-hidden='true' role='status'></div>
                 Please wait... `;
@@ -21,10 +22,15 @@ toggleIcons.forEach((icon, index) => {
 })
 
 registerForm.onsubmit = (event) => {
-    submitBtn.disabled = true;
     event.preventDefault();
+    if (isNaN(Number(phoneInput.value))) {
+        errorDiv.textContent = "Invalid phone number";
+        errorDiv.classList.remove("d-none");
+        return;
+     }
     const aj = new Ajax(event.target as HTMLFormElement);
     aj.setBefore(() => {
+        submitBtn.disabled = true;
         submitBtn.innerHTML = spinner;
     });
     aj.setAfter((responseText: string) => {
@@ -33,7 +39,6 @@ registerForm.onsubmit = (event) => {
         else {
             errorDiv.innerText = responseText;
             errorDiv.classList.remove("d-none");
-            errorDiv.classList.add("d-block");
             submitBtn.disabled = false;
             submitBtn.innerHTML = "Register";
             errorDiv.focus();

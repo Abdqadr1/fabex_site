@@ -3,23 +3,23 @@
         <p class="kindly-pay mb-3 mx-md-3 mx-3">Hello <span class="text-caps" id="fname"><?php echo $fname; ?></span>,</p>
         <p class="mb-3 fw-bold mx-md-3 mx-3">What would you like to do? </p>
         <div class="row justify-content-center justify-content-md-around mt-3 no-margin">
-            <div class="col-12 col-md-5 py-md-4 py-2 px-md-3 px-3 todo my-3 my-md-0">
-                <a href="giftcard" class="dash">
+            <div class="col-12 col-md-5 py-md-4 py-2 px-md-3 px-3 todo my-3 my-md-0" data-trade-giftcard>
+                <span href="giftcard" class="dash">
                     <span class="material-icons icon giftcard d-inline-block">
                         card_giftcard
                     </span>
                     <span class="mt-md-3 mb-0 act d-inline-block d-md-block text-md-left px-2 px-md-0">Trade Giftcards</span>
                     <p class="note d-none d-md-block">Amazon, Google play, Xbox, Itunes, ebay, etc.</p>
-                </a>
+                </span>
             </div>
-            <div class="col-12 col-md-5 py-md-4 py-2 px-md-3 px-3 todo">
-                <a href="crypto" class="dash">
+            <div class="col-12 col-md-5 py-md-4 py-2 px-md-3 px-3 todo" data-trade-crypto>
+                <span href="crypto" class="dash">
                     <span class="material-icons icon crypto">
                         currency_bitcoin
                     </span>
                     <span class="mt-md-3 mb-0 act d-inline-block d-md-block text-md-left px-2 px-md-0">Trade Crypto</span>
                     <p class="note d-none d-md-block">Bitcoin (BTC), Ethereum (ETH), Tether USD (USDT), Binance coin (BNB)</p>
-                </a>
+                </span>
             </div>
             <div class="col-12 d-md-none mt-3 mb-5">
                 <a href="top-ten" class="btn best-giftcard">Best Giftcards at the moment</a>

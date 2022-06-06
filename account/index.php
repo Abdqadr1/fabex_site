@@ -22,7 +22,26 @@ include "header.php"; ?>
             <span>1 SOL= <b id="solusdt">$0</b></span>
         </div>
     </div>
-    <?php include_once "navbar.php"; ?>
+    <?php
+    include_once "navbar.php";
+    if (empty($_SESSION["nin"])) {
+        echo "<div class='bg-danger py-1 text-center text-light'>
+                <img src='../assets/images/warning.png' alt='warning'>
+                Your account is not verified. Click <span class='click-here' data-here>here</span> to do it now
+            </div>";
+
+        include_once "add-bank-modal.php";
+        echo "<script>const isNotAllowed = true; </script>";
+    } else {
+        echo "<script>const isNotAllowed = false; </script>";
+    }
+    ?>
+
+
+
+
+    <script src="../js/add_bank.js" type="module"></script>
+
     <script>
         let dash_version = 1.0;
         let version = 0.6;

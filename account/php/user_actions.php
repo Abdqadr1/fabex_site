@@ -1,7 +1,7 @@
 <?php
 class User
 {
-    private $id, $fname, $lname, $email = "", $pword, $phone, $bank_name, $account_number, $account_name, $bvn;
+    private $id, $fname, $lname, $email = "", $pword, $phone, $bank_name, $account_number, $account_name, $nin;
     function __construct($email, $pword)
     {
         $this->email = $email;
@@ -23,9 +23,9 @@ class User
     {
         $this->account_number = $number;
     }
-    public function setBvn(string $bvn)
+    public function setNin(string $nin)
     {
-        $this->bvn = $bvn;
+        $this->nin = $nin;
     }
     public function setFname(string $fname)
     {
@@ -49,7 +49,7 @@ class User
     }
     public function login(mysqli &$conn)
     {
-        $login_query = "SELECT id, fname, verified, pword, email FROM users WHERE email = '{$this->email}'";
+        $login_query = "SELECT id, fname, verified, pword, email, nin FROM users WHERE email = '{$this->email}'";
         $result = $conn->query($login_query);
         if ($result->num_rows === 1) {
             $row = $result->fetch_assoc();
@@ -59,8 +59,10 @@ class User
                     $_SESSION["id"] = $row["id"];
                     $_SESSION["fname"] = $row["fname"];
                     $_SESSION["email"] = $row["email"];
+                    $_SESSION["verified"] = $row["verified"];
                     $session_id = substr(uniqid("sid"), 0, 13);
                     $_SESSION["session_id"] = $session_id;
+                    $_SESSION["nin"] = $row["nin"];
                     $sql = "UPDATE users SET session_id='$session_id' WHERE email = '{$this->email}'";
                     if ($conn->query($sql)) {
                         echo "Success: Account found and verified!";
@@ -114,9 +116,10 @@ class User
         $row = $res->fetch_assoc();
         $_SESSION['fname'] = $row["fname"];
         $_SESSION['email'] = $row["email"];
-        $query = "UPDATE users SET bank_name='{$this->bank_name}', account_number='{$this->account_number}', bvn='{$this->bvn}' WHERE id='{$this->id}'";
+        $query = "UPDATE users SET bank_name='{$this->bank_name}', account_number='{$this->account_number}', nin='{$this->nin}' WHERE id='{$this->id}'";
         $bank_query = $conn->query($query);
         if ($bank_query === true) {
+            $_SESSION["nin"] = $this->nin;
             echo "Bank details added successfully";
         } else {
             http_response_code(500);
@@ -167,6 +170,7 @@ class User
 
     public function changeCurrentPassword(mysqli &$conn, string $newPass)
     {
+        $_pass = password_hash($newPass, PASSWORD_DEFAULT);
         //get current password
         $sql = "SELECT pword FROM users WHERE id='{$this->id}'";
         $res = $conn->query($sql);
@@ -174,15 +178,16 @@ class User
             $r = $res->fetch_assoc();
             $pword = $r['pword'];
             if (password_verify($this->pword, $pword)) {
-                $query = "UPDATE users SET pword='$newPass' WHERE id='{$this->id}'";
+                $query = "UPDATE users SET pword='$_pass' WHERE id='{$this->id}'";
                 $bank_query = $conn->query($query);
                 if ($bank_query === true) {
                     echo "Password changed successfully";
                 } else {
-                    echo "Error updating record: " . $conn->error;
+                    http_response_code(500);
+                    echo json_encode("Error updating password, try again later");
                 }
             } else {
-                exit("Current password wrong!");
+                exit("Wrong password!");
             }
         }
     }

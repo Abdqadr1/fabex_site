@@ -1,3 +1,5 @@
+declare const bootstrap: any;
+declare const isNotAllowed: boolean;
 declare let dash_version: number;
 declare let version: number;
 declare let activePage:string;
@@ -10,6 +12,37 @@ const container = document.querySelector("div#container") as HTMLDivElement;
 const view_all = document.querySelector("p#view_all") as HTMLParagraphElement;
 const navLinks = document.querySelectorAll("li>a.nav-link") as NodeListOf<HTMLAnchorElement>;
 const navToggleButton = document.querySelector(".dropdown-toggle") as HTMLAnchorElement;
+const tradeCrypto = document.querySelector("[data-trade-crypto]") as HTMLDivElement;
+const tradeGiftcard = document.querySelector("[data-trade-giftcard]") as HTMLDivElement;
+
+
+if (isNotAllowed) {
+    console.log("You are not allowed")
+} else {
+    console.log("You are allowed");
+}
+function checkAllowed(isNotAllowed:boolean, f:Function) {
+    if (isNotAllowed) {
+        console.log("You are not allowed");
+        const bankModalDiv = document.querySelector("[data-bank-modal]") as HTMLDivElement;
+        const bankModalDivModal = new bootstrap.Modal(bankModalDiv, {
+            keyboard: false,
+        });
+        bankModalDivModal.show();
+    } else {
+        console.log("You are allowed");
+        f();
+    }
+}
+
+tradeCrypto.addEventListener("click", (e) => {
+    checkAllowed(isNotAllowed, () => location.href="crypto")
+})
+
+tradeGiftcard.addEventListener("click", (e) => {
+    checkAllowed(isNotAllowed, () => location.href = "giftcard")
+})
+
 
 
 

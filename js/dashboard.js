@@ -5,6 +5,34 @@ var container = document.querySelector("div#container");
 var view_all = document.querySelector("p#view_all");
 var navLinks = document.querySelectorAll("li>a.nav-link");
 var navToggleButton = document.querySelector(".dropdown-toggle");
+var tradeCrypto = document.querySelector("[data-trade-crypto]");
+var tradeGiftcard = document.querySelector("[data-trade-giftcard]");
+if (isNotAllowed) {
+    console.log("You are not allowed");
+}
+else {
+    console.log("You are allowed");
+}
+function checkAllowed(isNotAllowed, f) {
+    if (isNotAllowed) {
+        console.log("You are not allowed");
+        var bankModalDiv = document.querySelector("[data-bank-modal]");
+        var bankModalDivModal = new bootstrap.Modal(bankModalDiv, {
+            keyboard: false,
+        });
+        bankModalDivModal.show();
+    }
+    else {
+        console.log("You are allowed");
+        f();
+    }
+}
+tradeCrypto.addEventListener("click", function (e) {
+    checkAllowed(isNotAllowed, function () { return location.href = "crypto"; });
+});
+tradeGiftcard.addEventListener("click", function (e) {
+    checkAllowed(isNotAllowed, function () { return location.href = "giftcard"; });
+});
 view_all.onclick = function () {
     // go to history
     load("history");

@@ -62,7 +62,6 @@ changeInfoForm.onsubmit = event => {
         changeInfoBtn.innerHTML = spinner;
     });
     aj.setAfter((responseText: string) => {
-        console.log(responseText);
         if (responseText.toLowerCase().indexOf("success") != -1) {
             changeInfoSuccessDiv.innerText = responseText;
             changeInfoSuccessDiv.classList.remove("d-none");
@@ -123,7 +122,7 @@ changePassForm.onsubmit = event => {
     Ajax.fetchPage("php/get_user_data.php", (data: string) => {
         type user_data = {
             fname: string, lname: string, phone: string, email: string,
-            bank_name: string, account_number: string, bvn: string
+            bank_name: string, account_number: string, nin: string
         };
         const json: user_data = JSON.parse(data);
         
@@ -139,7 +138,7 @@ changePassForm.onsubmit = event => {
         option.innerText = json.bank_name;
         (changeInfoForm.querySelector("select#bankname") as HTMLInputElement).appendChild(option);
         (changeInfoForm.querySelector("input#accountnumber") as HTMLInputElement).value = json.account_number;
-        (changeInfoForm.querySelector("input#bvn") as HTMLInputElement).value = json.bvn;
+        (changeInfoForm.querySelector("input#nin") as HTMLInputElement).value = json.nin;
         (changeInfoForm.querySelector("span#account_name") as HTMLSpanElement).innerText = `${json.fname} ${json.lname}`;
         loadingContainer.classList.remove("d-block");
         loadingContainer.classList.add("d-none");

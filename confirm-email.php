@@ -10,7 +10,7 @@ include_once "header.php"; ?>
                 <p class="text-center mt-2 fw-bold fs-4">Confirm your email</p>
                 <p class="text-center mt-2 fs-6">An email has been sent to <b><?php echo $_SESSION["email"] ?></b>
                     Check your email and follow the instructions.</a></p>
-                <p class="text-center changepass"><a href="change-email.php">Change email</a></p>
+                <p class="text-center changepass"><a href="#" onclick="history.go(-1)">Change email</a></p>
                 <div class="row justify-content-center">
                     <button class="btn col-10 settings text-center mx-auto"><a class="text-white d-block" href="login.php">Go to login</a></button>
                 </div>

@@ -1,7 +1,9 @@
 <?php
 session_start();
-include_once "connect_db.php";
-include_once "user_actions.php";
+
+if (empty($_SESSION["nin"])) {
+    exit("Forbidden");
+}
 
 if (!isset($_SESSION["id"])) {
     exit("No valid user!");
@@ -9,6 +11,9 @@ if (!isset($_SESSION["id"])) {
 if ($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["act"]) || !isset($_SESSION["id"])) {
     header("location: ../login");
 }
+
+include_once "connect_db.php";
+include_once "user_actions.php";
 
 $action = mysqli_escape_string($conn, $_POST["act"]);
 $category = mysqli_escape_string($conn, $_POST["category"]);

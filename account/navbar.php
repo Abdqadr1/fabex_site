@@ -7,24 +7,24 @@
             </a>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <ul class="navbar-nav mx-auto">
+            <ul class="navbar-nav mx-auto ">
                 <li class="nav-item">
-                    <a class="nav-link d-none d-md-block active border-bottom border-2 border-primary py-md-3 py-1" aria-current="page" href="dashboard">Dashboard</a>
+                    <a class="nav-link text-end d-none d-md-block active border-bottom border-2 border-primary py-md-3 py-1" aria-current="page" href="dashboard">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link py-md-3 py-1" aria-current="page" href="history">History</a>
+                    <a class="nav-link text-end py-md-3 py-1" aria-current="page" href="history">History</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link py-md-3 py-1" href="rates">Rates</a>
+                    <a class="nav-link text-end py-md-3 py-1" href="rates">Rates</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link py-md-3 py-1" style="cursor: pointer;" href="settings">Settings</a>
+                    <a class="nav-link text-end py-md-3 py-1" style="cursor: pointer;" href="settings">Settings</a>
                 </li>
                 <li class="d-none d-md-">
                     <hr href="" class="dropdown-divider" />
                 </li>
             </ul>
-            <p class="d-block py-sm-1 d-md-flex my-0">
+            <p class="d-block py-sm-1 d-md-flex my-0 text-end">
                 <a id="logout" href="logout" class="d-inline-block logout nav-link py-1">Log out</a>
             </p>
         </div>

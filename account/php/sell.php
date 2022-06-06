@@ -1,6 +1,8 @@
 <?php
 session_start();
-include_once "connect_db.php";
+if (empty($_SESSION["nin"])) {
+    exit("location: dashboard");
+}
 if (!isset($_SESSION["id"]) || !isset($_SESSION["tx_id"]) || !isset($_SESSION["amount"]) || !isset($_SESSION["which"])) {
     exit("Not enough parameters!");
 }
@@ -11,6 +13,8 @@ $id = $_SESSION["id"];
 $tx_id = $_SESSION["tx_id"];
 $amount = $_SESSION["amount"];
 $which = $_SESSION["which"];
+
+include_once "connect_db.php";
 
 $sql = "SELECT COUNT(*) FROM trx_history WHERE tx_id='$tx_id'";
 $res = $conn->query($sql);

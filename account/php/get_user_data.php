@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $id = $_SESSION['id'];
 
-$query = "SELECT fname, lname ,phone, email, bank_name, account_number, bvn FROM users WHERE id='$id'";
+$query = "SELECT fname, lname ,phone, email, bank_name, account_number, nin FROM users WHERE id='$id'";
 $result = $conn->query($query);
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();

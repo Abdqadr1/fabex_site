@@ -1,6 +1,9 @@
 <?php
 session_start();
-include_once "connect_db.php";
+if (empty($_SESSION["nin"])) {
+    exit("Forbidden");
+}
+
 if (
     !isset($_SESSION["id"]) || !isset($_SESSION["tx_id"]) || !isset($_SESSION["amount"]) || !isset($_SESSION["which"])
     || !isset($_POST["bankname"]) || !isset($_POST["accountname"]) || !isset($_POST["accountnumber"])
@@ -13,6 +16,8 @@ if (
 ) {
     exit("Parameters must not be empty!");
 }
+include_once "connect_db.php";
+
 $id = $_SESSION["id"];
 $tx_id = $_SESSION["tx_id"];
 $amount = $_SESSION["amount"];

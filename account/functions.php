@@ -38,7 +38,10 @@ function isSessionChanged($conn)
 
 function isLoggedIn()
 {
-    if (!isset($_SESSION["id"]) || !isset($_SESSION["fname"]) || empty($_SESSION["id"]) || empty($_SESSION["fname"])) {
+    if (
+        !isset($_SESSION["id"]) || !isset($_SESSION["fname"])
+        || empty($_SESSION["id"]) || empty($_SESSION["fname"]) || !isset($_SESSION["nin"])
+    ) {
         header("location: ../login");
         exit();
     }

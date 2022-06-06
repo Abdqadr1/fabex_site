@@ -1,6 +1,8 @@
 <?php
 session_start();
-
+if (empty($_SESSION["nin"])) {
+    exit("Forbidden: Verify your identity first!");
+}
 
 include_once "connect_db.php";
 include_once "../functions.php";
@@ -11,6 +13,20 @@ if (
     !isset($_POST["bank_name"]) || !isset($_POST["account_number"]) || !$_SESSION["id"]
 ) {
     exit("Invalid credentials!");
+}
+
+if (
+    empty($_POST["fname"]) || empty($_POST["lname"]) || empty($_POST["phone"]) ||
+    empty($_POST["bank_name"]) || empty($_POST["account_number"])
+) {
+    exit("All fields are required!");
+}
+
+if (
+    !is_numeric($_POST["phone"]) || !is_numeric($_POST["account_number"])
+    || strlen($_POST["phone"]) != 11 || strlen($_POST["account_number"]) != 10
+) {
+    exit("Invalid phone number or account number!");
 }
 
 include_once "user_actions.php";
