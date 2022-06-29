@@ -138,10 +138,10 @@ var changeTable = function (list, filters) {
                         td.innerHTML += "<span class='copy material-icons' title='copy full text'>content_copy</span>";
                         var copy = td.querySelector("span.copy");
                         if (copy)
-                            copy.onclick = function (event) {
+                            copy.addEventListener("click", function (event) {
                                 event.stopPropagation();
                                 copyFunc(order[name_1]);
-                            };
+                            });
                     }
                     if (name_1 === "time") {
                         td.innerText = formatDate(order[name_1]);
@@ -179,23 +179,23 @@ var changeTable = function (list, filters) {
                     td.innerHTML = "<button aria-id='" + id_1 + "' class=\"action-button text-capitalize " + first + "\">" + first + "</button>\n                    <button aria-id='" + id_1 + "' class=\"action-button text-capitalize " + second + "\">" + second + "</button>\n                    <div class=\"dropdown\">\n                        <span data-feed-button data-feed class=\"material-icons\" id=" + id_1 + " aria-expanded=\"false\"\n                         data-bs-toggle=\"dropdown\" title='show activities'>feed</span>\n                        <ul class=\"dropdown-menu\" aria-labelledby=" + id_1 + " style='min-width: 20rem;' data-order-feeds>\n                            <li><a class=\"dropdown-item\" href=\"#\">Action</a></li>\n                            <li><a class=\"dropdown-item\" href=\"#\">Another action</a></li>\n                        </ul>\n                        </div>";
                     //registering click events for buttons
                     td.querySelectorAll("button").forEach(function (btn) {
-                        btn.onclick = function (event) {
+                        btn.addEventListener("click", function (event) {
                             event.stopPropagation();
                             changeStatus(btn);
-                        };
+                        });
                     });
                     td.querySelector("[data-feed]")
-                        .onclick = function (event) {
+                        .addEventListener("click", function (event) {
                         event.stopPropagation();
                         loadActivityFeeds(Number(id_1), event.target);
-                    };
+                    });
                 }
                 tr.appendChild(td);
             };
             for (var i = 0; i < numberOfCells; i++) {
                 _loop_1(i);
             }
-            tr.ondblclick = function () { return showTransactionDetails(order); };
+            tr.addEventListener("click", function () { return showTransactionDetails(order); });
             tableBody.appendChild(tr);
         });
     }

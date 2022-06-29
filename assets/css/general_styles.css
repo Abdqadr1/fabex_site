@@ -919,3 +919,20 @@ a.best-giftcard:hover {
 .click-here:hover{
   filter: opacity(70%);
 }
+.whatsapp-icon {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  padding: 10px;
+  opacity: 1;
+  transition: opacity 500ms;
+}
+.whatsapp-icon:where(:focus, :hover){
+  opacity: .8;
+}
+
+.whatsapp-icon>img {
+  aspect-ratio: 1;
+  width: 40px;
+  border-radius: 6px;
+}

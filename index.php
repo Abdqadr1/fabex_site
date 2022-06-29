@@ -54,6 +54,9 @@
         </p>
         <a href="register" class="sign-up-btn btn mb-2">Sign Up</a>
     </section>
+    <a class="whatsapp-icon" href="https://wa.me/2348021042090" title="chat us">
+        <img alt="whatsapp-icon" src="./assets/images/whatsapp-icon.png" />
+    </a>
     <footer class="py-5 px-3 px-md-5">
         <img class="fabex" src="assets/images/FabEx3.png" alt="fabex">
         <div class="d-flex-start mt-4">

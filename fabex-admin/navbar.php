@@ -22,9 +22,18 @@
                     isset($_SESSION["access_level"]) &&
                     $_SESSION["access_level"] == 1
                 ) {
-                    echo "<li class='nav-item'>
+                    $out = "<li class='nav-item'>
                             <a class='nav-link py-md-3 py-1' style='cursor: pointer;' href='settings'>Admin-Management</a>
                         </li>";
+
+                    include_once "../account/php/connect_db.php";
+                    $sql = "SELECT COUNT(id) as total FROM `users` WHERE verified=1 AND nin != ''";
+                    $res = $conn->query($sql);
+                    $result =  $res->fetch_assoc()["total"];
+                    $out .= "<li class='nav-item'>
+                            <span class='nav-link py-md-3 py-1' style='cursor: pointer;' href='#'>User Count: $result</sp>
+                        </li>";
+                    echo $out;
                 }
                 ?>
 

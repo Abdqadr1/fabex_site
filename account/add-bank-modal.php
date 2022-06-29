@@ -21,7 +21,7 @@
                     </div>
                     <div class="mt-1 mt-3 mb-1">
                         <label for="nin" class="form-label settings">National Identity Number</label>
-                        <input name="nin" type="text" class="form-control rad8" id="nin" placeholder="Enter your nin" maxlength="11" minlength="11" required>
+                        <input name="nin" type="text" class="form-control rad8" id="nin" placeholder="Enter your NIN" maxlength="11" minlength="11" required>
                     </div>
                     <div class="row justify-content-center no-margin mt-4 mb-2">
                         <button type="submit" class="col-12 settings text-center mx-auto">Add account details</button>

@@ -141,10 +141,10 @@ const changeTable = (list: any[], filters: filterType) => {
                     if (name === "memo" || name === "email") {
                         td.innerHTML += "<span class='copy material-icons' title='copy full text'>content_copy</span>";
                         const copy = td.querySelector("span.copy") as HTMLSpanElement;
-                        if (copy) copy.onclick = event => {
+                        if (copy) copy.addEventListener("click", event => {
                             event.stopPropagation();
                             copyFunc(order[name]);
-                        }
+                        }) 
                     }
                     if (name === "time") {
                         td.innerText = formatDate(order[name]);
@@ -190,20 +190,20 @@ const changeTable = (list: any[], filters: filterType) => {
                         </div>`;
                     //registering click events for buttons
                     td.querySelectorAll("button").forEach(btn => {
-                        btn.onclick = event => {
+                        btn.addEventListener("click", event => {
                             event.stopPropagation();
                             changeStatus(btn as HTMLButtonElement);
-                        }
+                        })
                     });
                     (td.querySelector("[data-feed]") as HTMLSpanElement)
-                    .onclick = (event) => {
+                    .addEventListener("click", (event) => {
                         event.stopPropagation();
                         loadActivityFeeds(Number(id), event.target as HTMLSpanElement);
-                    }
+                    })
                 }
                 tr.appendChild(td);
             }
-            tr.ondblclick = () => showTransactionDetails(order);
+            tr.addEventListener("click", () => showTransactionDetails(order));
             tableBody.appendChild(tr);
         })
     } else {
